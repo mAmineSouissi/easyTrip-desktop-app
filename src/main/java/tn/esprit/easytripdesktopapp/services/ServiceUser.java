@@ -8,6 +8,7 @@ import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ServiceUser implements CRUDService<User> {
     private final Connection cnx;
@@ -53,7 +54,7 @@ public class ServiceUser implements CRUDService<User> {
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setAddress(rs.getString("addresse"));
+                user.setAddress(rs.getString("address"));
                 user.setProfilePhoto(rs.getString("profilePhoto"));
                 user.setRole(rs.getString("role"));
 
@@ -100,4 +101,100 @@ public class ServiceUser implements CRUDService<User> {
             System.out.println(e.getMessage());
         }
     }
+
+    @Override
+    public Optional<User> getById(int id) {
+        String qry = "SELECT * FROM `user` WHERE `id`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setSurname(rs.getString("surname"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+                user.setProfilePhoto(rs.getString("profilePhoto"));
+                user.setRole(rs.getString("role"));
+
+                return Optional.of(user);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return Optional.empty();
+    }
+
+
+    @Override
+    public List<User> search(String keyword) {
+        List<User> users = new ArrayList<>();
+        String qry = "SELECT * FROM `user` WHERE `name` LIKE ? OR `surname` LIKE ?";
+
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            String searchPattern = "%" + keyword + "%"; // Wildcard search
+            pstm.setString(1, searchPattern);
+            pstm.setString(2, searchPattern);
+
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setSurname(rs.getString("surname"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+                user.setProfilePhoto(rs.getString("profilePhoto"));
+                user.setRole(rs.getString("role"));
+
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return users;
+    }
+
+
+    @Override
+    public boolean exists(int id) {
+        String qry = "SELECT * FROM `user` WHERE `id`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public long count() {
+        String countQuery = "SELECT COUNT(*) FROM `user`";
+        try (Statement stm = cnx.createStatement();
+             ResultSet rs = stm.executeQuery(countQuery)) {
+
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error counting users: " + e.getMessage());
+        }
+        return 0;
+    }
+
 }

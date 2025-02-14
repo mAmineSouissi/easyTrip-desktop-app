@@ -1,19 +1,20 @@
 package tn.esprit.easytripdesktopapp.services;
 
-import tn.esprit.Interfaces.IService;
-import tn.esprit.Models.Agence;
-import tn.esprit.Utils.DB;
+import tn.esprit.easytripdesktopapp.models.Agence;
+import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
+import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class ServiceAgence implements IService<Agence> {
+public class ServiceAgence implements CRUDService<Agence> {
 
     private Connection cnx ;
 
     public ServiceAgence(){
-        cnx = DB.getInstance().getCnx();
+        cnx = MyDataBase.getInstance().getCnx();
     }
 
     @Override
@@ -96,6 +97,26 @@ public class ServiceAgence implements IService<Agence> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public Optional<Agence> getById(int id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Agence> search(String keyword) {
+        return List.of();
+    }
+
+    @Override
+    public boolean exists(int id) {
+        return false;
+    }
+
+    @Override
+    public long count() {
+        return 0;
     }
 
 

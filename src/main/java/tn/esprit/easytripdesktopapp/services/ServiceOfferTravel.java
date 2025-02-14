@@ -1,19 +1,20 @@
 package tn.esprit.easytripdesktopapp.services;
 
-import tn.esprit.Interfaces.IService;
-import tn.esprit.Models.OfferTravel;
-import tn.esprit.Utils.DB;
+import tn.esprit.easytripdesktopapp.models.OfferTravel;
+import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
+import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class ServiceOffer implements IService<OfferTravel> {
+public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
     private Connection cnx ;
 
-    public ServiceOffer(){
-        cnx = DB.getInstance().getCnx();
+    public ServiceOfferTravel(){
+        cnx = MyDataBase.getInstance().getCnx();
     }
 
     @Override
@@ -114,6 +115,26 @@ public class ServiceOffer implements IService<OfferTravel> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public Optional<OfferTravel> getById(int id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<OfferTravel> search(String keyword) {
+        return List.of();
+    }
+
+    @Override
+    public boolean exists(int id) {
+        return false;
+    }
+
+    @Override
+    public long count() {
+        return 0;
     }
 
 

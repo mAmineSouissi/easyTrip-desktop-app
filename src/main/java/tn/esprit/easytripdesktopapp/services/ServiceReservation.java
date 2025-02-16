@@ -8,6 +8,7 @@ import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ServiceReservation implements CRUDService<Reservation> {
     private Connection cnx ;
@@ -66,6 +67,26 @@ public class ServiceReservation implements CRUDService<Reservation> {
             pstmt.setInt(1, Reservation.getIdReservation());
             int rowsAffected = pstmt.executeUpdate();
         } catch (SQLException e) {System.out.println(e.getMessage());}
+    }
+
+    @Override
+    public Optional<Reservation> getById(int id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Reservation> search(String keyword) {
+        return List.of();
+    }
+
+    @Override
+    public boolean exists(int id) {
+        return false;
+    }
+
+    @Override
+    public long count() {
+        return 0;
     }
 
 

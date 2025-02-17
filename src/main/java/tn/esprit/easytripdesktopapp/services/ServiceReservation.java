@@ -1,6 +1,7 @@
 package tn.esprit.easytripdesktopapp.services;
 
-import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
+
+import tn.esprit.easytripdesktopapp.interfaces.IService;
 import tn.esprit.easytripdesktopapp.models.Reservation;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 
@@ -11,19 +12,17 @@ import java.util.List;
 import java.util.Optional;
 
 
-public class ServiceReservation implements CRUDService<Reservation> {
+public class ServiceReservation implements IService<Reservation> {
     private Connection cnx ;
 
     public ServiceReservation(){
         cnx = MyDataBase.getInstance().getCnx();
     }
 
+
     @Override
     public void add(Reservation reservation) {
-        //create Qry SQL
-        //execute Qry
-        String qry ="INSERT INTO `reservation`(`ordre_date`, `nom`, `prenom`, `phone`, `email`) VALUES (?,?,?,?,?)";
-
+        String qry ="INSERT INTO `reservation`(`ordreDate`, `nom`, `prenom`, `phone`, `email`) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setDate(1, new java.sql.Date(reservation.getOrdreDate().getTime()));
@@ -31,11 +30,10 @@ public class ServiceReservation implements CRUDService<Reservation> {
             pstm.setString(3, reservation.getPrenom());
             pstm.setInt(4, reservation.getPhone());
             pstm.setString(5, reservation.getEmail());
-
-
             pstm.executeUpdate();
         } catch (SQLException e) {System.out.println(e.getMessage());}
     }
+
 
     @Override
     public List<Reservation> getAll() {
@@ -48,6 +46,7 @@ public class ServiceReservation implements CRUDService<Reservation> {
             while (rs.next()){
                 Reservation r = new Reservation();
                 r.setIdReservation(rs.getInt(("id_reservation")));
+                r.setOrdreDate(rs.getDate(("ordreDate")));
                 r.setNom(rs.getString(("nom")));
                 r.setPrenom(rs.getString(("prenom")));
                 r.setPhone(rs.getInt(("phone")));
@@ -60,40 +59,20 @@ public class ServiceReservation implements CRUDService<Reservation> {
         return reservations;
     }
 
+
     @Override
-    public void delete(Reservation Reservation) {
+    public void delete(int id) {
         String qry = "DELETE FROM `reservation` WHERE id_reservation =?";
         try (PreparedStatement pstmt = cnx.prepareStatement(qry)) {
-
-            pstmt.setInt(1, Reservation.getIdReservation());
+            pstmt.setInt(1, id);
             int rowsAffected = pstmt.executeUpdate();
         } catch (SQLException e) {System.out.println(e.getMessage());}
-    }
-
-    @Override
-    public Optional<Reservation> getById(int id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<Reservation> search(String keyword) {
-        return List.of();
-    }
-
-    @Override
-    public boolean exists(int id) {
-        return false;
-    }
-
-    @Override
-    public long count() {
-        return 0;
     }
 
 
     @Override
     public void update(Reservation reservation) {
-        String qry = "UPDATE `reservation` SET  `ordre_date`=?, `nom`=?, `prenom`=?, `phone`=?,`email`=?  WHERE id_reservation =?";
+        String qry = "UPDATE `reservation` SET  `ordreDate`=?, `nom`=?, `prenom`=?, `phone`=?,`email`=?  WHERE id_reservation =?";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setDate(1, new java.sql.Date(reservation.getOrdreDate().getTime()));
             pstm.setString(2, reservation.getNom());
@@ -101,12 +80,29 @@ public class ServiceReservation implements CRUDService<Reservation> {
             pstm.setInt(4, reservation.getPhone());
             pstm.setString(5, reservation.getEmail());
             pstm.setInt(6, reservation.getIdReservation());
-
             int rowsUpdated = pstm.executeUpdate();
         } catch (SQLException e) {System.out.println(e.getMessage());}
     }
 
-
+    public Reservation getById(int id) {
+        String qry = "SELECT * FROM `reservation` WHERE id_reservation = ?";
+        Reservation c = null;
+        try (PreparedStatement ps = cnx.prepareStatement(qry)) {
+            ps.setInt(1, id);
+            ResultSet res = ps.executeQuery();
+            if (res.next()) {
+                Date ordreDate = res.getDate("ordreDate");
+                String nom = res.getString("nom");
+                String prenom = res.getString("prenom");
+                int phone = res.getInt("phone");
+                String email = res.getString("email");
+                c = new Reservation(id, ordreDate, nom, prenom, phone, email);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return c;
+    }
 
 
 }

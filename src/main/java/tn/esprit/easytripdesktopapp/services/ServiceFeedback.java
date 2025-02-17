@@ -1,22 +1,20 @@
-package tn.esprit.easytripdesktopapp.services;
+package tn.esprit.services;
 
-
-import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
-import tn.esprit.easytripdesktopapp.models.Feedback;
-import tn.esprit.easytripdesktopapp.utils.MyDataBase;
-
+import tn.esprit.interfaces.IService;
+import tn.esprit.models.Feedback;
+import tn.esprit.utils.MyDatabase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ServiceFeedback implements CRUDService<Feedback> {
+public class ServiceFeedback implements CRUDService <Feedback>{
 
     private final Connection cnx;
 
     public ServiceFeedback() {
-        cnx = MyDataBase.getInstance().getCnx();
+        cnx = MyDatabase.getInstance().getCnx();
     }
 
     @Override
@@ -57,7 +55,7 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             }
 
         } catch (SQLException e) {
-            System.out.println("Erreur" + e.getMessage());
+            System.out.println("Erreur :" + e.getMessage());
         }
 
         return feedbackList;
@@ -66,8 +64,7 @@ public class ServiceFeedback implements CRUDService<Feedback> {
     @Override
     public void update(Feedback feedback) {
         String qry = "UPDATE `feedback` SET `userId`=?, `offerId`=?, `rating`=?, `message`=?, `date`=? WHERE `id`=?";
-        try {
-            PreparedStatement pstm = cnx.prepareStatement(qry);
+        try {PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, feedback.getUserId());
             pstm.setInt(2, feedback.getOfferId());
             pstm.setInt(3, feedback.getRating());
@@ -79,6 +76,7 @@ public class ServiceFeedback implements CRUDService<Feedback> {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
 
     }
 
@@ -98,9 +96,7 @@ public class ServiceFeedback implements CRUDService<Feedback> {
 
     @Override
     public Optional<Feedback> getById(int id) {
-        List<Feedback> feedbacks = new ArrayList<>();
-        String qry = "SELECT * FROM `feedback` WHERE `id` = ?";
-
+        String qry = "SELECT * FROM Feedback WHERE id = ?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, id);
@@ -109,19 +105,17 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             if (rs.next()) {
                 Feedback feedback = new Feedback();
                 feedback.setId(rs.getInt("id"));
-                feedback.setUserId(rs.getInt("user_id"));
-                feedback.setOfferId(rs.getInt("offer_id"));
+                feedback.setUserId(rs.getInt("userId"));
+                feedback.setOfferId(rs.getInt("offerId"));
                 feedback.setRating(rs.getInt("rating"));
                 feedback.setMessage(rs.getString("message"));
                 feedback.setDate(rs.getDate("date"));
-
-                feedbacks.add(feedback);
 
                 return Optional.of(feedback);
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur: " + e.getMessage());
         }
 
         return Optional.empty();
@@ -130,7 +124,7 @@ public class ServiceFeedback implements CRUDService<Feedback> {
     @Override
     public List<Feedback> search(String keyword) {
         List<Feedback> feedbacks = new ArrayList<>();
-        String qry = "SELECT * FROM `feedback` WHERE `message` LIKE ?";
+        String qry = "SELECT * FROM Feedback WHERE message LIKE ?";
 
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
@@ -141,8 +135,8 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             while (rs.next()) {
                 Feedback feedback = new Feedback();
                 feedback.setId(rs.getInt("id"));
-                feedback.setUserId(rs.getInt("user_id"));
-                feedback.setOfferId(rs.getInt("offer_id"));
+                feedback.setUserId(rs.getInt("userId"));
+                feedback.setOfferId(rs.getInt("offerId"));
                 feedback.setRating(rs.getInt("rating"));
                 feedback.setMessage(rs.getString("message"));
                 feedback.setDate(rs.getDate("date"));
@@ -150,8 +144,8 @@ public class ServiceFeedback implements CRUDService<Feedback> {
                 feedbacks.add(feedback);
             }
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
+        } catch (SQLException e) {
+            System.out.println("Erreur: " + e.getMessage());
         }
 
         return feedbacks;
@@ -159,23 +153,22 @@ public class ServiceFeedback implements CRUDService<Feedback> {
 
     @Override
     public boolean exists(int id) {
-        String qry = "SELECT * FROM `feedback` WHERE `id` = ?";
+        String qry = "SELECT * FROM Feedback WHERE id = ?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, id);
-            pstm.execute();
-            if (pstm.getResultSet().next()) {
-                return true;
-            }
+            ResultSet rs = pstm.executeQuery();
+
+            return rs.next();
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur: " + e.getMessage());
         }
         return false;
     }
 
     @Override
     public long count() {
-        String countQuery = "SELECT COUNT(*) FROM `feedback`";
+        String countQuery = "SELECT COUNT(*) FROM Feedback";
         try {
             PreparedStatement pstm = cnx.prepareStatement(countQuery);
             ResultSet rs = pstm.executeQuery();
@@ -183,13 +176,9 @@ public class ServiceFeedback implements CRUDService<Feedback> {
                 return rs.getLong(1);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Erreur: " + e.getMessage());
         }
         return 0;
+
     }
 }
-
-
-
-
-

@@ -1,21 +1,20 @@
-package tn.esprit.easytripdesktopapp.services;
+package tn.esprit.services;
 
+import tn.esprit.interfaces.IService;
+import tn.esprit.utils.MyDatabase;
+import tn.esprit.models.Reclamation;
 
-import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
-import tn.esprit.easytripdesktopapp.models.*;
-import tn.esprit.easytripdesktopapp.utils.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
-public class ServiceReclamation implements CRUDService<Reclamation> {
+public class ServiceReclamation implements CRUDService <Reclamation>{
 
     private final Connection cnx;
 
     public ServiceReclamation() {
-        cnx = MyDataBase.getInstance().getCnx();
+        cnx = MyDatabase.getInstance().getCnx();
     }
 
 
@@ -184,4 +183,5 @@ public class ServiceReclamation implements CRUDService<Reclamation> {
         }
         return 0;
     }
+
 }

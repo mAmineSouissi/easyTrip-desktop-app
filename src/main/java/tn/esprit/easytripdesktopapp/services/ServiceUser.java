@@ -1,6 +1,5 @@
 package tn.esprit.easytripdesktopapp.services;
 
-
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
@@ -19,7 +18,7 @@ public class ServiceUser implements CRUDService<User> {
 
     @Override
     public void add(User user) {
-        String qry = "INSERT INTO `user`(`name`, `surname`, `password`, `email`, `phone`, `addresse`, `profilePhoto`, `role`) VALUES (?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `User`(`name`, `surname`, `password`, `email`, `phone`, `addresse`, `profilePhoto`, `role`) VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, user.getName());
@@ -40,7 +39,7 @@ public class ServiceUser implements CRUDService<User> {
     @Override
     public List<User> getAll() {
         List<User> users = new ArrayList<>();
-        String qry = "SELECT * FROM `user`";
+        String qry = "SELECT * FROM `User`";
 
         try {
             Statement stm = cnx.createStatement();
@@ -70,7 +69,7 @@ public class ServiceUser implements CRUDService<User> {
 
     @Override
     public void update(User user) {
-        String qry = "UPDATE `user` SET `name`=?, `surname`=?, `password`=?, `email`=?, `phone`=?, `addresse`=?, `profilePhoto`=?, `role`=? WHERE `id`=?";
+        String qry = "UPDATE `User` SET `name`=?, `surname`=?, `password`=?, `email`=?, `phone`=?, `addresse`=?, `profilePhoto`=?, `role`=? WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, user.getName());
@@ -91,7 +90,7 @@ public class ServiceUser implements CRUDService<User> {
 
     @Override
     public void delete(User user) {
-        String qry = "DELETE FROM `user` WHERE `id`=?";
+        String qry = "DELETE FROM `User` WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, user.getId());
@@ -104,7 +103,7 @@ public class ServiceUser implements CRUDService<User> {
 
     @Override
     public Optional<User> getById(int id) {
-        String qry = "SELECT * FROM `user` WHERE `id`=?";
+        String qry = "SELECT * FROM `User` WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, id);
@@ -130,15 +129,14 @@ public class ServiceUser implements CRUDService<User> {
         return Optional.empty();
     }
 
-
     @Override
     public List<User> search(String keyword) {
         List<User> users = new ArrayList<>();
-        String qry = "SELECT * FROM `user` WHERE `name` LIKE ? OR `surname` LIKE ?";
+        String qry = "SELECT * FROM `User` WHERE `name` LIKE ? OR `surname` LIKE ?";
 
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            String searchPattern = "%" + keyword + "%"; // Wildcard search
+            String searchPattern = "%" + keyword + "%";
             pstm.setString(1, searchPattern);
             pstm.setString(2, searchPattern);
 
@@ -165,10 +163,9 @@ public class ServiceUser implements CRUDService<User> {
         return users;
     }
 
-
     @Override
     public boolean exists(int id) {
-        String qry = "SELECT * FROM `user` WHERE `id`=?";
+        String qry = "SELECT * FROM `User` WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, id);
@@ -184,7 +181,7 @@ public class ServiceUser implements CRUDService<User> {
 
     @Override
     public long count() {
-        String countQuery = "SELECT COUNT(*) FROM `user`";
+        String countQuery = "SELECT COUNT(*) FROM `User`";
         try (Statement stm = cnx.createStatement();
              ResultSet rs = stm.executeQuery(countQuery)) {
 
@@ -196,5 +193,4 @@ public class ServiceUser implements CRUDService<User> {
         }
         return 0;
     }
-
 }

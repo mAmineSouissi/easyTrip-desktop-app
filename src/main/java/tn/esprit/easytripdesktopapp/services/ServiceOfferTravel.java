@@ -11,15 +11,15 @@ import java.util.Optional;
 
 public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
-    private Connection cnx ;
+    private Connection cnx;
 
-    public ServiceOfferTravel(){
+    public ServiceOfferTravel() {
         cnx = MyDataBase.getInstance().getCnx();
     }
 
     @Override
     public void add(OfferTravel offer) {
-        String qry = "INSERT INTO `offer`(`departure`, `destination`, `departure_date`, `arrival_date`, `hotelName`, `flightName`, `discription`, `price`, `agency_id`, `promotion_id`) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `Offer`(`departure`, `destination`, `departure_date`, `arrival_date`, `hotelName`, `flightName`, `discription`, `price`, `agency_id`, `promotion_id`) VALUES (?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, offer.getDeparture());
@@ -43,7 +43,7 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
     @Override
     public List<OfferTravel> getAll() {
         List<OfferTravel> offers = new ArrayList<>();
-        String qry = "SELECT * FROM `offer`";
+        String qry = "SELECT * FROM `Offer`";
 
         try {
             Statement stm = cnx.createStatement();
@@ -73,7 +73,7 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
     @Override
     public void update(OfferTravel offer) {
-        String qry = "UPDATE `offer` SET `departure`=?, `destination`=?, `departure_date`=?, `arrival_date`=?, `hotelName`=?, `flightName`=?, `discription`=?, `price`=?, `agency_id`=?, `promotion_id`=? WHERE `id`=?";
+        String qry = "UPDATE `Offer` SET `departure`=?, `destination`=?, `departure_date`=?, `arrival_date`=?, `hotelName`=?, `flightName`=?, `discription`=?, `price`=?, `agency_id`=?, `promotion_id`=? WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, offer.getDeparture());
@@ -101,7 +101,7 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
     @Override
     public void delete(OfferTravel offer) {
-        String qry = "DELETE FROM `offer` WHERE `id`=?";
+        String qry = "DELETE FROM `Offer` WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, offer.getId());
@@ -136,7 +136,6 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
     public long count() {
         return 0;
     }
-
 
     public List<OfferTravel> getByDestination(String s) {
         return List.of();

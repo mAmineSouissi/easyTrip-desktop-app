@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class Reclamation {
     private int id;
-    private int userId;
+    private int user_id;
     private String status;
     private Date date;
     private String issue;
@@ -12,22 +12,20 @@ public class Reclamation {
 
     public Reclamation() {}
 
-    public Reclamation(int id, int userId, String status, Date date, String issue, String category) {
-        this.id = id;
-        this.userId = userId;
+    // Constructor without id (since it is auto-incremented)
+    public Reclamation(int user_id, String status, Date date, String issue, String category) {
+        this.user_id = user_id;
         this.status = status;
         this.date = date;
         this.issue = issue;
         this.category = category;
     }
 
-    // Getters and Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
-
+    public int getuser_id() { return user_id; }
+    public void setuser_id(int user_id) { this.user_id = user_id; }
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
@@ -45,7 +43,7 @@ public class Reclamation {
     public String toString() {
         return "Reclamation{" +
                 "id=" + id +
-                ", userId=" + userId +
+                ", user_id=" + user_id +
                 ", status='" + status + '\'' +
                 ", date=" + date +
                 ", issue='" + issue + '\'' +

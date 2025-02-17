@@ -19,7 +19,7 @@ public class ServiceAgence implements CRUDService<Agence> {
 
     @Override
     public void add(Agence agence) {
-        String qry = "INSERT INTO `agency`(`name`, `address`, `phone`, `email`) VALUES (?,?,?,?)";
+        String qry = "INSERT INTO `Agency`(`name`, `address`, `phone`, `email`) VALUES (?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, agence.getNom());
@@ -37,7 +37,7 @@ public class ServiceAgence implements CRUDService<Agence> {
     @Override
     public List<Agence> getAll() {
         List<Agence> agences = new ArrayList<>();
-        String qry = "SELECT * FROM `agency`";
+        String qry = "SELECT * FROM `Agency`";
 
         try {
             Statement stm = cnx.createStatement();
@@ -61,7 +61,7 @@ public class ServiceAgence implements CRUDService<Agence> {
 
     @Override
     public void update(Agence agence) {
-        String qry = "UPDATE `agency` SET `name`=?, `address`=?, `phone`=?, `email`=? WHERE `id`=?";
+        String qry = "UPDATE `Agency` SET `name`=?, `address`=?, `phone`=?, `email`=? WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, agence.getNom());
@@ -83,7 +83,7 @@ public class ServiceAgence implements CRUDService<Agence> {
 
     @Override
     public void delete(Agence agence) {
-        String qry = "DELETE FROM `agency` WHERE `id`=?";
+        String qry = "DELETE FROM `Agency` WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, agence.getId());
@@ -118,6 +118,4 @@ public class ServiceAgence implements CRUDService<Agence> {
     public long count() {
         return 0;
     }
-
-
 }

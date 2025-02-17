@@ -1,4 +1,4 @@
-package tn.esprit.easytripdesktopapp.test;
+package tn.esprit.easytripdesktopapp;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,15 +15,15 @@ public class MainFX extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-       /* FXMLLoader loader =new FXMLLoader(getClass().getResource("/GestionPersonne.fxml"));
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/SignUp.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("---- Gestion Personne -----");
+            primaryStage.setTitle("Sign Up");
             primaryStage.show();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }*/
+            System.err.println("Error loading FXML file: " + e.getMessage());
+        }
     }
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.stage.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.easytripdesktopapp.controllers.update_agence">
+    <children>
+        <Label text="Modifier l'Agence" style="-fx-font-size: 20; -fx-font-weight: bold;" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10"/>
+
+        <Label text="Nom:" AnchorPane.topAnchor="50" AnchorPane.leftAnchor="10"/>
+        <TextField fx:id="nameField" AnchorPane.topAnchor="50" AnchorPane.leftAnchor="100"/>
+
+        <Label text="Adresse:" AnchorPane.topAnchor="100" AnchorPane.leftAnchor="10"/>
+        <TextField fx:id="addressField" AnchorPane.topAnchor="100" AnchorPane.leftAnchor="100"/>
+
+        <Label text="Téléphone:" AnchorPane.topAnchor="150" AnchorPane.leftAnchor="10"/>
+        <TextField fx:id="phoneField" AnchorPane.topAnchor="150" AnchorPane.leftAnchor="100"/>
+
+        <Label text="Email:" AnchorPane.topAnchor="200" AnchorPane.leftAnchor="10"/>
+        <TextField fx:id="emailField" AnchorPane.topAnchor="200" AnchorPane.leftAnchor="100"/>
+
+        <Label text="Image:" AnchorPane.topAnchor="250" AnchorPane.leftAnchor="10"/>
+        <ImageView fx:id="imageView" fitWidth="100" fitHeight="100" AnchorPane.topAnchor="250" AnchorPane.leftAnchor="100"/>
+        <Button text="Choisir Image" onAction="#chooseImage" AnchorPane.topAnchor="250" AnchorPane.leftAnchor="210"/>
+
+        <Button text="Mettre à jour" onAction="#updateAgence" AnchorPane.topAnchor="300" AnchorPane.leftAnchor="100"/>
+        <Button text="Annuler" onAction="#cancel" AnchorPane.topAnchor="300" AnchorPane.leftAnchor="210"/>
+    </children>
+</AnchorPane>

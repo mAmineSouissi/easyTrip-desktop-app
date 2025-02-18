@@ -16,16 +16,15 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/ajouter_agence.fxml"));
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/afficher_agence.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root);
-            primaryStage.setScene(scene);
-            primaryStage.setTitle("---- Ajouter Agence -----");
-            primaryStage.show();
-
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace(); // Afficher le message d'erreur exact
         }
+
     }
 }

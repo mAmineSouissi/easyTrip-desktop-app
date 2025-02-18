@@ -1,5 +1,8 @@
 package tn.esprit.easytripdesktopapp.models;
 
+import tn.esprit.easytripdesktopapp.models.Agence;
+import tn.esprit.easytripdesktopapp.models.Promotion;
+
 import java.util.Date;
 
 public class OfferTravel {
@@ -13,14 +16,19 @@ public class OfferTravel {
     private String flightName;
     private String discription;
     private float price;
-    private int agency_id;
-    private int promotion_id;
+    private String image;
+    private Agence agence;
+    private Promotion promotion;
+    private Category category;
 
     public OfferTravel() {
 
     }
 
-    public OfferTravel(int id, String departure, String destination, Date departure_date, Date arrival_date, String hotelName, String flightName, String discription, float price, int agency_id, int promotion_id) {
+    public OfferTravel(int id, String departure, String destination, Date departure_date, Date arrival_date,
+                 String hotelName, String flightName, String discription, float price,
+                 String image, Agence agence, Promotion promotion, Category category)
+    {
         this.id = id;
         this.departure = departure;
         this.destination = destination;
@@ -30,10 +38,13 @@ public class OfferTravel {
         this.flightName = flightName;
         this.discription = discription;
         this.price = price;
-        this.agency_id = agency_id;
-        this.promotion_id = promotion_id;
+        this.image = image;
+        this.agence = agence;
+        this.promotion = promotion;
+        this.category = category;  //Initialise Category
     }
 
+    // Getters
 
     public int getId() {
         return id;
@@ -71,15 +82,24 @@ public class OfferTravel {
         return price;
     }
 
-
-    public int getAgency_id() {
-        return agency_id;
+    public String getImage() {
+        return image;
     }
 
-    public int getPromotion_id() {
-        return promotion_id;
+    public Agence getAgence() {
+        return agence;
     }
 
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public Category getCategory() {  //getter Category
+        return category;
+    }
+
+
+    // Setters
 
     public void setId(int id) {
         this.id = id;
@@ -109,22 +129,37 @@ public class OfferTravel {
         this.flightName = flightName;
     }
 
-    public void setDiscription(String discription) {
-        this.discription = discription;
+    public void setDiscription(String description) {
+        this.discription = description;
     }
 
     public void setPrice(float price) {
         this.price = price;
     }
 
-    public void setAgency_id(int agency_id) {
-        this.agency_id = agency_id;
+    public void setImage(String image) {
+        this.image = image;
     }
 
-    public void setPromotion_id(int promotion_id) {
-        this.promotion_id = promotion_id;
+    public void setAgence(Agence agence) {
+        this.agence = agence;
     }
 
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
+    public void setCategory(Category category) {  //seter category
+        this.category = category;
+    }
+
+    public float getFinalPrice() {
+        if (promotion != null) {
+            return price - (price * promotion.getDiscount_percentage() / 100);
+        } else {
+            return price;
+        }
+    }
 
     @Override
     public String toString() {
@@ -136,12 +171,12 @@ public class OfferTravel {
                 ", arrival_date=" + arrival_date +
                 ", hotelName='" + hotelName + '\'' +
                 ", flightName='" + flightName + '\'' +
-                ", discription='" + discription + '\'' +
+                ", description='" + discription + '\'' +
                 ", price=" + price +
-                ", agency_id=" + agency_id +
-                ", promotion_id=" + promotion_id +
+                ", image='" + image + '\'' +
+                ", agence=" + (agence != null ? agence.getNom() : "null") +
+                ", promotion=" + (promotion != null ? promotion.getTitle() : "null") +
+                ", category=" + category +   // affichage de la category
                 '}';
     }
-
-
 }

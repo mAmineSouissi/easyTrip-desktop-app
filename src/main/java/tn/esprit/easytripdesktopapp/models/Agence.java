@@ -1,18 +1,25 @@
 package tn.esprit.easytripdesktopapp.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Agence {
     private int id;
-    private String name, address, phone, email;
+    private String name, address, phone, email , image;
+    private List<OfferTravel> offerTravels;
 
     public Agence() {
     }
 
-    public Agence(int id, String name, String address, String phone, String email) {
+    public Agence(int id, String name, String address, String phone, String email , String image) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
+        this.image = image;
+        this.offerTravels = new ArrayList<>();
+
     }
 
     public int getId() {
@@ -35,6 +42,14 @@ public class Agence {
         return email;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public List<OfferTravel> getOfferTravels() {
+        return offerTravels;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -55,6 +70,22 @@ public class Agence {
         this.email = email;
     }
 
+    public void setOfferTravels(List<OfferTravel> offerTravels) {
+        this.offerTravels = offerTravels;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void addOffer(OfferTravel offer) {
+        this.offerTravels.add(offer);
+    }
+
+    public void removeOffer(OfferTravel offer) {
+        this.offerTravels.remove(offer);
+    }
+
     @Override
     public String toString() {
         return "Agence{" +
@@ -63,6 +94,8 @@ public class Agence {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
-                '}' + "\n" ;
+                "    image='" + image + '\'' +
+                ", offerTravels=" + offerTravels +
+                '}' ;
     }
 }

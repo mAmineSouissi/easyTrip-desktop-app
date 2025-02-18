@@ -25,7 +25,11 @@ public class ServiceReservation implements IService<Reservation> {
         String qry ="INSERT INTO `reservation`(`ordreDate`, `nom`, `prenom`, `phone`, `email`) VALUES (?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setDate(1, new java.sql.Date(reservation.getOrdreDate().getTime()));
+            if (reservation.getOrdreDate() != null) {
+                pstm.setDate(1, new java.sql.Date(reservation.getOrdreDate().getTime()));
+            } else {
+                pstm.setDate(1, new java.sql.Date(System.currentTimeMillis()));
+            }
             pstm.setString(2, reservation.getNom());
             pstm.setString(3, reservation.getPrenom());
             pstm.setInt(4, reservation.getPhone());

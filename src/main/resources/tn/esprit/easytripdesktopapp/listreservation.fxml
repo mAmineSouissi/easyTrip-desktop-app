@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Listreservation">
+   <children>
+      <ListView fx:id="listres" layoutX="50.0" layoutY="80.0" onEditStart="#initialize" prefHeight="200.0" prefWidth="513.0" />
+      <Label layoutX="13.0" layoutY="15.0" prefHeight="26.0" prefWidth="554.0" text="Liste des réservations:" textFill="#2a2fbf">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

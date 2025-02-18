@@ -16,11 +16,11 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/SignUp.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Sign Up");
+            primaryStage.setTitle("Login");
             primaryStage.show();
         } catch (IOException e) {
             System.err.println("Error loading FXML file: " + e.getMessage());

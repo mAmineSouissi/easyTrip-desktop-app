@@ -8,6 +8,10 @@ module tn.esprit.easytripdesktopapp {
     opens tn.esprit.easytripdesktopapp.controllers to javafx.fxml;
     opens tn.esprit.easytripdesktopapp.models to javafx.fxml;
     opens tn.esprit.easytripdesktopapp.services to javafx.fxml;
+    opens tn.esprit.easytripdesktopapp.controllers.Admin to javafx.fxml;
+    opens tn.esprit.easytripdesktopapp.controllers.Agent to javafx.fxml;
+    opens tn.esprit.easytripdesktopapp.controllers.Client to javafx.fxml;
+
 
     exports tn.esprit.easytripdesktopapp;
     exports tn.esprit.easytripdesktopapp.controllers;

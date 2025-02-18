@@ -23,7 +23,7 @@ public class ServiceUser implements CRUDService<User> {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, user.getName());
             pstm.setString(2, user.getSurname());
-            pstm.setString(3, user.getPassword());
+            pstm.setString(3, user.getPassword()); // Need of hashing the password before storing
             pstm.setString(4, user.getEmail());
             pstm.setString(5, user.getPhone());
             pstm.setString(6, user.getAddress());
@@ -35,6 +35,34 @@ public class ServiceUser implements CRUDService<User> {
             System.out.println(e.getMessage());
         }
     }
+
+    public User authenticate(String email, String password) {
+        String qry = "SELECT * FROM `User` WHERE `email`=? AND `password`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, email);
+            pstm.setString(2, password); // Hash password before comparing
+
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setSurname(rs.getString("surname"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("addresse"));
+                user.setProfilePhoto(rs.getString("profilePhoto"));
+                user.setRole(rs.getString("role"));
+
+                return user;
+            }
+        } catch (SQLException e) {
+            System.out.println("Login error: " + e.getMessage());
+        }
+        return null;
+    }
+
 
     @Override
     public List<User> getAll() {

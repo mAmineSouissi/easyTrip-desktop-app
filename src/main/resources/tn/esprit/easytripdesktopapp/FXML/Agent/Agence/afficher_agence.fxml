@@ -6,7 +6,7 @@
 
 
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.easytripdesktopapp.controllers.afficher_agence" styleClass="main-pane">
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agence.afficher_agence" styleClass="main-pane">
     <children>
         <Label text="Liste des Agences" styleClass="title-label" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"/>
         <ListView fx:id="listViewAgences" AnchorPane.topAnchor="40" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.bottomAnchor="10" styleClass="list-view"/>

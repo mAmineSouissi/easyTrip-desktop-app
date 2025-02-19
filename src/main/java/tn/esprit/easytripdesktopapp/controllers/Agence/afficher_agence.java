@@ -1,4 +1,4 @@
-package tn.esprit.easytripdesktopapp.controllers;
+package tn.esprit.easytripdesktopapp.controllers.Agence;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +9,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Agence;
@@ -88,7 +87,7 @@ public class afficher_agence implements Initializable {
         Agence selectedAgence = listViewAgences.getSelectionModel().getSelectedItem();
         if (selectedAgence != null) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/update_agence.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/update_agence.fxml"));
                 Stage stage = new Stage();
                 stage.setScene(new Scene(loader.load()));
 
@@ -115,7 +114,7 @@ public class afficher_agence implements Initializable {
     public void openAddAgence(ActionEvent actionEvent) {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent//ajouter_agence.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/ajouter_agence.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.show();

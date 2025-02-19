@@ -17,7 +17,7 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Charger le fichier FXML pour la gestion des hôtels
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AjouterHotel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/AffichageTicket.fxml"));
         try {
             Parent root = loader.load();
             Scene scene = new Scene(root);
@@ -26,6 +26,7 @@ public class MainFX extends Application {
             primaryStage.show();
         } catch (IOException e) {
             System.out.println("Erreur lors du chargement de l'interface utilisateur : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

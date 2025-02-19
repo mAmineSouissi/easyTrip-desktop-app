@@ -1,4 +1,4 @@
-package tn.esprit.easytripdesktopapp.controllers;
+package tn.esprit.easytripdesktopapp.controllers.Promotion;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

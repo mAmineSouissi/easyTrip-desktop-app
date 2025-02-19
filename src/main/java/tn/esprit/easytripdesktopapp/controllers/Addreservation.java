@@ -41,6 +41,7 @@ public class Addreservation {
                 afficherErreur("Veuillez saisir un E-mail valide.");
                 return;
             }
+
             Reservation r = new Reservation();
             r.setNom(nomres.getText());
             r.setPrenom(prenomres.getText());

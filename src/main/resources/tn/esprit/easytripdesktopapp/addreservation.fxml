@@ -10,7 +10,8 @@
       <TextField fx:id="prenomres" layoutX="93.0" layoutY="143.0" promptText="Prénom" />
       <TextField fx:id="phoneres" layoutX="93.0" layoutY="219.0" promptText="Téléphone" />
       <TextField fx:id="mailres" layoutX="93.0" layoutY="289.0" promptText="E-mail" />
-      <Button layoutX="125.0" layoutY="358.0" mnemonicParsing="false" onAction="#ajouterR" text="Ajouter réservation" textFill="#1338b0" />
+      <Button layoutX="81.0" layoutY="358.0" mnemonicParsing="false" onAction="#ajouterR" text="Ajouter réservation" textFill="#1338b0" />
       <Button layoutX="405.0" layoutY="47.0" mnemonicParsing="false" onAction="#naviger" text="panier" />
+      <Button layoutX="224.0" layoutY="358.0" mnemonicParsing="false" onAction="#reset" text="Réinitialiser" textFill="#2f23cf" />
    </children>
 </AnchorPane>

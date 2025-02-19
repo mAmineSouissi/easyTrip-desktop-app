@@ -86,5 +86,13 @@ public class Addreservation {
         }
     }
 
+    @FXML
+    void reset(ActionEvent event) {
+        mailres.clear();
+        nomres.clear();
+        phoneres.clear();
+        prenomres.clear();
+    }
+
 
 }

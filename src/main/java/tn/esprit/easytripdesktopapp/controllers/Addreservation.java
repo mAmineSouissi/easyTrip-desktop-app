@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import tn.esprit.easytripdesktopapp.models.Reservation;
 import tn.esprit.easytripdesktopapp.services.ServiceReservation;
@@ -28,6 +29,18 @@ public class Addreservation {
     @FXML
     void ajouterR(ActionEvent event) {
         try {
+            if (!allFieldsFilled()) {
+                afficherErreur("Veuillez remplir tous les champs obligatoires.");
+                return;
+            }
+            if (!isValidPhoneNumber(phoneres.getText())) {
+                afficherErreur("Veuillez saisir un numéro de téléphone valide.");
+                return;
+            }
+            if (!isValidEmail(mailres.getText())) {
+                afficherErreur("Veuillez saisir un E-mail valide.");
+                return;
+            }
             Reservation r = new Reservation();
             r.setNom(nomres.getText());
             r.setPrenom(prenomres.getText());
@@ -40,6 +53,28 @@ public class Addreservation {
         }
     }
 
+    private boolean allFieldsFilled() {
+        return !nomres.getText().isEmpty() &&
+                !prenomres.getText().isEmpty() &&
+                !phoneres.getText().isEmpty() &&
+                !mailres.getText().isEmpty();
+    }
+
+    private boolean isValidPhoneNumber(String phone) {
+        return phone.matches("\\d{8}");
+    }
+
+    private boolean isValidEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
+    }
+
+    private void afficherErreur(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     @FXML
     void naviger(ActionEvent event) {
         try {
@@ -49,4 +84,6 @@ public class Addreservation {
             System.out.println(e.getMessage());
         }
     }
+
+
 }

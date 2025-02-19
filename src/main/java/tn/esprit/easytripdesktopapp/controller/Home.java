@@ -13,6 +13,7 @@ public class Home {
 
     @FXML
     void navigateToAdminFeedback(ActionEvent event) {
+        navigate(event, "/FeedbackAdmin.fxml");
     }
 
 
@@ -33,6 +34,7 @@ public class Home {
     @FXML
     void navigateToUserReclamation(ActionEvent event) {
 
+        navigate(event, "/ReclamationUser.fxml");
     }
     @FXML
     private void navigate(ActionEvent event, String fxmlPath) {

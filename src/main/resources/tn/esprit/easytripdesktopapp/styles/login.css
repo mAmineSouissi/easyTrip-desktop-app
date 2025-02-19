@@ -1,0 +1,72 @@
+/* login.css */
+
+
+.greeting-text {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0d32ff;
+    -fx-padding: 0 0 20 0;
+    -fx-font-family: 'Arial', sans-serif;
+}
+
+
+.Label {
+    -fx-font-size: 16px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #333;
+}
+
+#emailField {
+    -fx-font-size: 14px;
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #ccc;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-pref-width: 300px;
+}
+
+
+#passwordField {
+    -fx-font-size: 14px;
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #ccc;
+    -fx-padding: 10px;
+    -fx-border-radius: 5px;
+    -fx-pref-width: 300px;
+}
+
+
+#loginButton {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+}
+
+#loginButton:hover {
+    -fx-background-color: #45a049;
+}
+
+
+#signUpButton {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+}
+
+
+#signUpButton:hover {
+    -fx-background-color: #1976D2;
+}
+
+
+.AnchorPane {
+    -fx-background-color: #ffffff;
+    -fx-padding: 40px;
+    -fx-alignment: center;
+}

@@ -25,8 +25,24 @@ Button {
     -fx-font-size: 14px;
     -fx-border-radius: 5px;
     -fx-padding: 7px 15px;
+    -fx-cursor: hand;
+}
+Button:hover {
+    -fx-background-color: #28a745;
+    -fx-underline: true;
 }
 
 Button:hover {
     -fx-background-color: #218838;
+}
+.back-button {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-background-color: #a10000;
+    -fx-underline: true;
 }

@@ -1,8 +1,8 @@
 module tn.esprit.easytripdesktopapp {
-    requires javafx.controls;
     requires javafx.fxml;
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
+    requires javafx.controls;
 
     opens tn.esprit.easytripdesktopapp to javafx.fxml;
     opens tn.esprit.easytripdesktopapp.controllers to javafx.fxml;

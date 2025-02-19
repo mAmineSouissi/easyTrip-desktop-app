@@ -8,7 +8,13 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="541.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.SignUpController">
+
+<AnchorPane stylesheets="@../styles/signup.css" prefHeight="541.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.SignUpController">
+
+    <!-- Back Button with Icon -->
+    <Button fx:id="backButton" onAction="#goBack" text="Back" styleClass="back-button"  AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10">
+
+    </Button>
 
     <!-- Name Field -->
     <Label text="Name:" AnchorPane.leftAnchor="50" AnchorPane.topAnchor="50" />
@@ -45,6 +51,6 @@
 
     <!-- Sign Up Button -->
     <Button fx:id="signUpButton" onAction="#onClick" text="Sign Up" AnchorPane.leftAnchor="150" AnchorPane.topAnchor="470" />
-   <Button layoutX="236.0" layoutY="470.0" mnemonicParsing="false" onAction="#reset" text="Reset" />
+    <Button layoutX="236.0" layoutY="470.0" mnemonicParsing="false" onAction="#reset" text="Reset" />
 
 </AnchorPane>

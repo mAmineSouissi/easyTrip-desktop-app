@@ -20,6 +20,7 @@ public class Home {
 
     @FXML
     void navigateToAdminReclamation(ActionEvent event) {
+        navigate(event, "/ReclamationAdmin.fxml");
 
     }
 

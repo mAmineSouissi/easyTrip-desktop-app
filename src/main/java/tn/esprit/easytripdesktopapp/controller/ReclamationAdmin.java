@@ -132,6 +132,11 @@ public class ReclamationAdmin {
     @FXML
     void updateReclamation(ActionEvent event) {
         try {
+
+            if (!validateInputs()) {
+                return;
+            }
+
             Reclamation selectedReclamation = reclamationList.getSelectionModel().getSelectedItem();
             if (selectedReclamation == null) {
                 showAlert(Alert.AlertType.WARNING, "Please select a reclamation to update");
@@ -145,6 +150,31 @@ public class ReclamationAdmin {
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Error updating reclamation: " + e.getMessage());
         }
+    }
+
+    private boolean validateInputs() {
+        StringBuilder errors = new StringBuilder();
+
+        if (statusComboBox.getValue() == null || statusComboBox.getValue().trim().isEmpty()) {
+            errors.append("Status must be selected\n");
+        }
+
+        try {
+            if (!userIdField.getText().trim().isEmpty()) {
+                int userId = Integer.parseInt(userIdField.getText());
+                if (userId <= 0) {
+                    errors.append("User ID must be a positive number\n");
+                }
+            }
+        } catch (NumberFormatException e) {
+            errors.append("User ID must be a valid number\n");
+        }
+
+        if (errors.length() > 0) {
+            showAlert(Alert.AlertType.ERROR, errors.toString());
+            return false;
+        }
+        return true;
     }
 
 

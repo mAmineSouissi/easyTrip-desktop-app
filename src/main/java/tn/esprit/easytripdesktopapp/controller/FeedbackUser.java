@@ -55,7 +55,6 @@ public class FeedbackUser {
             }
         });
 
-        // Add search functionality
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
@@ -96,6 +95,10 @@ public class FeedbackUser {
         @FXML
         void insertFeedback(ActionEvent event) {
             try {
+                if (!validateInputs()) {
+                    return;
+                }
+
                 Feedback feedback = new Feedback();
                 feedback.setUserId(userId);
                 feedback.setOfferId(Integer.parseInt(offerIdField.getText()));
@@ -118,6 +121,10 @@ public class FeedbackUser {
         @FXML
         void updateFeedback(ActionEvent event) {
             try {
+                if (!validateInputs()) {
+                    return;
+                }
+
                 Feedback selectedFeedback = feedbackList.getSelectionModel().getSelectedItem();
                 if (selectedFeedback == null) {
                     showAlert(Alert.AlertType.WARNING, "Please select a feedback to update");
@@ -174,6 +181,39 @@ public class FeedbackUser {
         ObservableList<Feedback> allFeedbacks = FXCollections.observableArrayList(feedbackService.getAll());
         ObservableList<Feedback> userFeedbacks = allFeedbacks.filtered(feed -> feed.getUserId() == userId);
         feedbackList.setItems(userFeedbacks);
+    }
+
+    private boolean validateInputs() {
+        StringBuilder errors = new StringBuilder();
+
+        try {
+            int offerId = Integer.parseInt(offerIdField.getText().trim());
+            if (offerId <= 0) {
+                errors.append("Offer ID must be a positive number\n");
+            }
+        } catch (NumberFormatException e) {
+            errors.append("Offer ID must be a valid number\n");
+        }
+
+        if (messageField.getText().trim().isEmpty()) {
+            errors.append("Message field cannot be empty\n");
+        }
+
+        if (datePicker.getValue() == null) {
+            errors.append("Date must be selected\n");
+        } else if (datePicker.getValue().isAfter(java.time.LocalDate.now())) {
+            errors.append("Date cannot be in the future\n");
+        }
+
+        if (ratingSpinner.getValue() == null || ratingSpinner.getValue() < 1 || ratingSpinner.getValue() > 5) {
+            errors.append("Rating must be between 1 and 5\n");
+        }
+
+        if (errors.length() > 0) {
+            showAlert(Alert.AlertType.ERROR, errors.toString());
+            return false;
+        }
+        return true;
     }
 
 

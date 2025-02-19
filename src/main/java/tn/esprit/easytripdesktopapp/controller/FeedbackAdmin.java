@@ -43,6 +43,48 @@ public class FeedbackAdmin {
     @FXML
     private TextField userIdField;
 
+    private boolean validateInputs() {
+        StringBuilder errors = new StringBuilder();
+
+        try {
+            int userId = Integer.parseInt(userIdField.getText().trim());
+            if (userId <= 0) {
+                errors.append("User ID must be a positive number\n");
+            }
+        } catch (NumberFormatException e) {
+            errors.append("User ID must be a valid number\n");
+        }
+
+        try {
+            int offerId = Integer.parseInt(offerIdField.getText().trim());
+            if (offerId <= 0) {
+                errors.append("Offer ID must be a positive number\n");
+            }
+        } catch (NumberFormatException e) {
+            errors.append("Offer ID must be a valid number\n");
+        }
+
+        if (messageField.getText().trim().isEmpty()) {
+            errors.append("Message field cannot be empty\n");
+        }
+
+        if (datePicker.getValue() == null) {
+            errors.append("Date must be selected\n");
+        } else if (datePicker.getValue().isAfter(java.time.LocalDate.now())) {
+            errors.append("Date cannot be in the future\n");
+        }
+
+        if (ratingSpinner.getValue() == null || ratingSpinner.getValue() < 1 || ratingSpinner.getValue() > 5) {
+            errors.append("Rating must be between 1 and 5\n");
+        }
+
+        if (errors.length() > 0) {
+            showAlert(Alert.AlertType.ERROR, errors.toString());
+            return false;
+        }
+        return true;
+    }
+
     @FXML
     void initialize() {
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1);
@@ -59,9 +101,10 @@ public class FeedbackAdmin {
             }
         });
 
-        // Add search functionality
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
+
+
 
     @FXML
     void backToHome(ActionEvent event) {
@@ -115,6 +158,9 @@ public class FeedbackAdmin {
     @FXML
     void updateFeedback(ActionEvent event) {
         try {
+            if (!validateInputs()) {
+                return;
+            }
             Feedback selectedFeedback = feedbackList.getSelectionModel().getSelectedItem();
             if (selectedFeedback == null) {
                 showAlert(Alert.AlertType.WARNING, "Please select a feedback to update");

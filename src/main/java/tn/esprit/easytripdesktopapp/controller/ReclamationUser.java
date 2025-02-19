@@ -37,6 +37,28 @@ public class ReclamationUser {
     @FXML
     private ComboBox<String> statusComboBox;
 
+    private boolean validateInputs() {
+        StringBuilder errors = new StringBuilder();
+
+        if (issueField.getText().trim().isEmpty()) {
+            errors.append("Issue field cannot be empty\n");
+        }
+        if (categoryField.getText().trim().isEmpty()) {
+            errors.append("Category field cannot be empty\n");
+        }
+        if (datePicker.getValue() == null) {
+            errors.append("Date must be selected\n");
+        } else if (datePicker.getValue().isAfter(java.time.LocalDate.now())) {
+            errors.append("Date cannot be in the future\n");
+        }
+
+        if (errors.length() > 0) {
+            showAlert(Alert.AlertType.ERROR, errors.toString());
+            return false;
+        }
+        return true;
+    }
+
     @FXML
     void initialize() {
         statusComboBox.setItems(FXCollections.observableArrayList("Pending", "In Progress", "Resolved", "Closed"));
@@ -51,7 +73,6 @@ public class ReclamationUser {
             }
         });
 
-        // Add search functionality
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
@@ -110,6 +131,12 @@ public class ReclamationUser {
     void submitReclamation(ActionEvent event) {
 
         try {
+
+
+                if (!validateInputs()) {
+                    return;
+                }
+
             Reclamation reclamation = new Reclamation();
             reclamation.setUserId(userId);
             reclamation.setIssue(issueField.getText());
@@ -126,6 +153,9 @@ public class ReclamationUser {
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Error submitting reclamation: " + e.getMessage());
         }
+
+
+
 
     }
 

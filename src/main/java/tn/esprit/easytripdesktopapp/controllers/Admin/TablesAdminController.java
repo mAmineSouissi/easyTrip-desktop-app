@@ -10,88 +10,95 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
-public class DashboardController {
+public class TablesAdminController {
     private final ServiceUser serviceUser = new ServiceUser();
     private final ObservableList<User> userList = FXCollections.observableArrayList();
 
-    @FXML private TableView<User> userTable;
-    @FXML private TableColumn<User, Integer> idColumn;
-    @FXML private TableColumn<User, String> nameColumn;
-    @FXML private TableColumn<User, String> surnameColumn;
-    @FXML private TableColumn<User, String> emailColumn;
-    @FXML private TableColumn<User, String> phoneColumn;
-    @FXML private TableColumn<User, String> addressColumn;
-    @FXML private TableColumn<User, String> roleColumn;
-    @FXML private TableColumn<User, Void> actionsColumn;
+    @FXML private ListView<User> userListView;
 
     @FXML
     public void initialize() {
-        setupTableColumns();
-        setupActionsColumn();
+        setupListView();
         loadUsers();
     }
 
-    private void setupTableColumns() {
-        idColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleIntegerProperty(data.getValue().getId()).asObject());
-        nameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getName()));
-        surnameColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getSurname()));
-        emailColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getEmail()));
-        phoneColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getPhone()));
-        addressColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getAddress()));
-        roleColumn.setCellValueFactory(data -> new javafx.beans.property.SimpleStringProperty(data.getValue().getRole()));
-    }
-
-    private void setupActionsColumn() {
-        actionsColumn.setCellFactory(col -> new TableCell<>() {
-            private final Button editBtn = new Button("Edit");
-            private final Button deleteBtn = new Button("Delete");
-            private final HBox box = new HBox(5, editBtn, deleteBtn);
-
-            {
-                editBtn.getStyleClass().add("edit-button");
-                deleteBtn.getStyleClass().add("delete-button");
-
-                editBtn.setOnAction(e -> {
-                    User user = getTableRow().getItem();
-                    if (user != null) {
-                        editUser(user);
-                    }
-                });
-
-                deleteBtn.setOnAction(e -> {
-                    User user = getTableRow().getItem();
-                    if (user != null) {
-                        deleteUser(user);
-                    }
-                });
-            }
-
+    private void setupListView() {
+        userListView.setCellFactory(param -> new ListCell<>() {
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setGraphic(empty ? null : box);
+            protected void updateItem(User user, boolean empty) {
+                super.updateItem(user, empty);
+                if (empty || user == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    // Create Labels with field names
+                    Label idLabel = new Label("ID:");
+                    Label nameLabel = new Label("Name:");
+                    Label surnameLabel = new Label("Surname:");
+                    Label emailLabel = new Label("Email:");
+                    Label phoneLabel = new Label("Phone:");
+                    Label addressLabel = new Label("Address:");
+                    Label roleLabel = new Label("Role:");
+
+                    // Create Labels for values
+                    Label idValue = new Label(String.valueOf(user.getId()));
+                    Label nameValue = new Label(user.getName());
+                    Label surnameValue = new Label(user.getSurname());
+                    Label emailValue = new Label(user.getEmail());
+                    Label phoneValue = new Label(user.getPhone());
+                    Label addressValue = new Label(user.getAddress());
+                    Label roleValue = new Label(user.getRole());
+
+                    // Buttons for Edit and Delete
+                    Button editBtn = new Button("Edit");
+                    Button deleteBtn = new Button("Delete");
+
+                    editBtn.getStyleClass().add("edit-button");
+                    deleteBtn.getStyleClass().add("delete-button");
+
+                    // Handle Button Actions
+                    editBtn.setOnAction(e -> editUser(user));
+                    deleteBtn.setOnAction(e -> deleteUser(user));
+
+                    // GridPane to Structure Labels Like a Table
+                    GridPane grid = new GridPane();
+                    grid.setHgap(10);
+                    grid.setVgap(5);
+
+                    grid.addRow(0, idLabel, idValue);
+                    grid.addRow(1, nameLabel, nameValue);
+                    grid.addRow(2, surnameLabel, surnameValue);
+                    grid.addRow(3, emailLabel, emailValue);
+                    grid.addRow(4, phoneLabel, phoneValue);
+                    grid.addRow(5, addressLabel, addressValue);
+                    grid.addRow(6, roleLabel, roleValue);
+
+                    // HBox for Buttons
+                    HBox buttonBox = new HBox(10, editBtn, deleteBtn);
+                    VBox itemBox = new VBox(grid, buttonBox);
+                    itemBox.setSpacing(5);
+
+                    setGraphic(itemBox);
+                }
             }
         });
     }
 
     private void loadUsers() {
         try {
-            System.out.println("Loading users...");
             List<User> users = serviceUser.getAll();
-            System.out.println("Retrieved users: " + users.size());
             userList.setAll(users);
-            userTable.setItems(userList);
-            System.out.println("Users loaded into table");
+            userListView.setItems(userList);
         } catch (Exception e) {
-            System.out.println("Error in loadUsers(): " + e.getMessage());
-            e.printStackTrace();
             showError("Error loading users", e.getMessage());
         }
     }
@@ -99,34 +106,26 @@ public class DashboardController {
     private void editUser(User user) {
         Dialog<User> dialog = new Dialog<>();
         dialog.setTitle("Edit User");
-        dialog.setHeaderText("Edit user: " + user.getName());
+        dialog.setHeaderText("Edit details for: " + user.getName());
 
-        // Create the form
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new javafx.geometry.Insets(20, 150, 10, 10));
-
+        // Text fields for editing
         TextField nameField = new TextField(user.getName());
         TextField surnameField = new TextField(user.getSurname());
         TextField emailField = new TextField(user.getEmail());
         TextField phoneField = new TextField(user.getPhone());
         TextField addressField = new TextField(user.getAddress());
-        ComboBox<String> roleField = new ComboBox<>(FXCollections.observableArrayList("ADMIN", "USER"));
-        roleField.setValue(user.getRole());
+        TextField roleField = new TextField(user.getRole());
 
-        grid.add(new Label("Name:"), 0, 0);
-        grid.add(nameField, 1, 0);
-        grid.add(new Label("Surname:"), 0, 1);
-        grid.add(surnameField, 1, 1);
-        grid.add(new Label("Email:"), 0, 2);
-        grid.add(emailField, 1, 2);
-        grid.add(new Label("Phone:"), 0, 3);
-        grid.add(phoneField, 1, 3);
-        grid.add(new Label("Address:"), 0, 4);
-        grid.add(addressField, 1, 4);
-        grid.add(new Label("Role:"), 0, 5);
-        grid.add(roleField, 1, 5);
+        // GridPane for Input Fields
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.addRow(0, new Label("Name:"), nameField);
+        grid.addRow(1, new Label("Surname:"), surnameField);
+        grid.addRow(2, new Label("Email:"), emailField);
+        grid.addRow(3, new Label("Phone:"), phoneField);
+        grid.addRow(4, new Label("Address:"), addressField);
+        grid.addRow(5, new Label("Role:"), roleField);
 
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -138,17 +137,18 @@ public class DashboardController {
                 user.setEmail(emailField.getText());
                 user.setPhone(phoneField.getText());
                 user.setAddress(addressField.getText());
-                user.setRole(roleField.getValue());
+                user.setRole(roleField.getText());
                 return user;
             }
             return null;
         });
 
-        dialog.showAndWait().ifPresent(updatedUser -> {
+        Optional<User> result = dialog.showAndWait();
+        result.ifPresent(updatedUser -> {
             try {
                 serviceUser.update(updatedUser);
                 loadUsers();
-                showInfo("Success", "User updated successfully");
+                showInfo("Success", "User updated successfully.");
             } catch (Exception e) {
                 showError("Update Error", e.getMessage());
             }
@@ -165,14 +165,16 @@ public class DashboardController {
             if (response == ButtonType.OK) {
                 try {
                     serviceUser.delete(user);
-                    loadUsers();
-                    showInfo("Success", "User deleted successfully");
+                    userList.remove(user);
+                    showInfo("Success", "User deleted successfully.");
                 } catch (Exception e) {
                     showError("Delete Error", e.getMessage());
                 }
             }
         });
     }
+
+
 
     private void showError(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

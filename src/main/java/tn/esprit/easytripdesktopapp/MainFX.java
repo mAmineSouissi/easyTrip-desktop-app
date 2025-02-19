@@ -20,7 +20,7 @@ public class MainFX extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Login");
+            primaryStage.setTitle("Login Screen");
             primaryStage.show();
         } catch (IOException e) {
             System.err.println("Error loading FXML file: " + e.getMessage());

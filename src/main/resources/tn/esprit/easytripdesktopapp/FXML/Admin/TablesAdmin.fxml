@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/22"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.TablesAdminController"
+            stylesheets="../../styles/dashboard.css"
+            prefHeight="600.0" prefWidth="1000.0">
+
+    <VBox spacing="20" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20">
+
+        <!-- Title -->
+        <Label text="Users List" styleClass="dashboard-title"/>
+
+        <!-- ListView -->
+        <ListView fx:id="userListView" VBox.vgrow="ALWAYS"/>
+
+        <!-- LogOut Button -->
+        <Button text="Log Out" onAction="#handleLogOut" styleClass="logout-button"/>
+
+    </VBox>
+
+</AnchorPane>

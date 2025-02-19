@@ -62,10 +62,11 @@ public class SignUpController {
         ServiceUser serviceUser = new ServiceUser();
         serviceUser.add(newUser);
 
-        // Show a success message
-        showAlert("Success", "User created successfully!");
+        if (serviceUser.getAll() != null)
+            showAlert("Success", "User created successfully!");
+        else
+            showAlert("Error", "User creation failed!");
 
-        // Reset all fields after submission
         resetFields();
     }
 

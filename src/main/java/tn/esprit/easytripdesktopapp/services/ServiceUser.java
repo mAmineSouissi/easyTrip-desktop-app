@@ -81,11 +81,12 @@ public class ServiceUser implements CRUDService<User> {
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setAddress(rs.getString("address"));
+                user.setAddress(rs.getString("addresse"));
                 user.setProfilePhoto(rs.getString("profilePhoto"));
                 user.setRole(rs.getString("role"));
 
                 users.add(user);
+                System.out.println(" Users Added...");
             }
 
         } catch (SQLException e) {
@@ -144,7 +145,7 @@ public class ServiceUser implements CRUDService<User> {
                 user.setSurname(rs.getString("surname"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setAddress(rs.getString("address"));
+                user.setAddress(rs.getString("addresse"));
                 user.setProfilePhoto(rs.getString("profilePhoto"));
                 user.setRole(rs.getString("role"));
 
@@ -178,7 +179,7 @@ public class ServiceUser implements CRUDService<User> {
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setAddress(rs.getString("address"));
+                user.setAddress(rs.getString("addresse"));
                 user.setProfilePhoto(rs.getString("profilePhoto"));
                 user.setRole(rs.getString("role"));
 

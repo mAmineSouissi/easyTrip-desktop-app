@@ -2,15 +2,35 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/22"
-            stylesheets="../../styles/dashboard.css"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.DashboardController"
-            prefHeight="400.0" prefWidth="600.0">
+            stylesheets="../../styles/dashboard.css"
+            prefHeight="600.0" prefWidth="1000.0">
 
-    <!-- Centered Label -->
-    <Label text="Coming Soon..."
-           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #555;"
-           AnchorPane.topAnchor="180" AnchorPane.leftAnchor="200"/>
+    <VBox spacing="20" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20">
+
+        <!-- Title -->
+        <Label text="Users List" styleClass="dashboard-title"/>
+
+        <!-- Table -->
+        <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn text="ID" fx:id="idColumn" prefWidth="50"/>
+                <TableColumn text="Name" fx:id="nameColumn" prefWidth="100"/>
+                <TableColumn text="Surname" fx:id="surnameColumn" prefWidth="100"/>
+                <TableColumn text="Email" fx:id="emailColumn" prefWidth="150"/>
+                <TableColumn text="Phone" fx:id="phoneColumn" prefWidth="100"/>
+                <TableColumn text="Address" fx:id="addressColumn" prefWidth="150"/>
+                <TableColumn text="Role" fx:id="roleColumn" prefWidth="100"/>
+                <TableColumn text="Actions" fx:id="actionsColumn" prefWidth="150"/>
+            </columns>
+        </TableView>
+    </VBox>
+
+    <Button text="Log Out" onAction="#handleLogOut" styleClass="logout-button"/>
+
 </AnchorPane>

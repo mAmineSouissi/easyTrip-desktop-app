@@ -59,7 +59,7 @@ public class LoginController {
             try {
                 switch (AccountType.valueOf(user.getRole())) {
                     case Admin:
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Dashboard.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/TablesAdmin.fxml"));
                         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
                         scene = new Scene(loader.load());
                         stage.setScene(scene);

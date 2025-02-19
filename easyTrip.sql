@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 17, 2025 at 08:39 PM
+-- Generation Time: Feb 19, 2025 at 05:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,38 +33,16 @@ CREATE TABLE `Agency` (
   `address` varchar(255) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `logo` varchar(255) DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `Agency`
 --
 
-INSERT INTO `Agency` (`id`, `name`, `address`, `phone`, `email`, `logo`) VALUES
+INSERT INTO `Agency` (`id`, `name`, `address`, `phone`, `email`, `image`) VALUES
 (1, 'EasyTrip Travel', '123 Main Street', '+216 12345678', 'contact@easytrip.com', NULL),
 (2, 'VoyagePlus', '456 Avenue Road', '+216 87654321', 'info@voyageplus.com', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `BilletAvion`
---
-
-CREATE TABLE `BilletAvion` (
-  `id_billet` int(11) NOT NULL,
-  `num_vol` varchar(50) NOT NULL,
-  `id_user` int(11) DEFAULT NULL,
-  `compagnie_aerienne` varchar(100) NOT NULL,
-  `ville_depart` varchar(100) NOT NULL,
-  `ville_arrivee` varchar(100) NOT NULL,
-  `date_depart` date NOT NULL,
-  `heure_depart` time NOT NULL,
-  `date_arrivee` date NOT NULL,
-  `heure_arrivee` time NOT NULL,
-  `classe` enum('Economique','Affaires','Première') NOT NULL,
-  `prix` decimal(10,2) NOT NULL CHECK (`prix` >= 0),
-  `type_billet` enum('Aller simple','Aller-retour') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -80,6 +58,44 @@ CREATE TABLE `Feedback` (
   `Offer_id` int(11) DEFAULT NULL,
   `date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `Feedback`
+--
+
+INSERT INTO `Feedback` (`id`, `user_id`, `message`, `rating`, `Offer_id`, `date`) VALUES
+(1, 1, 'Excellent service, very happy with the trip!', 5, 1, '2025-02-17'),
+(2, 2, 'Good experience, but the flight was delayed.', 4, 1, '2025-02-17');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hotels`
+--
+
+CREATE TABLE `hotels` (
+  `id_hotel` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `adresse` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `rating` int(11) DEFAULT NULL,
+  `description` text DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  `type_room` enum('simple','double','suit') DEFAULT NULL,
+  `num_room` int(11) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `discount_id` int(11) DEFAULT NULL,
+  `agency_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hotels`
+--
+
+INSERT INTO `hotels` (`id_hotel`, `name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `discount_id`, `agency_id`) VALUES
+(10, 'yalla', 'zefbuba', 'ziefjij', 5, 'zefazef', 1000, 'simple', 5, 'azefkookazef', NULL, NULL),
+(11, 'kaka', 'korba', 'suisse', 5, 'yalla let s go ', 1230, 'simple', 5, 'pojzpefjp', NULL, NULL),
+(13, 'zeofkzp', 'zefopzjfop', 'suisssss', 4, 'zefko', 1000, 'simple', 4, 'file:/C:/Users/oussa.LAPTOP-THCQB19P/OneDrive/Images/Captures%20d’écran/Capture%20d\'écran%202024-11-07%20212945.png', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -100,25 +116,13 @@ CREATE TABLE `Offer` (
   `promotion_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Table structure for table `OffreHotel`
+-- Dumping data for table `Offer`
 --
 
-CREATE TABLE `OffreHotel` (
-  `id` int(11) NOT NULL,
-  `nom` varchar(255) NOT NULL,
-  `id_user` int(11) DEFAULT NULL,
-  `adresse` varchar(255) NOT NULL,
-  `ville` varchar(100) NOT NULL,
-  `categorie` int(11) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `prix_par_nuit` decimal(10,2) NOT NULL,
-  `type_chambre` varchar(50) NOT NULL,
-  `nombre_chambres_disponibles` int(11) NOT NULL,
-  `image_url` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO `Offer` (`id`, `departure`, `destination`, `departure_date`, `arrival_date`, `price`, `flightName`, `discription`, `agency_id`, `promotion_id`) VALUES
+(1, 'Tunis', 'Paris', '2025-06-15', '2025-06-22', 1200.5, 'Flight Air Tunis', 'A wonderful offer to explore Paris!', NULL, NULL),
+(2, 'Sfax', 'London', '2025-07-01', '2025-07-07', 1500.75, 'Flight EasyJet', 'An amazing trip to London!', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -184,10 +188,18 @@ CREATE TABLE `Reclamation` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `issue` text DEFAULT NULL,
-  `category` enum('Crash','UI Issue','Performance','Feature Not Working','Other') DEFAULT NULL,
+  `category` varchar(255) NOT NULL,
   `status` enum('Pending','Resolved') DEFAULT NULL,
   `date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `Reclamation`
+--
+
+INSERT INTO `Reclamation` (`id`, `user_id`, `issue`, `category`, `status`, `date`) VALUES
+(1, 1, 'Lost luggage', 'Flight issue', 'Pending', '2025-02-17'),
+(2, 1, 'Delayed flight', 'Flight issue', 'Pending', '2025-02-17');
 
 -- --------------------------------------------------------
 
@@ -235,6 +247,39 @@ CREATE TABLE `SurveyResponse` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `id_ticket` int(11) NOT NULL,
+  `flight_number` int(11) DEFAULT NULL,
+  `airline` varchar(255) DEFAULT NULL,
+  `departure_city` varchar(255) DEFAULT NULL,
+  `arrival_city` varchar(255) DEFAULT NULL,
+  `departure_date` date DEFAULT NULL,
+  `departure_time` time DEFAULT NULL,
+  `arrival_date` date DEFAULT NULL,
+  `arrival_time` time DEFAULT NULL,
+  `ticket_class` enum('Economy','Business','First') DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  `ticket_type` enum('one-way','round-trip') DEFAULT NULL,
+  `image_airline` varchar(255) DEFAULT NULL,
+  `agence_id` int(11) DEFAULT NULL,
+  `promotion_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tickets`
+--
+
+INSERT INTO `tickets` (`id_ticket`, `flight_number`, `airline`, `departure_city`, `arrival_city`, `departure_date`, `departure_time`, `arrival_date`, `arrival_time`, `ticket_class`, `price`, `ticket_type`, `image_airline`, `agence_id`, `promotion_id`) VALUES
+(3, 2121, 'zfaezf', 'azefazef', 'fazef', '2025-02-01', '21:00:00', '2025-03-04', '22:00:00', 'First', 1000, 'one-way', NULL, NULL, NULL),
+(6, 21, 'suisse ', 'tunisie ', 'equador ', '2025-02-12', '21:00:00', '2025-02-21', '22:00:00', 'Business', 1000, 'round-trip', NULL, NULL, NULL),
+(7, 1, 'fix', 'iuhih', 'uguygy', '2025-02-12', '12:00:00', '2025-02-13', '13:00:00', 'Economy', 1000, 'round-trip', NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `User`
 --
 
@@ -255,8 +300,9 @@ CREATE TABLE `User` (
 --
 
 INSERT INTO `User` (`id`, `name`, `surname`, `password`, `email`, `phone`, `addresse`, `profilePhoto`, `role`) VALUES
-(1, 'Admin', 'User', 'admin123', 'admin@example.com', '1234567890', '123 Admin Street', 'admin.jpg', 'Admin'),
-(2, 'Agent', 'User', 'agent123', 'agent@example.com', '0987654321', '456 Agent Avenue', 'agent.jpg', 'Agent');
+(1, 'Admin', 'Admin', 'admin123', 'admin@admin.com', '1234567890', '123 Admin Street', 'admin.jpg', 'Admin'),
+(2, 'Agent', 'User', 'agent123', 'agent@example.com', '0987654321', '456 Agent Avenue', 'agent.jpg', 'Agent'),
+(4, 'Client', 'User', 'client123', 'client@example.com', '22545445', 'Client Avenue 123', 'client.jpg', 'Client');
 
 --
 -- Indexes for dumped tables
@@ -270,14 +316,6 @@ ALTER TABLE `Agency`
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indexes for table `BilletAvion`
---
-ALTER TABLE `BilletAvion`
-  ADD PRIMARY KEY (`id_billet`),
-  ADD UNIQUE KEY `num_vol` (`num_vol`),
-  ADD KEY `id_user` (`id_user`);
-
---
 -- Indexes for table `Feedback`
 --
 ALTER TABLE `Feedback`
@@ -286,19 +324,20 @@ ALTER TABLE `Feedback`
   ADD KEY `Offer_id` (`Offer_id`);
 
 --
+-- Indexes for table `hotels`
+--
+ALTER TABLE `hotels`
+  ADD PRIMARY KEY (`id_hotel`),
+  ADD UNIQUE KEY `discount_id` (`discount_id`),
+  ADD KEY `fk_hotels_agency` (`agency_id`);
+
+--
 -- Indexes for table `Offer`
 --
 ALTER TABLE `Offer`
   ADD PRIMARY KEY (`id`),
   ADD KEY `agency_id` (`agency_id`),
   ADD KEY `promotion_id` (`promotion_id`);
-
---
--- Indexes for table `OffreHotel`
---
-ALTER TABLE `OffreHotel`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_user` (`id_user`);
 
 --
 -- Indexes for table `Option`
@@ -359,6 +398,14 @@ ALTER TABLE `SurveyResponse`
   ADD KEY `SurveyResponse_ibfk_2` (`survey_id`);
 
 --
+-- Indexes for table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id_ticket`),
+  ADD KEY `fk_agence` (`agence_id`),
+  ADD KEY `fk_promotion` (`promotion_id`);
+
+--
 -- Indexes for table `User`
 --
 ALTER TABLE `User`
@@ -376,28 +423,22 @@ ALTER TABLE `Agency`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `BilletAvion`
---
-ALTER TABLE `BilletAvion`
-  MODIFY `id_billet` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `Feedback`
 --
 ALTER TABLE `Feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `hotels`
+--
+ALTER TABLE `hotels`
+  MODIFY `id_hotel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `Offer`
 --
 ALTER TABLE `Offer`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `OffreHotel`
---
-ALTER TABLE `OffreHotel`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `Option`
@@ -427,7 +468,7 @@ ALTER TABLE `Question`
 -- AUTO_INCREMENT for table `Reclamation`
 --
 ALTER TABLE `Reclamation`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `Reservation`
@@ -448,20 +489,20 @@ ALTER TABLE `SurveyResponse`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `id_ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `BilletAvion`
---
-ALTER TABLE `BilletAvion`
-  ADD CONSTRAINT `BilletAvion_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `User` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `Feedback`
@@ -476,12 +517,6 @@ ALTER TABLE `Feedback`
 ALTER TABLE `Offer`
   ADD CONSTRAINT `Offer_ibfk_1` FOREIGN KEY (`agency_id`) REFERENCES `Agency` (`id`),
   ADD CONSTRAINT `Offer_ibfk_2` FOREIGN KEY (`promotion_id`) REFERENCES `Promotion` (`id`);
-
---
--- Constraints for table `OffreHotel`
---
-ALTER TABLE `OffreHotel`
-  ADD CONSTRAINT `OffreHotel_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `User` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `Option`

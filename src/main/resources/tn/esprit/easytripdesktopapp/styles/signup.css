@@ -1,0 +1,48 @@
+/* Set background color */
+AnchorPane {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Style labels */
+Label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+/* Style text fields */
+TextField, PasswordField, TextArea {
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
+}
+
+/* Style buttons */
+Button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-border-radius: 5px;
+    -fx-padding: 7px 15px;
+    -fx-cursor: hand;
+}
+Button:hover {
+    -fx-background-color: #28a745;
+    -fx-underline: true;
+}
+
+Button:hover {
+    -fx-background-color: #218838;
+}
+.back-button {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+}
+
+.back-button:hover {
+    -fx-background-color: #a10000;
+    -fx-underline: true;
+}

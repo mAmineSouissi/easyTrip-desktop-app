@@ -1,0 +1,102 @@
+/* dashboard.css */
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+Label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555;
+}
+
+.dashboard-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-table-cell-border-color: #ddd;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: white;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+.edit-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-min-width: 60px;
+}
+
+.edit-button:hover {
+    -fx-background-color: #218838;
+}
+
+.delete-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-min-width: 60px;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c82333;
+}
+
+/* Style for ListView */
+#userListView {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+}
+
+/* Style for ListView Items */
+#userListView .list-cell {
+    -fx-background-color: white;
+    -fx-border-color: #f0f0f0;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 10px;
+    -fx-font-size: 16px;
+    -fx-text-fill: #333;
+}
+
+/* Hover effect for ListView Items */
+#userListView .list-cell:hover {
+    -fx-background-color: #f8f9fa;
+    -fx-cursor: hand;
+}
+
+/* Highlight selected ListView Item */
+#userListView .list-cell:focused {
+    -fx-background-color: #d1e7dd;
+}
+
+/* LogOut Button */
+.logout-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-min-width: 100px;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+}
+
+.logout-button:hover {
+    -fx-background-color: #0056b3;
+}
+
+/* Style for ImageView in HBox */
+#image {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);
+}

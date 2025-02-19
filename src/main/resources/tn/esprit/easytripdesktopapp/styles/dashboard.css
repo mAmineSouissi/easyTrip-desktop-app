@@ -1,0 +1,55 @@
+/* dashboard.css */
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+Label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555;
+}
+
+.dashboard-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-table-cell-border-color: #ddd;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-padding: 10px;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-row-cell {
+    -fx-background-color: white;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+.edit-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+    -fx-min-width: 60px;
+}
+
+.edit-button:hover {
+    -fx-background-color: #218838;
+}
+
+.delete-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+    -fx-min-width: 60px;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c82333;
+}

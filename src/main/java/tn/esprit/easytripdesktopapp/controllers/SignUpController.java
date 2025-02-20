@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 import tn.esprit.easytripdesktopapp.models.AccountType;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
@@ -89,7 +90,10 @@ public class SignUpController {
             return;
         }
 
-        User newUser = new User(name, surname, password, email, phone, address, imageUrl, role);
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
+        User newUser = new User(name, surname, hashedPassword, email, phone, address, imageUrl, role);
+
         ServiceUser serviceUser = new ServiceUser();
         serviceUser.add(newUser);
 

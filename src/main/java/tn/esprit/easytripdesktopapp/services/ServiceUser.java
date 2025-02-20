@@ -1,5 +1,6 @@
 package tn.esprit.easytripdesktopapp.services;
 
+import org.mindrot.jbcrypt.BCrypt;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
@@ -36,29 +37,38 @@ public class ServiceUser implements CRUDService<User> {
         }
     }
 
+
     public User authenticate(String email, String password) {
-        String qry = "SELECT * FROM `User` WHERE `email`=? AND `password`=?";
+        String qry = "SELECT * FROM `User` WHERE email = ?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, email);
-            pstm.setString(2, password); // Hash password before comparing
-
             ResultSet rs = pstm.executeQuery();
-            if (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setName(rs.getString("name"));
-                user.setSurname(rs.getString("surname"));
-                user.setEmail(rs.getString("email"));
-                user.setPhone(rs.getString("phone"));
-                user.setAddress(rs.getString("addresse"));
-                user.setProfilePhoto(rs.getString("profilePhoto"));
-                user.setRole(rs.getString("role"));
 
-                return user;
+            if (rs.next()) {
+                String storedHashedPassword = rs.getString("password");
+
+                // Verify the entered password against the stored hashed password
+                if (BCrypt.checkpw(password, storedHashedPassword)) {
+                    return new User(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("surname"),
+                            storedHashedPassword, // Store hashed password in the session
+                            rs.getString("email"),
+                            rs.getString("phone"),
+                            rs.getString("addresse"),
+                            rs.getString("profilePhoto"),
+                            rs.getString("role")
+                    );
+                } else {
+                    System.out.println("Incorrect password!");
+                }
+            } else {
+                System.out.println("User not found!");
             }
         } catch (SQLException e) {
-            System.out.println("Login error: " + e.getMessage());
+            System.out.println("Authentication error: " + e.getMessage());
         }
         return null;
     }

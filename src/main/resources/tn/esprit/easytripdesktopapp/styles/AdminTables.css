@@ -1,102 +1,132 @@
-/* dashboard.css */
+/* Root background */
 .root {
-    -fx-background-color: #f4f4f4;
+    -fx-background-color: #f9f9f9; /* Lighter background for a clean, modern look */
 }
 
+/* Label Styling */
 Label {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #555;
+    -fx-font-size: 16px; /* Slightly smaller for a more professional feel */
+    -fx-font-weight: 600; /* Semi-bold for readability */
+    -fx-text-fill: #333333; /* Dark Gray for better contrast */
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Dashboard Title */
 .dashboard-title {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-padding: 0 0 10 0;
+    -fx-font-size: 28px; /* Larger size for the main title */
+    -fx-font-weight: 700; /* Bold title for emphasis */
+    -fx-padding: 0 0 20 0;
+    -fx-text-fill: #333333; /* Darker color for contrast */
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Table Styling */
 .table-view {
     -fx-background-color: white;
-    -fx-table-cell-border-color: #ddd;
+    -fx-table-cell-border-color: #dddddd; /* Light border color for a softer look */
+    -fx-border-radius: 5px; /* Rounded corners for a smooth, professional finish */
 }
 
+/* Table Header Styling */
 .table-view .column-header {
-    -fx-background-color: #f8f9fa;
+    -fx-background-color: #f0f0f0; /* Subtle background color for table headers */
     -fx-padding: 10px;
-    -fx-font-weight: bold;
+    -fx-font-weight: 600;
+    -fx-font-size: 16px;
+    -fx-text-fill: #555555; /* Darker text for better readability */
 }
 
+/* Table Row Styling */
 .table-view .table-row-cell {
     -fx-background-color: white;
 }
 
+/* Odd Row Highlighting */
 .table-view .table-row-cell:odd {
-    -fx-background-color: #f8f9fa;
+    -fx-background-color: #f9f9f9; /* Light background for odd rows */
 }
 
+/* Button Styling */
 .edit-button {
-    -fx-background-color: #28a745;
+    -fx-background-color: #28a745; /* Green for edit actions */
     -fx-text-fill: white;
-    -fx-min-width: 60px;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600; /* Semi-bold text for emphasis */
+    -fx-border-radius: 5px;
+    -fx-min-width: 80px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
 }
 
 .edit-button:hover {
-    -fx-background-color: #218838;
+    -fx-background-color: #218838; /* Darker green on hover */
 }
 
+/* Delete Button Styling */
 .delete-button {
-    -fx-background-color: #dc3545;
+    -fx-background-color: #dc3545; /* Red for delete actions */
     -fx-text-fill: white;
-    -fx-min-width: 60px;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-border-radius: 5px;
+    -fx-min-width: 80px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
 }
 
 .delete-button:hover {
-    -fx-background-color: #c82333;
+    -fx-background-color: #c82333; /* Darker red on hover */
 }
 
-/* Style for ListView */
+/* ListView Styling */
 #userListView {
     -fx-background-color: white;
-    -fx-border-color: #ddd;
+    -fx-border-color: #dddddd;
     -fx-border-radius: 5px;
     -fx-padding: 10px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Style for ListView Items */
+/* ListView Item Styling */
 #userListView .list-cell {
     -fx-background-color: white;
     -fx-border-color: #f0f0f0;
     -fx-border-width: 0 0 1 0;
-    -fx-padding: 10px;
-    -fx-font-size: 16px;
-    -fx-text-fill: #333;
+    -fx-padding: 12px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #333333;
 }
 
-/* Hover effect for ListView Items */
+/* Hover effect for ListView items */
 #userListView .list-cell:hover {
-    -fx-background-color: #f8f9fa;
-    -fx-cursor: hand;
+    -fx-background-color: #f8f9fa; /* Subtle hover effect for items */
+    -fx-cursor: hand; /* Pointer cursor on hover */
 }
 
 /* Highlight selected ListView Item */
 #userListView .list-cell:focused {
-    -fx-background-color: #d1e7dd;
+    -fx-background-color: #d1e7dd; /* Light green for selected items */
 }
 
-/* LogOut Button */
+/* Logout Button Styling */
 .logout-button {
-    -fx-background-color: #007bff;
+    -fx-background-color: #007bff; /* Professional blue for logout button */
     -fx-text-fill: white;
-    -fx-min-width: 100px;
-    -fx-padding: 10px;
-    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-font-weight: 700; /* Bold for emphasis */
+    -fx-border-radius: 5px;
+    -fx-min-width: 120px;
+    -fx-padding: 12px;
+    -fx-cursor: hand;
 }
 
 .logout-button:hover {
-    -fx-background-color: #0056b3;
+    -fx-background-color: #0056b3; /* Darker blue on hover */
 }
 
-/* Style for ImageView in HBox */
+/* ImageView Styling */
 #image {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 5); /* Subtle shadow for depth */
+    -fx-border-radius: 5px; /* Rounded corners for image */
+    -fx-padding: 5px;
 }

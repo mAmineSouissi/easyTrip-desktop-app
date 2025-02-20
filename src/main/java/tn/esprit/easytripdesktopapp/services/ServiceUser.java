@@ -86,7 +86,6 @@ public class ServiceUser implements CRUDService<User> {
                 user.setRole(rs.getString("role"));
 
                 users.add(user);
-                System.out.println(" Users Added...");
             }
 
         } catch (SQLException e) {
@@ -112,6 +111,7 @@ public class ServiceUser implements CRUDService<User> {
             pstm.setInt(9, user.getId());
 
             pstm.executeUpdate();
+            System.out.println(" Users Updated...");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -131,7 +131,7 @@ public class ServiceUser implements CRUDService<User> {
     }
 
     @Override
-    public Optional<User> getById(int id) {
+    public User getById(int id) {
         String qry = "SELECT * FROM `User` WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
@@ -148,14 +148,16 @@ public class ServiceUser implements CRUDService<User> {
                 user.setAddress(rs.getString("addresse"));
                 user.setProfilePhoto(rs.getString("profilePhoto"));
                 user.setRole(rs.getString("role"));
+                user.setPassword(rs.getString("password"));
+                System.out.println("Fetching user from DB: ID=" + rs.getInt("id") + ", Password=" + rs.getString("password"));
 
-                return Optional.of(user);
+                return user;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return Optional.empty();
+        return null;
     }
 
     @Override

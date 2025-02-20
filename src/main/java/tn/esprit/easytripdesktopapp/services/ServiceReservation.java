@@ -85,7 +85,7 @@ public class ServiceReservation implements CRUDService<Reservation> {
     }
 
     @Override
-    public Optional<Reservation> getById(int id) {
+    public Reservation getById(int id) {
         String qry = "SELECT * FROM `reservation` WHERE id_reservation = ?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
@@ -99,12 +99,12 @@ public class ServiceReservation implements CRUDService<Reservation> {
                 reservation.setPrenom(rs.getString("prenom"));
                 reservation.setPhone(rs.getInt("phone"));
                 reservation.setEmail(rs.getString("email"));
-                return Optional.of(reservation);
+                return reservation;
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return Optional.empty();
+        return null;
     }
 
     @Override

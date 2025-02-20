@@ -8,11 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.AccountType;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
 
+import java.io.File;
 import java.io.IOException;
 
 public class SignUpController {
@@ -39,6 +43,9 @@ public class SignUpController {
     private ComboBox<AccountType> roleComboBox;
 
     @FXML
+    private ImageView image;
+
+    @FXML
     private Button signUpButton;
 
     @FXML
@@ -51,6 +58,11 @@ public class SignUpController {
     private TextField surnameField;
 
     @FXML
+    private Button chooseImageButton;
+
+    private String imageUrl;
+
+    @FXML
     void onClick(ActionEvent event) {
         String name = nameField.getText();
         String surname = surnameField.getText();
@@ -58,10 +70,9 @@ public class SignUpController {
         String email = emailField.getText();
         String phone = phoneField.getText();
         String address = addressField.getText();
-        String profilePhoto = profilePhotoField.getText();
         String role = String.valueOf(roleComboBox.getValue());
 
-        User newUser = new User(name, surname, password, email, phone, address, profilePhoto, role);
+        User newUser = new User(name, surname, password, email, phone, address, imageUrl, role);
         ServiceUser serviceUser = new ServiceUser();
         serviceUser.add(newUser);
 
@@ -117,6 +128,25 @@ public class SignUpController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void chooseImage() {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif", "*.bmp"));
+
+
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+
+            imageUrl = selectedFile.toURI().toString();
+
+
+            Image img = new Image(imageUrl);
+            image.setImage(img);
         }
     }
 

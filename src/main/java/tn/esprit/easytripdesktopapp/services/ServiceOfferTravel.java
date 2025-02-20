@@ -118,8 +118,8 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
     }
 
     @Override
-    public Optional<OfferTravel> getById(int id) {
-        return Optional.empty();
+    public OfferTravel getById(int id) {
+        return null;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class ServiceSurvey implements CRUDService<Survey> {
     }
 
     @Override
-    public Optional<Survey> getById(int id) {
+    public Survey getById(int id) {
         List<Survey> surveys = new ArrayList<>();
         String qry = "SELECT * FROM `survey` WHERE `id` = ?";
 
@@ -35,14 +35,14 @@ public class ServiceSurvey implements CRUDService<Survey> {
 
                 surveys.add(survey);
 
-                return Optional.of(survey);
+                return survey;
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return Optional.empty();
+        return null;
     }
 
     @Override

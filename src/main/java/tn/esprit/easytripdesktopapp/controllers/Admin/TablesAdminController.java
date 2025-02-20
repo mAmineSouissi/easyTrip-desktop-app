@@ -20,6 +20,8 @@ import tn.esprit.easytripdesktopapp.utils.UserSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TablesAdminController {
     private final ServiceUser serviceUser = new ServiceUser();
@@ -134,6 +136,20 @@ public class TablesAdminController {
 
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
+                if (nameField.getText().isEmpty() || surnameField.getText().isEmpty() || emailField.getText().isEmpty() || phoneField.getText().isEmpty() || addressField.getText().isEmpty() || roleField.getText().isEmpty()) {
+                    showError("Validation Error", "All fields must be filled.");
+                    return null;
+                }
+
+                if (!isValidEmail(emailField.getText())) {
+                    showError("Validation Error", "Invalid email format.");
+                    return null;
+                }
+
+                if (!isValidPhone(phoneField.getText())) {
+                    showError("Validation Error", "Invalid phone number format.");
+                    return null;
+                }
                 user.setName(nameField.getText());
                 user.setSurname(surnameField.getText());
                 user.setEmail(emailField.getText());
@@ -194,11 +210,6 @@ public class TablesAdminController {
 
     @FXML
     public void handleLogOut(ActionEvent actionEvent) {
-        // Clear the user session
-        UserSession session = UserSession.getInstance();
-        session.clearSession();
-
-        // Confirmation logout Alert Logic
         Alert logoutAlert = new Alert(Alert.AlertType.CONFIRMATION);
         logoutAlert.setTitle("Logout Confirmation");
         logoutAlert.setHeaderText("Are you sure you want to log out?");
@@ -207,6 +218,8 @@ public class TablesAdminController {
         logoutAlert.showAndWait().ifPresent(response -> {
             // If the user confirms , navigate to login screen
             if (response == ButtonType.OK) {
+                UserSession session = UserSession.getInstance();
+                session.clearSession();
                 System.out.println("User logged out successfully.");
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"));
@@ -222,5 +235,20 @@ public class TablesAdminController {
                 System.out.println("Logout cancelled.");
             }
         });
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+
+    private boolean isValidPhone(String phone) {
+        String phoneRegex = "^\\d{8}$";
+        Pattern pattern = Pattern.compile(phoneRegex);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
     }
 }

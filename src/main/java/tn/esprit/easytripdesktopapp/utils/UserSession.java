@@ -13,19 +13,9 @@ public class UserSession {
 
     public static void createSession(User user) {
         if (instance == null) {
-            // Ensure password is set before creating the session
-            if (user.getPassword() == null || user.getPassword().isEmpty()) {
-                ServiceUser serviceUser = new ServiceUser();
-                User userFromDB = serviceUser.getById(user.getId());
-                if (userFromDB != null) {
-                    user.setPassword(userFromDB.getPassword());
-                } else {
-                    System.out.println("Error: User not found in the database!");
-                }
-            }
             instance = new UserSession(user);
         } else {
-            instance.setUser(user);  // Use setUser to update the user session
+            instance.setUser(user);  // Use setUser to update the session
         }
     }
 
@@ -48,3 +38,4 @@ public class UserSession {
         instance = null;
     }
 }
+

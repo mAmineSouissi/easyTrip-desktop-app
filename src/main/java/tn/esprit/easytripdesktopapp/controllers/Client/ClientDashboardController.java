@@ -23,6 +23,8 @@ import tn.esprit.easytripdesktopapp.services.ServiceUser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ClientDashboardController {
     public ImageView profilePic;
@@ -82,7 +84,6 @@ public class ClientDashboardController {
         TextField addressField = new TextField();
         TextField profilePhotoField = new TextField();
 
-        // Create an ImageView for previewing the selected image
         ImageView profilePreview = new ImageView();
         profilePreview.setFitWidth(100);
         profilePreview.setFitHeight(100);
@@ -135,6 +136,20 @@ public class ClientDashboardController {
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
+                if (nameField.getText().isEmpty() || surnameField.getText().isEmpty() || emailField.getText().isEmpty() || phoneField.getText().isEmpty() || addressField.getText().isEmpty()) {
+                    showError("Validation Error", "All fields must be filled.");
+                    return;
+                }
+
+                if (!isValidEmail(emailField.getText())) {
+                    showError("Validation Error", "Invalid email format.");
+                    return;
+                }
+
+                if (!isValidPhone(phoneField.getText())) {
+                    showError("Validation Error", "Invalid phone number format.");
+                    return;
+                }
                 User updatedUser = new User();
                 updatedUser.setId(session.getUser().getId());
                 updatedUser.setName(nameField.getText());
@@ -187,11 +202,6 @@ public class ClientDashboardController {
 
     @FXML
     public void handelLogout(ActionEvent actionEvent) {
-        // Clear the user session
-        UserSession session = UserSession.getInstance();
-        session.clearSession();
-
-        // Confirmation logout Alert Logic
         Alert logoutAlert = new Alert(Alert.AlertType.CONFIRMATION);
         logoutAlert.setTitle("Logout Confirmation");
         logoutAlert.setHeaderText("Are you sure you want to log out?");
@@ -200,6 +210,8 @@ public class ClientDashboardController {
         logoutAlert.showAndWait().ifPresent(response -> {
             // If the user confirms , navigate to login screen
             if (response == ButtonType.OK) {
+                UserSession session = UserSession.getInstance();
+                session.clearSession();
                 System.out.println("User logged out successfully.");
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"));
@@ -215,6 +227,28 @@ public class ClientDashboardController {
                 System.out.println("Logout cancelled.");
             }
         });
+    }
+
+    private void showError(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+
+    private boolean isValidPhone(String phone) {
+        String phoneRegex = "^\\d{8}$";
+        Pattern pattern = Pattern.compile(phoneRegex);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
     }
 
 }

@@ -149,7 +149,7 @@ public class ServiceUser implements CRUDService<User> {
                 user.setProfilePhoto(rs.getString("profilePhoto"));
                 user.setRole(rs.getString("role"));
                 user.setPassword(rs.getString("password"));
-                System.out.println("Fetching user from DB: ID=" + rs.getInt("id") + ", Password=" + rs.getString("password"));
+                System.out.println("EL ID=" + rs.getInt("id") + ",EL  Password aman=" + rs.getString("password"));
 
                 return user;
             }

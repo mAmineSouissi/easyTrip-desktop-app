@@ -1,0 +1,105 @@
+/* General Styles */
+.root {
+    -fx-background-color: #f4f4f4; /* Light Gray Background for the whole window */
+}
+
+.navbar {
+    -fx-background-color: #333; /* Dark background for the navigation bar */
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+.nav-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand; /* Pointer cursor for clickable items */
+    -fx-padding: 5px;
+}
+
+.nav-label:hover {
+    -fx-background-color: #444; /* Hover effect for navigation labels */
+    -fx-border-radius: 5px;
+}
+
+.profile-button, .logout-button {
+    -fx-background-color: #007bff; /* Blue background for buttons */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 16px;
+    -fx-border-radius: 5px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.profile-button:hover, .logout-button:hover {
+    -fx-background-color: #0056b3; /* Darker blue on hover */
+}
+
+.profile-button:pressed, .logout-button:pressed {
+    -fx-background-color: #004377; /* Even darker blue on button press */
+}
+
+/* Profile Image */
+.profile-image {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 0); /* Soft shadow for profile image */
+    -fx-fit-height: 36px;
+    -fx-fit-width: 46px;
+}
+
+/* Centered Coming Soon Text */
+.coming-soon {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555; /* Dark gray text */
+}
+
+/* Hover Effects for List Items */
+.list-cell:hover {
+    -fx-background-color: #f8f9fa;
+    -fx-cursor: hand;
+}
+
+.list-cell:focused {
+    -fx-background-color: #d1e7dd; /* Light Greenish Highlight when focused */
+}
+
+/* Spacer Region in HBox */
+.Region {
+    -fx-hgrow: ALWAYS;
+}
+
+/* Overall Window Padding */
+.AnchorPane {
+    -fx-padding: 20px;
+}
+
+/* Table and ListView Styling */
+.table-view {
+    -fx-background-color: white;
+    -fx-table-cell-border-color: #ddd;
+}
+
+.table-view .column-header {
+    -fx-background-color: #f8f9fa;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+}
+
+.table-view .table-row-cell:odd {
+    -fx-background-color: #f8f9fa;
+}
+
+/* Customizing TextField and PasswordField */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #0078d7; /* Blue border when focused */
+    -fx-background-color: #f9f9f9;
+}

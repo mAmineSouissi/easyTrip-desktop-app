@@ -18,6 +18,8 @@ import tn.esprit.easytripdesktopapp.services.ServiceUser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignUpController {
 
@@ -72,6 +74,21 @@ public class SignUpController {
         String address = addressField.getText();
         String role = String.valueOf(roleComboBox.getValue());
 
+        if (name.isEmpty() || surname.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty() || role.isEmpty()) {
+            showAlert("Error", "All fields must be filled!");
+            return;
+        }
+
+        if (!isValidEmail(email)) {
+            showAlert("Error", "Invalid email format!");
+            return;
+        }
+
+        if (!isValidPhone(phone)) {
+            showAlert("Error", "Invalid phone number format!");
+            return;
+        }
+
         User newUser = new User(name, surname, password, email, phone, address, imageUrl, role);
         ServiceUser serviceUser = new ServiceUser();
         serviceUser.add(newUser);
@@ -101,7 +118,6 @@ public class SignUpController {
         emailField.clear();
         phoneField.clear();
         addressField.clear();
-        profilePhotoField.clear();
         roleComboBox.getSelectionModel().clearSelection();
     }
 
@@ -114,6 +130,9 @@ public class SignUpController {
     public void initialize() {
         roleComboBox.setItems(FXCollections.observableArrayList(AccountType.Agent, AccountType.Client));
         roleComboBox.getSelectionModel().select(AccountType.Client);
+        imageUrl = "file:///home/cardinal/Documents/GitHub/easyTrip-desktop-app/src/main/resources/tn/esprit/easytripdesktopapp/assets/defaultPic.jpg";
+        Image img = new Image(imageUrl);
+        image.setImage(img);
 
     }
 
@@ -148,6 +167,21 @@ public class SignUpController {
             Image img = new Image(imageUrl);
             image.setImage(img);
         }
+    }
+
+    // Email Validation
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private boolean isValidPhone(String phone) {
+        String phoneRegex = "^\\d{8}$";
+        Pattern pattern = Pattern.compile(phoneRegex);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
     }
 
 }

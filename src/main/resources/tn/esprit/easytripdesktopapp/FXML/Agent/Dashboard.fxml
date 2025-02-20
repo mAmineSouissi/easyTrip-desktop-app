@@ -1,17 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/22"
-            stylesheets="../../styles/dashboard.css"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AgentDashboardController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="736.0" prefWidth="1183.0" stylesheets="@../../styles/dashboardClient.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AgentDashboardController">
 
-    <!-- Centered Label -->
-    <Label text="Coming Soon..."
-           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #555;"
-           AnchorPane.topAnchor="180" AnchorPane.leftAnchor="200"/>
+    <!-- Navigation Bar -->
+    <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+        <!-- Welcome Text on the Left -->
+        <Label fx:id="welcomeLabel" styleClass="nav-label" text="Welcome, User" />
+
+        <!-- Spacer to push items to the center -->
+        <Region HBox.hgrow="ALWAYS" />
+
+        <!-- Centered Navigation Items -->
+        <Label styleClass="nav-label" text="Manage Agency" />
+        <Label styleClass="nav-label" text="Manage Feedback" />
+        <Label styleClass="nav-label" text="Manage Reclamations" />
+
+        <!-- Spacer to push profile and logout to the right -->
+        <Region HBox.hgrow="ALWAYS" />
+
+        <!-- Profile Button -->
+        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button" text="Profile" />
+
+        <!-- LogOut Button -->
+        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button" text="LogOut" />
+
+        <!-- Profile Image -->
+        <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
+    </HBox>
+
+    <!-- Centered "Coming Soon..." Text -->
+    <Label layoutX="485.0" layoutY="331.0" styleClass="coming-soon" text="Coming Soon..." AnchorPane.leftAnchor="485.0" AnchorPane.topAnchor="331.0" />
+
 </AnchorPane>
-

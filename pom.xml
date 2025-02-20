@@ -72,12 +72,12 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>tn.esprit.easytripdesktopapp.MainFX</mainClass>
-                    <options>
-                        <option>--module-path</option>
+                   <!-- <options>
+                        <option>&#45;&#45;module-path</option>
                         <option>${project.build.directory}/jmods</option>
-                        <option>--add-modules</option>
+                        <option>&#45;&#45;add-modules</option>
                         <option>javafx.controls,javafx.fxml</option>
-                    </options>
+                    </options>-->
                 </configuration>
             </plugin>
         </plugins>

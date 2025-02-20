@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="686.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Travel.AjouterOfferTravelController">
+
+    <Label text="Départ:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10" />
+    <TextField fx:id="tfDeparture" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="10" />
+
+    <Label text="Destination:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="50" />
+    <TextField fx:id="tfDestination" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="50" />
+
+    <Label text="Date de départ:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="90" />
+    <DatePicker fx:id="dpDepartureDate" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="90" />
+
+    <Label text="Date d'arrivée:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="130" />
+    <DatePicker fx:id="dpArrivalDate" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="130" />
+
+    <Label text="Nom de l'hôtel:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="170" />
+    <TextField fx:id="tfHotelName" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="170" />
+
+    <Label text="Nom du vol:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="210" />
+    <TextField fx:id="tfFlightName" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="210" />
+
+    <Label text="Description:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="250" />
+    <TextArea fx:id="taDescription" prefHeight="100" prefWidth="300" wrapText="true" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="250" />
+
+    <Label text="Prix:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="370" />
+    <TextField fx:id="tfPrice" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="370" />
+
+    <Label text="Agence:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="410" />
+    <ComboBox fx:id="cbAgence" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="410" />
+
+    <Label text="Promotion:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="450" />
+    <ComboBox fx:id="cbPromotion" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="450" />
+
+    <Label text="Catégorie:" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="490" />
+    <ComboBox fx:id="cbCategory" AnchorPane.leftAnchor="100" AnchorPane.topAnchor="490" />
+    <ImageView fx:id="imgOffer" fitHeight="72.0" fitWidth="90.0" layoutX="47.0" layoutY="570.0" preserveRatio="true" AnchorPane.leftAnchor="47.0" AnchorPane.topAnchor="570.0" />
+    <Button fx:id="btnChoisirImage" layoutX="14.0" layoutY="523.0" onAction="#choisirImage" text="Choisir une image" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="523.0" />
+
+    <Button fx:id="btnAjouter" layoutX="172.0" layoutY="642.0" onAction="#ajouterOffer" text="Ajouter" AnchorPane.leftAnchor="172.0" AnchorPane.topAnchor="642.0" />
+
+</AnchorPane>

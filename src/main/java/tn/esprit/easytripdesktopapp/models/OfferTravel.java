@@ -1,8 +1,5 @@
 package tn.esprit.easytripdesktopapp.models;
 
-import tn.esprit.easytripdesktopapp.models.Agence;
-import tn.esprit.easytripdesktopapp.models.Promotion;
-
 import java.util.Date;
 
 public class OfferTravel {

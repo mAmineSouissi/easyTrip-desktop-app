@@ -1,0 +1,108 @@
+/* General Styles */
+/* Root Styling */
+.root {
+    -fx-background-color: #f9f9f9; /* Lighter background for a cleaner look */
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, professional font */
+    -fx-font-size: 14px;
+}
+
+/* Navigation Bar */
+.navbar {
+    -fx-background-color: #2c3e50; /* Darker, professional shade of blue-gray */
+    -fx-padding: 12px 20px; /* Slightly increased padding for better spacing */
+}
+
+/* Navigation Labels */
+.nav-label {
+    -fx-text-fill: #ecf0f1; /* Light, almost white text for contrast */
+    -fx-font-size: 16px; /* Slightly larger font size for readability */
+    -fx-font-weight: 600; /* Semi-bold font for more emphasis */
+    -fx-cursor: hand; /* Hand cursor on hover */
+    -fx-padding: 8px 15px; /* Padding for better spacing */
+    -fx-background-color: transparent; /* Keep background transparent */
+    -fx-border-radius: 5px; /* Rounded corners for a clean look */
+    -fx-border-color: transparent; /* Remove border */
+    -fx-transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+}
+
+/* Navigation Labels Hover Effect */
+.nav-label:hover {
+    -fx-background-color: #34495e; /* Slightly lighter gray on hover */
+    -fx-text-fill: #ffffff; /* White text on hover for better contrast */
+    -fx-border-radius: 5px; /* Rounded corners on hover */
+    -fx-padding: 8px 15px; /* Ensure consistent padding on hover */
+}
+
+/* Optional: Active label state (useful if the label represents the active section) */
+.nav-label:focused, .nav-label:pressed {
+    -fx-background-color: #2980b9; /* Accent blue for active or pressed state */
+    -fx-text-fill: white;
+}
+
+
+/* Profile Button */
+.profile-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff; /* White text */
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Clean, modern font */
+    -fx-font-weight: bold;
+    -fx-border-color: #FFFFFF; /* White border */
+    -fx-border-width: 2px; /* Slightly thicker border for emphasis */
+    -fx-border-radius: 30px; /* Rounded corners for a modern look */
+    -fx-padding: 8px 20px; /* Added padding for a better click area */
+    -fx-cursor: hand; /* Hand cursor on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0.5, 0, 1); /* Soft shadow for depth */
+}
+
+/* Profile Button Hover Effect */
+.profile-button:hover {
+    -fx-background-color: #FFFFFF; /* White background on hover */
+    -fx-text-fill: #333333; /* Dark text on hover for contrast */
+    -fx-border-color: #FF5C5C; /* Accent red border on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 1); /* Slightly stronger shadow on hover */
+}
+
+/* Profile Image (keeps the existing effect) */
+.profile-image {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 1);
+}
+
+
+/* Centered "Coming Soon..." Text */
+.coming-soon {
+    -fx-font-size: 28px; /* Slightly larger for more emphasis */
+    -fx-font-weight: 600; /* Semi-bold to make it stand out */
+    -fx-text-fill: #34495e; /* Darker shade of gray for a more professional and elegant look */
+    -fx-text-alignment: center; /* Center-align the text */
+    -fx-padding: 20px 0; /* Adds some padding around the text for spacing */
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font with the rest of the UI */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.5, 0, 1); /* Subtle shadow to give it depth */
+}
+
+/* General Style for Logout Button */
+.logout-button {
+    -fx-background-color: #FF5C5C;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -fx-padding: 10px 20px; /* Padding inside the button */
+    -fx-border-radius: 25px; /* Rounded corners */
+    -fx-background-radius: 25px; /* Rounded corners */
+    -fx-cursor: hand; /* Cursor becomes a hand when hovered */
+    -fx-font-weight: bold; /* Bold text */
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.25), 5, 0.5, 1, 1); /* Subtle inner shadow */
+    -fx-alignment: center; /* Text centered */
+}
+
+/* Hover Effect for Logout Button */
+.logout-button:hover {
+    -fx-background-color: #FF4040; /* Darker red on hover */
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.35), 5, 0.5, 1, 1); /* Stronger shadow effect */
+}
+
+/* Focus Effect for Logout Button */
+.logout-button:focused {
+    -fx-border-color: #FF5C5C; /* Highlight border on focus */
+    -fx-border-width: 2px; /* Border thickness */
+}

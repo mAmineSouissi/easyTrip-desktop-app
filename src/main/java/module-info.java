@@ -17,4 +17,6 @@ module tn.esprit.easytripdesktopapp {
     exports tn.esprit.easytripdesktopapp.controllers;
     exports tn.esprit.easytripdesktopapp.models;
     exports tn.esprit.easytripdesktopapp.services;
+    exports tn.esprit.easytripdesktopapp.utils;
+    opens tn.esprit.easytripdesktopapp.utils to javafx.fxml;
 }

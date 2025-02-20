@@ -1,48 +1,150 @@
-/* Set background color */
+/* Set background color for the main AnchorPane */
 AnchorPane {
-    -fx-background-color: #f4f4f4;
+    -fx-background-color: #f9f9f9; /* Light, neutral background for a cleaner look */
 }
 
 /* Style labels */
-Label {
+.label {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #333;
+    -fx-font-weight: 600; /* Semi-bold for a refined, professional appearance */
+    -fx-text-fill: #333333; /* Dark Gray for better readability */
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Style text fields */
+/* TextField Styling */
+.text-field {
+    -fx-background-color: #ffffff; /* White background for clarity */
+    -fx-border-color: #cccccc; /* Light gray border for a clean appearance */
+    -fx-border-radius: 5px; /* Soft, modern rounded corners */
+    -fx-padding: 8px 12px; /* Sufficient padding for readability */
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* TextField Hover Effect */
+.text-field:hover {
+    -fx-border-color: #999999; /* Slightly darker gray border */
+}
+
+/* TextField Focus Effect */
+.text-field:focused {
+    -fx-border-color: #0078d7; /* Professional Blue on focus */
+    -fx-background-color: #f9f9f9; /* Light Gray background when focused */
+}
+
+/* Placeholder Text (Prompt) Styling */
+.text-field:focused:empty {
+    -fx-text-fill: #aaaaaa; /* Light gray placeholder */
+}
+
+/* Style for TextField, PasswordField, TextArea */
 TextField, PasswordField, TextArea {
-    -fx-border-color: #ccc;
+    -fx-border-color: #dcdcdc; /* Softer border color */
     -fx-border-width: 1px;
     -fx-border-radius: 5px;
-    -fx-padding: 5px;
+    -fx-padding: 10px;
 }
 
-/* Style buttons */
-Button {
-    -fx-background-color: #28a745;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
+/* General Button Styling */
+.button {
+    -fx-background-color: #0078d7; /* Professional Blue for buttons */
+    -fx-text-fill: #ffffff; /* White text for contrast */
+    -fx-font-size: 15px;
+    -fx-font-weight: 600; /* Semi-bold text for a stronger impact */
     -fx-border-radius: 5px;
-    -fx-padding: 7px 15px;
-    -fx-cursor: hand;
-}
-Button:hover {
-    -fx-background-color: #28a745;
-    -fx-underline: true;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand; /* Pointer cursor for better interaction */
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-Button:hover {
-    -fx-background-color: #218838;
+/* Button Hover Effect */
+.button:hover {
+    -fx-background-color: #005a9e; /* Darker blue for a hover effect */
 }
+
+/* Button Pressed Effect */
+.button:pressed {
+    -fx-background-color: #004377; /* Even darker blue for a pressed effect */
+}
+
+/* Reset Button Styling */
+.reset-button {
+    -fx-background-color: #888888; /* Neutral Gray for reset buttons */
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 15px;
+    -fx-font-weight: 600;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px 20px;
+}
+
+/* Reset Button Hover Effect */
+.reset-button:hover {
+    -fx-background-color: #6a6a6a;
+}
+
+/* Reset Button Pressed Effect */
+.reset-button:pressed {
+    -fx-background-color: #4d4d4d;
+}
+
+/* Back Button Styling */
 .back-button {
-    -fx-background-color: red;
-    -fx-text-fill: white;
-    -fx-border-width: 0;
+    -fx-background-color: #f4f4f4; /* Light gray for a soft, modern look */
+    -fx-text-fill: #333333; /* Dark gray for readability */
+    -fx-font-size: 16px; /* Slightly larger font for emphasis */
+    -fx-font-weight: 600; /* Semi-bold for better prominence */
+    -fx-border-color: #cccccc;
+    -fx-border-radius: 5px; /* Soft rounded corners */
+    -fx-padding: 8px 16px;
     -fx-cursor: hand;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Back Button Hover Effect */
 .back-button:hover {
-    -fx-background-color: #a10000;
-    -fx-underline: true;
+    -fx-background-color: #e0e0e0;
+    -fx-border-color: #aaaaaa; /* Slightly darker border for focus */
+}
+
+/* Back Button Pressed Effect */
+.back-button:pressed {
+    -fx-background-color: #d6d6d6;
+    -fx-border-color: #888888;
+}
+
+/* Focus Effect for Back Button */
+.back-button:focused {
+    -fx-border-color: #0078d7; /* Blue focus border for consistency */
+}
+
+/* Profile Picture Loader Styling */
+.profilePic-loader {
+    -fx-background-color: #f2f2f2; /* Light background for the loader */
+    -fx-text-fill: #3a3a3a; /* Slightly darker text */
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+}
+
+/* ComboBox Styling */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #dcdcdc;
+    -fx-border-radius: 5px;
+    -fx-padding: 8px 12px;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ComboBox Hover Effect */
+.combo-box:hover {
+    -fx-border-color: #999999;
+}
+
+/* ComboBox Focus Effect */
+.combo-box:focused {
+    -fx-border-color: #0078d7;
+    -fx-background-color: #f9f9f9;
 }

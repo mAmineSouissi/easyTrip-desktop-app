@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -14,6 +15,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -191,29 +193,33 @@ public class TablesAdminController {
     }
 
     @FXML
-    public void handleLogOut(ActionEvent event) {
-        final Stage[] stage = new Stage[1];
-        final Scene[] scene = new Scene[1];
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Log Out");
-        alert.setHeaderText("Are you sure you want to log out?");
-        alert.setContentText("You will be redirected to the login screen.");
+    public void handleLogOut(ActionEvent actionEvent) {
+        // Clear the user session
+        UserSession session = UserSession.getInstance();
+        session.clearSession();
 
-        alert.showAndWait().ifPresent(response -> {
+        // Confirmation logout Alert Logic
+        Alert logoutAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        logoutAlert.setTitle("Logout Confirmation");
+        logoutAlert.setHeaderText("Are you sure you want to log out?");
+        logoutAlert.setContentText("You will be redirected to the login screen.");
+
+        logoutAlert.showAndWait().ifPresent(response -> {
+            // If the user confirms , navigate to login screen
             if (response == ButtonType.OK) {
-                // Perform log out logic here (e.g., close the app, redirect to login screen)
-                System.out.println("User logged out.");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"));
-                stage[0] = (Stage)((Node)event.getSource()).getScene().getWindow();
+                System.out.println("User logged out successfully.");
                 try {
-                    scene[0] = new Scene(loader.load());
-                    stage[0].setScene(scene[0]);
-                    stage[0].setTitle("Login Screen");
-                    stage[0].show();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"));
+                    Parent root = loader.load();
+                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Login Screen");
+                    stage.show();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    e.printStackTrace();
                 }
-
+            } else {
+                System.out.println("Logout cancelled.");
             }
         });
     }

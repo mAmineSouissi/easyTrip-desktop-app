@@ -12,7 +12,7 @@ public interface CRUDService<T> {
 
     void delete(T t);
 
-    Optional<T> getById(int id); // Optional to handle cases where an entity is not found
+    T getById(int id); // Optional to handle cases where an entity is not found
 
     List<T> search(String keyword);
 

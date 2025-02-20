@@ -100,8 +100,8 @@ public class ServiceAgence implements CRUDService<Agence> {
     }
 
     @Override
-    public Optional<Agence> getById(int id) {
-        return Optional.empty();
+    public Agence getById(int id) {
+        return null;
     }
 
     @Override

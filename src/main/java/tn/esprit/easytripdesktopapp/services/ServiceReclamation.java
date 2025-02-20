@@ -91,7 +91,7 @@ public class ServiceReclamation implements CRUDService<Reclamation> {
     }
 
     @Override
-    public Optional<Reclamation> getById(int id) {
+    public Reclamation getById(int id) {
         String qry = "SELECT * FROM Reclamation WHERE id = ?";
 
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
@@ -107,14 +107,14 @@ public class ServiceReclamation implements CRUDService<Reclamation> {
                 reclamation.setIssue(rs.getString("issue"));
                 reclamation.setCategory(rs.getString("category"));
 
-                return Optional.of(reclamation);
+                return reclamation;
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return Optional.empty();
+        return null;
     }
 
     @Override

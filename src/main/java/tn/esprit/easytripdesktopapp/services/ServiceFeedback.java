@@ -93,7 +93,7 @@ public class ServiceFeedback implements CRUDService<Feedback> {
     }
 
     @Override
-    public Optional<Feedback> getById(int id) {
+    public Feedback getById(int id) {
         String qry = "SELECT * FROM Feedback WHERE id = ?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
@@ -109,14 +109,14 @@ public class ServiceFeedback implements CRUDService<Feedback> {
                 feedback.setMessage(rs.getString("message"));
                 feedback.setDate(rs.getDate("date"));
 
-                return Optional.of(feedback);
+                return feedback;
             }
 
         } catch (SQLException e) {
             System.out.println("Erreur: " + e.getMessage());
         }
 
-        return Optional.empty();
+        return null;
     }
 
     @Override

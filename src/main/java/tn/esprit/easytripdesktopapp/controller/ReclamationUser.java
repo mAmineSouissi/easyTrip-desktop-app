@@ -10,14 +10,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tn.esprit.models.Reclamation;
 import tn.esprit.services.ServiceReclamation;
+
 import java.sql.Date;
 
 public class ReclamationUser {
 
-    private int userId = 1;
+    private int userId = 1; // ID de l'utilisateur connecté
 
     @FXML
     private TextField categoryField;
@@ -26,7 +28,7 @@ public class ReclamationUser {
     private DatePicker datePicker;
 
     @FXML
-    private ListView<Reclamation> reclamationList;
+    private HBox cardContainer; // Conteneur horizontal pour les cartes
 
     @FXML
     private TextField issueField;
@@ -37,70 +39,89 @@ public class ReclamationUser {
     @FXML
     private ComboBox<String> statusComboBox;
 
-    private boolean validateInputs() {
-        StringBuilder errors = new StringBuilder();
+    @FXML
+    private Label issueError; // Message d'erreur pour le champ "Problème"
 
-        if (issueField.getText().trim().isEmpty()) {
-            errors.append("Issue field cannot be empty\n");
-        }
-        if (categoryField.getText().trim().isEmpty()) {
-            errors.append("Category field cannot be empty\n");
-        }
-        if (datePicker.getValue() == null) {
-            errors.append("Date must be selected\n");
-        } else if (datePicker.getValue().isAfter(java.time.LocalDate.now())) {
-            errors.append("Date cannot be in the future\n");
-        }
+    @FXML
+    private Label categoryError; // Message d'erreur pour le champ "Catégorie"
 
-        if (errors.length() > 0) {
-            showAlert(Alert.AlertType.ERROR, errors.toString());
-            return false;
-        }
-        return true;
-    }
+    @FXML
+    private Label dateError; // Message d'erreur pour le champ "Date"
+
+    private ServiceReclamation reclamationService = new ServiceReclamation();
 
     @FXML
     void initialize() {
-        statusComboBox.setItems(FXCollections.observableArrayList("Pending", "In Progress", "Resolved", "Closed"));
+        // Initialisation de la ComboBox des statuts
+        statusComboBox.setItems(FXCollections.observableArrayList("En attente", "En cours", "Résolu", "Fermé"));
         loadReclamations();
 
-        reclamationList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                issueField.setText(newSelection.getIssue());
-                categoryField.setText(newSelection.getCategory());
-                statusComboBox.setValue(newSelection.getStatus());
-                datePicker.setValue(newSelection.getDate().toLocalDate());
-            }
-        });
-
+        // Gestion de la recherche en temps réel
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
     private void loadReclamations() {
-        ServiceReclamation reclamationService = new ServiceReclamation();
         ObservableList<Reclamation> allReclamations = FXCollections.observableArrayList(reclamationService.getAll());
         ObservableList<Reclamation> userReclamations = allReclamations.filtered(rec -> rec.getUserId() == userId);
-        reclamationList.setItems(userReclamations);
+        displayReclamations(userReclamations);
     }
 
-    private void clearFields() {
-        issueField.clear();
-        categoryField.clear();
-        statusComboBox.setValue(null);
-        datePicker.setValue(null);
+    private void displayReclamations(ObservableList<Reclamation> reclamations) {
+        cardContainer.getChildren().clear();
+        for (Reclamation reclamation : reclamations) {
+            cardContainer.getChildren().add(createReclamationCard(reclamation));
+        }
     }
 
-    private void showAlert(Alert.AlertType alertType, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle("Reclamation Management");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.show();
+    private HBox createReclamationCard(Reclamation reclamation) {
+        HBox card = new HBox(10);
+        card.setStyle("-fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 10; -fx-background-color: #f9f9f9;");
+
+        Label issueLabel = new Label("Problème: " + reclamation.getIssue());
+        Label categoryLabel = new Label("Catégorie: " + reclamation.getCategory());
+        Label statusLabel = new Label("Statut: " + reclamation.getStatus());
+        Label dateLabel = new Label("Date: " + reclamation.getDate().toString());
+
+        VBox labelsVBox = new VBox(5, issueLabel, categoryLabel, statusLabel, dateLabel);
+        card.getChildren().add(labelsVBox);
+
+        return card;
+    }
+
+    private boolean validateInputs() {
+        boolean isValid = true;
+
+        // Réinitialiser les messages d'erreur
+        issueError.setText("");
+        categoryError.setText("");
+        dateError.setText("");
+
+        // Validation du champ "Problème"
+        if (issueField.getText().trim().isEmpty()) {
+            issueError.setText("Le champ Problème ne peut pas être vide.");
+            isValid = false;
+        }
+
+        // Validation du champ "Catégorie"
+        if (categoryField.getText().trim().isEmpty()) {
+            categoryError.setText("Le champ Catégorie ne peut pas être vide.");
+            isValid = false;
+        }
+
+        // Validation du champ "Date"
+        if (datePicker.getValue() == null) {
+            dateError.setText("La date doit être sélectionnée.");
+            isValid = false;
+        } else if (datePicker.getValue().isAfter(java.time.LocalDate.now())) {
+            dateError.setText("La date ne peut pas être dans le futur.");
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     @FXML
     void backToHome(ActionEvent event) {
-
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/Home.fxml"));
             Scene scene = new Scene(root);
@@ -108,55 +129,60 @@ public class ReclamationUser {
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error navigating back: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de la navigation : " + e.getMessage());
         }
-
     }
 
     @FXML
     void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
-        ServiceReclamation reclamationService = new ServiceReclamation();
         ObservableList<Reclamation> allReclamations = FXCollections.observableArrayList(reclamationService.getAll());
         ObservableList<Reclamation> filteredList = allReclamations
                 .filtered(reclamation -> reclamation.getUserId() == userId &&
                         (reclamation.getIssue().toLowerCase().contains(searchText) ||
                                 reclamation.getCategory().toLowerCase().contains(searchText) ||
                                 reclamation.getStatus().toLowerCase().contains(searchText)));
-        reclamationList.setItems(filteredList);
-
+        displayReclamations(filteredList);
     }
 
     @FXML
     void submitReclamation(ActionEvent event) {
+        if (!validateInputs()) {
+            return; // Arrêter la soumission si la validation échoue
+        }
 
         try {
-
-
-                if (!validateInputs()) {
-                    return;
-                }
-
             Reclamation reclamation = new Reclamation();
             reclamation.setUserId(userId);
             reclamation.setIssue(issueField.getText());
             reclamation.setCategory(categoryField.getText());
-            reclamation.setStatus("Pending");
+            reclamation.setStatus("En attente"); // Statut par défaut
             reclamation.setDate(Date.valueOf(datePicker.getValue()));
 
-            ServiceReclamation reclamationService = new ServiceReclamation();
             reclamationService.add(reclamation);
-
-            showAlert(Alert.AlertType.CONFIRMATION, "Reclamation submitted successfully");
+            showAlert(Alert.AlertType.CONFIRMATION, "Réclamation soumise avec succès");
             loadReclamations();
             clearFields();
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error submitting reclamation: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de la soumission de la réclamation : " + e.getMessage());
         }
-
-
-
-
     }
 
+    private void clearFields() {
+        issueField.clear();
+        categoryField.clear();
+        statusComboBox.setValue(null);
+        datePicker.setValue(null);
+        issueError.setText("");
+        categoryError.setText("");
+        dateError.setText("");
+    }
+
+    private void showAlert(Alert.AlertType alertType, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle("Gestion des réclamations");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
+    }
 }

@@ -1,92 +1,89 @@
 package tn.esprit.easytripdesktopapp.controllers.Agence;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
-import javafx.geometry.Pos;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Agence;
 import tn.esprit.easytripdesktopapp.services.ServiceAgence;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class afficher_agence implements Initializable {
 
     @FXML
-    private ListView<Agence> listViewAgences;
+    private FlowPane cardContainer;
 
-    private final ServiceAgence serviceAgence = new ServiceAgence();
+    private final CRUDService<Agence> agenceService = new ServiceAgence();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadAgences();  // Charge les agences au démarrage
     }
 
-    @FXML
-    public void loadAgences() {
-        System.out.println("Chargement des agences...");
-        listViewAgences.getItems().clear();
+    private void loadAgences() {
+        cardContainer.getChildren().clear(); // Nettoyer avant de recharger
 
-        List<Agence> agences = serviceAgence.getAll();
-        listViewAgences.getItems().addAll(agences);
+        List<Agence> agences = agenceService.getAll(); // Récupérer les agences de la BD
 
-        listViewAgences.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Agence agence, boolean empty) {
-                super.updateItem(agence, empty);
-                if (empty || agence == null) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    Button updateButton = new Button("Modifier");
-                    updateButton.setOnAction(event -> openUpdateAgence(agence));
-
-                    Button deleteButton = new Button("Supprimer");
-                    deleteButton.setOnAction(event -> confirmDeleteAgence(agence));
-
-                    VBox buttonsBox = new VBox(5, updateButton, deleteButton);
-                    buttonsBox.setAlignment(Pos.CENTER);
-
-                    VBox detailsBox = new VBox(3);
-                    detailsBox.getChildren().addAll(
-                            new Label("📌 Nom: " + agence.getNom()),
-                            new Label("📍 Adresse: " + agence.getAddress()),
-                            new Label("📞 Téléphone: " + agence.getPhone()),
-                            new Label("📧 Email: " + agence.getEmail()),
-                            new Label("🖼️ Image: " + agence.getImage())
-                    );
-
-                    HBox hbox = new HBox(10, buttonsBox, detailsBox);
-                    hbox.setAlignment(Pos.CENTER_LEFT);
-                    setGraphic(hbox);
-                }
-            }
-        });
-    }
-
-    private void confirmDeleteAgence(Agence agence) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation de suppression");
-        alert.setHeaderText("Supprimer l'agence : " + agence.getNom());
-        alert.setContentText("Êtes-vous sûr de vouloir supprimer cette agence ? Cette action est irréversible.");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            deleteAgence(agence);
+        for (Agence agence : agences) {
+            VBox card = createAgenceCard(agence);
+            cardContainer.getChildren().add(card);
         }
     }
 
-    private void deleteAgence(Agence agence) {
-        serviceAgence.delete(agence);
-        loadAgences();  // Rafraîchir après suppression
+    private VBox createAgenceCard(Agence agence) {
+        VBox card = new VBox();
+        card.getStyleClass().add("card");
+
+        // Image de l'agence
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(120);
+        imageView.setFitHeight(120);
+        imageView.setPreserveRatio(true);
+
+        // Chargement de l'image
+        if (agence.getImage() != null && !agence.getImage().isEmpty()) {
+            try {
+                Image img = new Image(agence.getImage());
+                imageView.setImage(img);
+            } catch (Exception e) {
+                System.out.println("Erreur chargement image : " + e.getMessage());
+                imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
+            }
+        } else {
+            imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
+        }
+
+        // Nom de l'agence
+        Text nomAgence = new Text(agence.getNom());
+        nomAgence.getStyleClass().add("card-title");
+
+        // Bouton Modifier
+        Button btnModifier = new Button("Modifier");
+        btnModifier.getStyleClass().add("btn-modifier");
+        btnModifier.setOnAction(event -> openUpdateAgence(agence));
+
+        // Bouton Supprimer
+        Button btnSupprimer = new Button("Supprimer");
+        btnSupprimer.getStyleClass().add("btn-supprimer");
+        btnSupprimer.setOnAction(event -> confirmDelete(agence));
+
+        card.getChildren().addAll(imageView, nomAgence, btnModifier, btnSupprimer);
+        return card;
     }
 
     private void openUpdateAgence(Agence agence) {
@@ -96,26 +93,43 @@ public class afficher_agence implements Initializable {
             stage.setScene(new Scene(loader.load()));
 
             update_agence controller = loader.getController();
-            controller.setAgence(agence);
+            controller.setAgence(agence); // Passer l'agence sélectionnée au contrôleur de mise à jour
+
+            // Ajouter un événement pour recharger les agences lorsque la fenêtre est fermée
+            stage.setOnHiding(event -> loadAgences());
+
             stage.show();
-
-            stage.setOnHiding(event -> loadAgences()); // Rafraîchir après modification
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+
+    private void confirmDelete(Agence agence) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation de suppression");
+        confirmation.setHeaderText(null);
+        confirmation.setContentText("Voulez-vous vraiment supprimer l'agence " + agence.getNom() + " ?");
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == javafx.scene.control.ButtonType.OK) {
+                deleteAgence(agence);
+            }
+        });
+    }
+
+    private void deleteAgence(Agence agence) {
+        agenceService.delete(agence);
+        loadAgences(); // Rafraîchir la liste après suppression
+    }
+
     @FXML
-    public void openAddAgence() {
+    public void openAddAgence(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/ajouter_agence.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.show();
-
-            stage.setOnHiding(event -> loadAgences()); // Rafraîchir après ajout
-
+            stage.setOnHiding(event -> loadAgences());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -3,12 +3,14 @@ package tn.esprit.easytripdesktopapp.controllers.Agence;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -48,14 +50,14 @@ public class afficher_agence implements Initializable {
     private VBox createAgenceCard(Agence agence) {
         VBox card = new VBox();
         card.getStyleClass().add("card");
+        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 1);");
 
         // Image de l'agence
         ImageView imageView = new ImageView();
         imageView.setFitWidth(120);
         imageView.setFitHeight(120);
         imageView.setPreserveRatio(true);
-
-        // Chargement de l'image
+        // (Le chargement de l'image reste inchangé)
         if (agence.getImage() != null && !agence.getImage().isEmpty()) {
             try {
                 Image img = new Image(agence.getImage());
@@ -67,24 +69,27 @@ public class afficher_agence implements Initializable {
         } else {
             imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
         }
-
         // Nom de l'agence
         Text nomAgence = new Text(agence.getNom());
         nomAgence.getStyleClass().add("card-title");
+        nomAgence.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-        // Bouton Modifier
+        // Boutons avec icônes
         Button btnModifier = new Button("Modifier");
         btnModifier.getStyleClass().add("btn-modifier");
         btnModifier.setOnAction(event -> openUpdateAgence(agence));
 
-        // Bouton Supprimer
         Button btnSupprimer = new Button("Supprimer");
         btnSupprimer.getStyleClass().add("btn-supprimer");
         btnSupprimer.setOnAction(event -> confirmDelete(agence));
 
-        card.getChildren().addAll(imageView, nomAgence, btnModifier, btnSupprimer);
+        HBox buttonBox = new HBox(10, btnModifier, btnSupprimer);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        card.getChildren().addAll(imageView, nomAgence, buttonBox);
         return card;
     }
+
 
     private void openUpdateAgence(Agence agence) {
         try {

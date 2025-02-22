@@ -13,29 +13,29 @@
     <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
         <!-- Welcome Text on the Left -->
-        <Label fx:id="welcomeLabel" styleClass="nav-label" text="Welcome, User" />
+        <Label fx:id="welcomeLabel" styleClass="nav-label" text="%welcome_label" />
 
         <!-- Spacer to push items to the center -->
         <Region HBox.hgrow="ALWAYS" />
 
         <!-- Centered Navigation Items -->
-        <Label styleClass="nav-label" text="Travel Offers" />
-        <Label styleClass="nav-label" text="Other Offers" />
+        <Label fx:id="manageOfferLabel" styleClass="nav-label" text="%travel_offers" />
+        <Label fx:id="otherOffersLabel" styleClass="nav-label" text="%other_offers" />
 
         <!-- Spacer to push profile and logout to the right -->
         <Region HBox.hgrow="ALWAYS" />
 
         <!-- Profile Button -->
-        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button" text="Profile" />
+        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button" text="%profile_button" />
 
         <!-- LogOut Button -->
-        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button" text="LogOut" />
+        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button" text="%logout_button" />
 
         <!-- Profile Image -->
         <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
     </HBox>
 
     <!-- Centered "Coming Soon..." Text -->
-    <Label layoutX="353.0" layoutY="262.0" styleClass="coming-soon" text="Coming Soon..." AnchorPane.leftAnchor="353.0" AnchorPane.topAnchor="262.0" />
+    <Label fx:id="coming_soon" layoutX="353.0" layoutY="262.0" styleClass="coming-soon" text="%coming_soon" AnchorPane.leftAnchor="353.0" AnchorPane.topAnchor="262.0" />
 
 </AnchorPane>

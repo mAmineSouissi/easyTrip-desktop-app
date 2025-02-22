@@ -98,9 +98,8 @@ public class ClientDashboardController {
             phoneField.setText(currentUser.getPhone());
             addressField.setText(currentUser.getAddress());
             profilePhotoField.setText(currentUser.getProfilePhoto());
-            System.out.println("Before setUser: " + currentUser.getPassword());
 
-            // Load the existing profile image
+            // Load existing profile image
             if (currentUser.getProfilePhoto() != null && !currentUser.getProfilePhoto().isEmpty()) {
                 profilePreview.setImage(new Image(currentUser.getProfilePhoto(), true));
             }
@@ -120,16 +119,19 @@ public class ClientDashboardController {
             File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
             if (selectedFile != null) {
-                String imagePath = "file://" + selectedFile.getAbsolutePath();
-                profilePhotoField.setText(imagePath);
-                profilePreview.setImage(new Image(imagePath));
+                String fileName = selectedFile.getName();
+                String baseUrl = "http://localhost/img/profile/";
+                String newImageUrl = baseUrl + fileName;
+
+                profilePhotoField.setText(newImageUrl);
+                profilePreview.setImage(new Image(newImageUrl, true));
             }
         });
 
         grid.addRow(5, new Label("Profile Photo:"), chooseImageButton);
-        grid.addRow(6, profilePreview); // Add the preview image below the button
+        grid.addRow(6, profilePreview);
 
-        Alert alert = new Alert(AlertType.CONFIRMATION);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Edit Profile");
         alert.setHeaderText("Update your profile details");
         alert.getDialogPane().setContent(grid);
@@ -150,6 +152,7 @@ public class ClientDashboardController {
                     showError("Validation Error", "Invalid phone number format.");
                     return;
                 }
+
                 User updatedUser = new User();
                 updatedUser.setId(session.getUser().getId());
                 updatedUser.setName(nameField.getText());
@@ -161,20 +164,15 @@ public class ClientDashboardController {
                 updatedUser.setPassword(session.getUser().getPassword());
                 updatedUser.setRole(session.getUser().getRole());
 
-                System.out.println("Updating user password: " + updatedUser.getPassword());
-
-                // Save updated user to the database
                 ServiceUser serviceUser = new ServiceUser();
                 serviceUser.update(updatedUser);
 
-                // Update session user
                 session.setUser(updatedUser);
 
-                // Update UI after saving changes
                 welcomeLabel.setText("Welcome, " + updatedUser.getName());
                 profilePic.setImage(new Image(updatedUser.getProfilePhoto(), true));
 
-                Alert successAlert = new Alert(AlertType.INFORMATION);
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
                 successAlert.setTitle("Profile Updated");
                 successAlert.setHeaderText("Your profile has been updated successfully.");
                 successAlert.showAndWait();
@@ -190,12 +188,16 @@ public class ClientDashboardController {
         File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
         if (selectedFile != null) {
-            // Update the text field with the file path
-            profilePhotoField.setText(selectedFile.getAbsolutePath());
+            // Extract the filename only
+            String fileName = selectedFile.getName();
 
-            // Update the image preview
-            String imagePath = "file://" + selectedFile.getAbsolutePath();
-            Image image = new Image(imagePath);
+            // Keep the base URL and update only the filename
+            String baseUrl = "http://localhost/img/profile/";
+            String newImageUrl = baseUrl + fileName;
+
+            // Update the text field and image preview
+            profilePhotoField.setText(newImageUrl);
+            Image image = new Image(newImageUrl, true);
             profilePicture.setImage(image);
         }
     }

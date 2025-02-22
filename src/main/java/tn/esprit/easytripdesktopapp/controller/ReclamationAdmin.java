@@ -1,7 +1,5 @@
 package tn.esprit.controller;
 
-
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,49 +9,49 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tn.esprit.models.Reclamation;
 import tn.esprit.services.ServiceReclamation;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 public class ReclamationAdmin {
 
     @FXML
-    private TextField categoryField;
-
+    private HBox cardContainer;
     @FXML
-    private DatePicker datePicker;
-
+    private TextField userIdField;
+    @FXML
+    private Label userIdError;
     @FXML
     private TextField issueField;
-
     @FXML
-    private ListView<Reclamation> reclamationList;
-
+    private Label issueError;
+    @FXML
+    private TextField categoryField;
+    @FXML
+    private Label categoryError;
+    @FXML
+    private ComboBox<String> statusComboBox;
+    @FXML
+    private Label statusError;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private Label dateError;
     @FXML
     private TextField searchField;
 
-    @FXML
-    private ComboBox<String> statusComboBox;
-
-    @FXML
-    private TextField userIdField;
+    private Reclamation selectedReclamation;
 
     @FXML
     void initialize() {
-        statusComboBox.setItems(FXCollections.observableArrayList("Pending", "In Progress", "Resolved", "Closed"));
+        statusComboBox.setItems(FXCollections.observableArrayList("En attente", "En cours", "Résolue", "Fermée"));
         loadReclamations();
-
-        reclamationList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                userIdField.setText(String.valueOf(newSelection.getUserId()));
-                issueField.setText(newSelection.getIssue());
-                categoryField.setText(newSelection.getCategory());
-                statusComboBox.setValue(newSelection.getStatus());
-                datePicker.setValue(newSelection.getDate().toLocalDate());
-            }
-        });
-
-        // Add search functionality
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
@@ -66,120 +64,163 @@ public class ReclamationAdmin {
             stage.setScene(scene);
             stage.show();
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error navigating back: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de la navigation : " + e.getMessage());
         }
-
-
     }
 
     private void loadReclamations() {
         ServiceReclamation reclamationService = new ServiceReclamation();
         ObservableList<Reclamation> reclamations = FXCollections.observableArrayList(reclamationService.getAll());
-        reclamationList.setItems(reclamations);
+        displayReclamations(reclamations);
     }
 
-    private void clearFields() {
-        userIdField.clear();
-        issueField.clear();
-        categoryField.clear();
-        statusComboBox.setValue(null);
-        datePicker.setValue(null);
+    private void displayReclamations(ObservableList<Reclamation> reclamations) {
+        cardContainer.getChildren().clear();
+
+        for (Reclamation rec : reclamations) {
+            VBox card = new VBox();
+            card.getStyleClass().add("card");
+
+            Label userIdLabel = new Label("ID Utilisateur: " + rec.getUserId());
+            userIdLabel.getStyleClass().add("card-label");
+
+            Label issueLabel = new Label("Problème: " + rec.getIssue());
+            issueLabel.getStyleClass().add("card-label");
+
+            Label categoryLabel = new Label("Catégorie: " + rec.getCategory());
+            categoryLabel.getStyleClass().add("card-label");
+
+            Label statusLabel = new Label("Statut: " + rec.getStatus());
+            statusLabel.getStyleClass().add("card-label");
+
+            Label dateLabel = new Label("Date: " + rec.getDate());
+            dateLabel.getStyleClass().add("card-label");
+
+            card.getChildren().addAll(userIdLabel, issueLabel, categoryLabel, statusLabel, dateLabel);
+            card.setOnMouseClicked(event -> handleCardClick(rec));
+
+            cardContainer.getChildren().add(card);
+        }
     }
 
-    private void showAlert(Alert.AlertType alertType, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle("Reclamation Management");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.show();
+    private void handleCardClick(Reclamation reclamation) {
+        selectedReclamation = reclamation;
+        fillFormWithReclamation(reclamation);
+    }
+
+    private void fillFormWithReclamation(Reclamation reclamation) {
+        userIdField.setText(String.valueOf(reclamation.getUserId()));
+        issueField.setText(reclamation.getIssue());
+        categoryField.setText(reclamation.getCategory());
+        statusComboBox.setValue(reclamation.getStatus());
+        datePicker.setValue(reclamation.getDate().toLocalDate());
     }
 
     @FXML
     void deleteReclamation(ActionEvent event) {
-
         try {
-            Reclamation selectedReclamation = reclamationList.getSelectionModel().getSelectedItem();
             if (selectedReclamation == null) {
-                showAlert(Alert.AlertType.WARNING, "Please select a reclamation to delete");
+                showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation à supprimer.");
                 return;
             }
             ServiceReclamation reclamationService = new ServiceReclamation();
             reclamationService.delete(selectedReclamation);
-            showAlert(Alert.AlertType.CONFIRMATION, "Reclamation deleted successfully");
+            showAlert(Alert.AlertType.CONFIRMATION, "Réclamation supprimée avec succès.");
             loadReclamations();
-            clearFields();
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error deleting reclamation: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de la suppression : " + e.getMessage());
         }
-
     }
 
     @FXML
     void handleSearch() {
-
-        String searchText = searchField.getText().toLowerCase();
+        String query = searchField.getText().toLowerCase();
         ServiceReclamation reclamationService = new ServiceReclamation();
         ObservableList<Reclamation> allReclamations = FXCollections.observableArrayList(reclamationService.getAll());
         ObservableList<Reclamation> filteredList = allReclamations
-                .filtered(reclamation -> reclamation.getIssue().toLowerCase().contains(searchText) ||
-                        reclamation.getCategory().toLowerCase().contains(searchText) ||
-                        reclamation.getStatus().toLowerCase().contains(searchText) ||
-                        String.valueOf(reclamation.getUserId()).contains(searchText));
-        reclamationList.setItems(filteredList);
+                .filtered(reclamation -> reclamation.getIssue().toLowerCase().contains(query) ||
+                        reclamation.getCategory().toLowerCase().contains(query) ||
+                        reclamation.getStatus().toLowerCase().contains(query) ||
+                        String.valueOf(reclamation.getUserId()).contains(query));
+        displayReclamations(filteredList);
     }
-
 
     @FXML
     void updateReclamation(ActionEvent event) {
         try {
-
             if (!validateInputs()) {
                 return;
             }
 
-            Reclamation selectedReclamation = reclamationList.getSelectionModel().getSelectedItem();
             if (selectedReclamation == null) {
-                showAlert(Alert.AlertType.WARNING, "Please select a reclamation to update");
+                showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation à mettre à jour.");
                 return;
             }
+
+            selectedReclamation.setUserId(Integer.parseInt(userIdField.getText()));
+            selectedReclamation.setIssue(issueField.getText());
+            selectedReclamation.setCategory(categoryField.getText());
             selectedReclamation.setStatus(statusComboBox.getValue());
+            selectedReclamation.setDate(Date.valueOf(datePicker.getValue()));
+
             ServiceReclamation reclamationService = new ServiceReclamation();
             reclamationService.update(selectedReclamation);
-            showAlert(Alert.AlertType.CONFIRMATION, "Reclamation updated successfully");
+
+            showAlert(Alert.AlertType.CONFIRMATION, "Réclamation mise à jour avec succès.");
             loadReclamations();
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Error updating reclamation: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de la mise à jour : " + e.getMessage());
         }
     }
 
     private boolean validateInputs() {
-        StringBuilder errors = new StringBuilder();
+        boolean isValid = true;
 
-        if (statusComboBox.getValue() == null || statusComboBox.getValue().trim().isEmpty()) {
-            errors.append("Status must be selected\n");
-        }
+        userIdError.setText("");
+        issueError.setText("");
+        categoryError.setText("");
+        statusError.setText("");
+        dateError.setText("");
 
         try {
-            if (!userIdField.getText().trim().isEmpty()) {
-                int userId = Integer.parseInt(userIdField.getText());
-                if (userId <= 0) {
-                    errors.append("User ID must be a positive number\n");
-                }
+            int userId = Integer.parseInt(userIdField.getText());
+            if (userId <= 0) {
+                userIdError.setText("L'ID utilisateur doit être un nombre positif.");
+                isValid = false;
             }
         } catch (NumberFormatException e) {
-            errors.append("User ID must be a valid number\n");
+            userIdError.setText("L'ID utilisateur doit être un nombre valide.");
+            isValid = false;
         }
 
-        if (errors.length() > 0) {
-            showAlert(Alert.AlertType.ERROR, errors.toString());
-            return false;
+        if (issueField.getText().trim().isEmpty()) {
+            issueError.setText("Le problème ne peut pas être vide.");
+            isValid = false;
         }
-        return true;
+
+        if (categoryField.getText().trim().isEmpty()) {
+            categoryError.setText("La catégorie ne peut pas être vide.");
+            isValid = false;
+        }
+
+        if (statusComboBox.getValue() == null || statusComboBox.getValue().trim().isEmpty()) {
+            statusError.setText("Le statut doit être sélectionné.");
+            isValid = false;
+        }
+
+        if (datePicker.getValue() == null) {
+            dateError.setText("La date doit être sélectionnée.");
+            isValid = false;
+        }
+
+        return isValid;
     }
 
-
-
-
+    private void showAlert(Alert.AlertType alertType, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle("Gestion des Réclamations");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.show();
     }
-
-
+}

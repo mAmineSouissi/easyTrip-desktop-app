@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ServiceAgence implements CRUDService<Agence> {
 
@@ -134,31 +135,15 @@ public class ServiceAgence implements CRUDService<Agence> {
 
     @Override
     public List<Agence> search(String keyword) {
-        List<Agence> agences = new ArrayList<>();
-        String qry = "SELECT * FROM `agency` WHERE `name` LIKE ? OR `address` LIKE ? OR `email` LIKE ?";
-        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
-            String likeKeyword = "%" + keyword + "%";
-            pstm.setString(1, likeKeyword);
-            pstm.setString(2, likeKeyword);
-            pstm.setString(3, likeKeyword);
+        List<Agence> allAgences = getAll(); // Récupérer toutes les agences
+        String lowerCaseKeyword = keyword.toLowerCase(); // Convertir le mot-clé en minuscules pour une recherche insensible à la casse
 
-            ResultSet rs = pstm.executeQuery();
-
-            while (rs.next()) {
-                Agence agence = new Agence();
-                agence.setId(rs.getInt("id"));
-                agence.setNom(rs.getString("name"));
-                agence.setAddress(rs.getString("address"));
-                agence.setPhone(rs.getString("phone"));
-                agence.setEmail(rs.getString("email"));
-                agence.setImage(rs.getString("image"));
-
-                agences.add(agence);
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return agences;
+        return allAgences.stream()
+                .filter(agence ->
+                        agence.getNom().toLowerCase().contains(lowerCaseKeyword) ||
+                                agence.getAddress().toLowerCase().contains(lowerCaseKeyword) ||
+                                agence.getEmail().toLowerCase().contains(lowerCaseKeyword))
+                .collect(Collectors.toList());
     }
 
     @Override

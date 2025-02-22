@@ -48,7 +48,7 @@ public class AgentDashboardController {
 
         if (session != null) {
             User user = session.getUser();
-            welcomeLabel.setText("Welcome, " + user.getName());
+            welcomeLabel.setText("Welcome, " + user.getName() + "\n" + user.getSurname());
 
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 try {
@@ -71,7 +71,7 @@ public class AgentDashboardController {
             User user = session.getUser();
             return user.getProfilePhoto();
         } else {
-            return "file:///home/cardinal/Documents/GitHub/easyTrip-desktop-app/src/main/resources/tn/esprit/easytripdesktopapp/assets/defaultPic.jpg";
+            return "http://localhost/img/profile/defaultPic.jpg";
         }
     }
 
@@ -122,9 +122,12 @@ public class AgentDashboardController {
             File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
             if (selectedFile != null) {
-                String imagePath = "file://" + selectedFile.getAbsolutePath();
-                profilePhotoField.setText(imagePath);
-                profilePreview.setImage(new Image(imagePath));
+                String fileName = selectedFile.getName();
+                String baseUrl = "http://localhost/img/profile/";
+                String newImageUrl = baseUrl + fileName;
+
+                profilePhotoField.setText(newImageUrl);
+                profilePreview.setImage(new Image(newImageUrl, true));
             }
         });
 
@@ -192,12 +195,16 @@ public class AgentDashboardController {
         File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
         if (selectedFile != null) {
-            // Update the text field with the file path
-            profilePhotoField.setText(selectedFile.getAbsolutePath());
+            // Extract the filename only
+            String fileName = selectedFile.getName();
 
-            // Update the image preview
-            String imagePath = "file://" + selectedFile.getAbsolutePath();
-            Image image = new Image(imagePath);
+            // Keep the base URL and update only the filename
+            String baseUrl = "http://localhost/img/profile/";
+            String newImageUrl = baseUrl + fileName;
+
+            // Update the text field and image preview
+            profilePhotoField.setText(newImageUrl);
+            Image image = new Image(newImageUrl, true);
             profilePicture.setImage(image);
         }
     }

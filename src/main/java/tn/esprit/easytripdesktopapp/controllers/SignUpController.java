@@ -134,7 +134,7 @@ public class SignUpController {
     public void initialize() {
         roleComboBox.setItems(FXCollections.observableArrayList(AccountType.Agent, AccountType.Client));
         roleComboBox.getSelectionModel().select(AccountType.Client);
-        imageUrl = "file:///home/cardinal/Documents/GitHub/easyTrip-desktop-app/src/main/resources/tn/esprit/easytripdesktopapp/assets/defaultPic.jpg";
+        imageUrl = "http://localhost/img/profile/defaultPic.jpg";
         Image img = new Image(imageUrl);
         image.setImage(img);
 
@@ -156,22 +156,25 @@ public class SignUpController {
 
     @FXML
     private void chooseImage() {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif", "*.bmp"));
-
 
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
         if (selectedFile != null) {
+            // Extract the filename from the selected file
+            String fileName = selectedFile.getName();
 
-            imageUrl = selectedFile.toURI().toString();
+            // Maintain the base URL and replace only the filename
+            String baseUrl = "http://localhost/img/profile/";
+            imageUrl = baseUrl + fileName;
 
-
+            // Set the new image in the ImageView
             Image img = new Image(imageUrl);
             image.setImage(img);
         }
     }
+
 
     // Email Validation
     private boolean isValidEmail(String email) {

@@ -47,7 +47,7 @@ public class ClientDashboardController {
 
         if (session != null) {
             User user = session.getUser();
-            welcomeLabel.setText("Welcome, " + user.getName());
+            welcomeLabel.setText("Welcome, " + user.getName() + "\n" + user.getSurname());
 
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 try {
@@ -70,7 +70,7 @@ public class ClientDashboardController {
             User user = session.getUser();
             return user.getProfilePhoto();
         } else {
-            return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqafzhnwwYzuOTjTlaYMeQ7hxQLy_Wq8dnQg&s";
+            return "http://localhost/img/profile/defaultPic.jpg";
         }
     }
 

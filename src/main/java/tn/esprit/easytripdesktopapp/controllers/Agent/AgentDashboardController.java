@@ -48,7 +48,7 @@ public class AgentDashboardController {
 
         if (session != null) {
             User user = session.getUser();
-            welcomeLabel.setText("Welcome, " + user.getName());
+            welcomeLabel.setText("Welcome, " + user.getName() + "\n" + user.getSurname());
 
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 try {
@@ -71,7 +71,7 @@ public class AgentDashboardController {
             User user = session.getUser();
             return user.getProfilePhoto();
         } else {
-            return "file:///home/cardinal/Documents/GitHub/easyTrip-desktop-app/src/main/resources/tn/esprit/easytripdesktopapp/assets/defaultPic.jpg";
+            return "http://localhost/img/profile/defaultPic.jpg";
         }
     }
 

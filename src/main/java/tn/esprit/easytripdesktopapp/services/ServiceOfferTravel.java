@@ -346,7 +346,6 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
                 offer.setImage(rs.getString("image"));
 
 
-                //Récupérer category
                 String categoryString = rs.getString("category");
                 Category category = null;
                 if(categoryString != null){
@@ -355,7 +354,6 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
                 offer.setCategory(category);
 
-                // Récupération de la Promotion
                 Promotion promotion = null;
                 int promotionId = rs.getInt("promotion_id");
                 if (!rs.wasNull()) {
@@ -402,7 +400,6 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
                 offer.setImage(rs.getString("image"));
 
 
-                //Récupérer category
                 String categoryString = rs.getString("category");
                 Category category = null;
                 if(categoryString != null){
@@ -410,7 +407,6 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
                 }
                 offer.setCategory(category);
 
-                // Récupérer l'Agence
                 Agence agence = new Agence();
                 agence.setId(rs.getInt("id"));
                 agence.setNom(rs.getString("name"));
@@ -420,7 +416,6 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
                 agence.setImage(rs.getString("image"));
 
                 offer.setAgence(agence);
-                // La liaison est assurée avec des entitées
                 offers.add(offer);
             }
         } catch (SQLException e) {

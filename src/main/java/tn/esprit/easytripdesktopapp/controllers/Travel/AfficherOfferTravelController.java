@@ -24,14 +24,13 @@ public class AfficherOfferTravelController {
     @FXML
     private ListView<OfferTravel> listViewPromotions;
 
-    @FXML
-    private Button btnAjouter, btnModifier, btnSupprimer, btnRafraichir;
+
 
     private final ServiceOfferTravel serviceOfferTravel = new ServiceOfferTravel();
 
     @FXML
     public void initialize() {
-        rafraichirListe(); // Charger la liste d'offres lors de l'initialisation
+        rafraichirListe();
     }
 
     @FXML
@@ -55,15 +54,15 @@ public class AfficherOfferTravelController {
         }
 
         try {
-            // Charger la fenêtre UpdateOfferTravel
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/update_offer_travel.fxml"));
             Parent root = loader.load();
 
-            // Récupérer le contrôleur et lui passer l'offre sélectionnée
-            UpdateOfferTravelController controller = loader.getController();
-            controller.setSelectedOffer(selectedOffer);  // Passer l'offre au contrôleur
 
-            // Ouvrir la fenêtre
+            UpdateOfferTravelController controller = loader.getController();
+            controller.setSelectedOffer(selectedOffer);
+
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.show();

@@ -3,6 +3,7 @@ package tn.esprit.easytripdesktopapp.controllers.Agence;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -50,14 +51,15 @@ public class afficher_agence implements Initializable {
     private VBox createAgenceCard(Agence agence) {
         VBox card = new VBox();
         card.getStyleClass().add("card");
-        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 1);");
+        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 1);");
 
         // Image de l'agence
         ImageView imageView = new ImageView();
         imageView.setFitWidth(120);
         imageView.setFitHeight(120);
         imageView.setPreserveRatio(true);
-        // (Le chargement de l'image reste inchangé)
+
+        // Chargement de l'image
         if (agence.getImage() != null && !agence.getImage().isEmpty()) {
             try {
                 Image img = new Image(agence.getImage());
@@ -69,6 +71,7 @@ public class afficher_agence implements Initializable {
         } else {
             imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
         }
+
         // Nom de l'agence
         Text nomAgence = new Text(agence.getNom());
         nomAgence.getStyleClass().add("card-title");
@@ -87,8 +90,54 @@ public class afficher_agence implements Initializable {
         buttonBox.setAlignment(Pos.CENTER);
 
         card.getChildren().addAll(imageView, nomAgence, buttonBox);
+
+        // Ajouter un événement de clic sur la carte
+        card.setOnMouseClicked(event -> showAgenceDetails(agence));
+
         return card;
     }
+
+    private void showAgenceDetails(Agence agence) {
+        Stage detailsStage = new Stage();
+        VBox detailsBox = new VBox(10);
+        detailsBox.setAlignment(Pos.CENTER);
+        detailsBox.setPadding(new Insets(20));
+
+        // Ajouter les détails de l'agence
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(200);
+        imageView.setPreserveRatio(true);
+
+        // Chargement de l'image
+        if (agence.getImage() != null && !agence.getImage().isEmpty()) {
+            try {
+                Image img = new Image(agence.getImage());
+                imageView.setImage(img);
+            } catch (Exception e) {
+                System.out.println("Erreur chargement image : " + e.getMessage());
+                imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
+            }
+        } else {
+            imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
+        }
+
+        Text nomLabel = new Text("Nom : " + agence.getNom());
+        Text adresseLabel = new Text("Adresse : " + agence.getAddress());
+        Text telephoneLabel = new Text("Téléphone : " + agence.getPhone());
+        Text emailLabel = new Text("Email : " + agence.getEmail());
+
+        Button closeButton = new Button("Fermer");
+        closeButton.setOnAction(event -> detailsStage.close());
+
+        detailsBox.getChildren().addAll(imageView, nomLabel, adresseLabel, telephoneLabel, emailLabel, closeButton);
+
+        Scene detailsScene = new Scene(detailsBox, 300, 400);
+        detailsStage.setScene(detailsScene);
+        detailsStage.setTitle("Détails de l'agence");
+        detailsStage.show();
+    }
+
 
 
     private void openUpdateAgence(Agence agence) {

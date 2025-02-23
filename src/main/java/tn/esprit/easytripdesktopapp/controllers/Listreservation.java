@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -33,32 +30,42 @@ public class Listreservation {
         col2.setCellValueFactory(new PropertyValueFactory<>("places"));
       // col3.setCellValueFactory(new PropertyValueFactory<>("prix"));
         loadReservations1();
-        loadReservations();
+        loadReservations("");
     }
 
-    private void loadReservations() {
+    private void loadReservations(String searchText) {
         List<Reservation> reservations = sr.getAll();
-        ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
+        ObservableList<Reservation> filteredReservations = FXCollections.observableArrayList();
+
+        for (Reservation reservation : reservations) {
+            if (reservation.getNom().toLowerCase().contains(searchText) ||
+                    reservation.getPrenom().toLowerCase().contains(searchText)) {
+                filteredReservations.add(reservation);
+            }
+        }
+
         listres.getChildren().clear();
 
         int columns = 3;
         int row = 0;
         int col = 0;
-
-        for (Reservation reservation : observableReservations) {
+        for (Reservation reservation : filteredReservations) {
             BorderPane card = new BorderPane();
             card.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; " +
                     "-fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
+
             Label infoLabel = new Label(String.format("👤 %s %s \n📧 %s\n📞 %d \n📅 %s",
                     reservation.getNom(), reservation.getPrenom(), reservation.getEmail(),
                     reservation.getPhone(), reservation.getOrdreDate()));
             infoLabel.setStyle("-fx-font-size: 14px;");
+
             Button btnModifier = new Button("Modifier");
             Button btnSupprimer = new Button("Supprimer");
             btnModifier.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
             btnSupprimer.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
             btnModifier.setOnAction(event -> modifierReservation(reservation));
             btnSupprimer.setOnAction(event -> supprimerReservation(reservation));
+
             HBox buttonBox = new HBox(10, btnModifier, btnSupprimer);
             buttonBox.setStyle("-fx-padding: 10;");
             card.setCenter(infoLabel);
@@ -72,6 +79,7 @@ public class Listreservation {
             }
         }
     }
+
 
     private void loadReservations1() {
         List<Reservation> reservations = sr.getAll();
@@ -93,7 +101,7 @@ public class Listreservation {
 
     private void supprimerReservation(Reservation reservation) {
         sr.delete(reservation.getIdReservation());
-        loadReservations();
+        loadReservations("");
         System.out.println("Réservation supprimée : " + reservation.getNom());
     }
 
@@ -118,6 +126,18 @@ public class Listreservation {
 
     @FXML
     private Label totalp;
+
+    @FXML
+    private TextField searchField;
+    @FXML
+    void handleSearch() {
+        String searchText = searchField.getText().toLowerCase();
+        if (searchText.isEmpty()) {
+            loadReservations("");
+        } else {
+            loadReservations(searchText);
+        }
+    }
 
 
 }

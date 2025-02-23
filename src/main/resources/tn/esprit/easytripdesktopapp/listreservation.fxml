@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
@@ -18,7 +19,7 @@
       </Label>
 
       <Button layoutX="35.0" layoutY="667.0" mnemonicParsing="false" onAction="#retour" prefHeight="22.0" prefWidth="112.0" text="Retour" />
-      <ScrollPane layoutX="27.0" layoutY="59.0" prefHeight="390.0" prefWidth="985.0">
+      <ScrollPane layoutX="27.0" layoutY="75.0" prefHeight="374.0" prefWidth="986.0">
          <content>
             <GridPane fx:id="listres" hgap="15" style="-fx-padding: 10; -fx-alignment: center;" vgap="15" />
          </content>
@@ -36,5 +37,6 @@
                   <Label layoutX="304.0" layoutY="215.0" text="Prix total" />
             <Label fx:id="totalp" layoutX="409.0" layoutY="215.0" text="0.0" />
          </children></AnchorPane>
+      <TextField fx:id="searchField" layoutX="251.0" layoutY="14.0" onKeyReleased="#handleSearch" prefHeight="40.0" prefWidth="290.0" promptText="Rechercher par nom..." />
    </children>
 </AnchorPane>

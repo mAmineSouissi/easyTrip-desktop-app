@@ -19,7 +19,10 @@
 
 
 <?import javafx.scene.control.ScrollPane?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controller.ReclamationUser">
+<AnchorPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controller.ReclamationUser">
    <stylesheets>
       <URL value="@lightblue.css" />
    </stylesheets>
@@ -74,13 +77,12 @@
 
                      <!-- Champ "Statut" -->
                      <Label text="Statut" GridPane.rowIndex="4" />
-                     <ComboBox fx:id="statusComboBox" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                     <Label fx:id="statusError" text="" style="-fx-text-fill: red;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                     <Label text="En attente" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                      <!-- Champ "Date" -->
-                     <Label text="Date" GridPane.rowIndex="6" />
-                     <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                     <Label fx:id="dateError" text="" style="-fx-text-fill: red;" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                     <Label text="Date" GridPane.rowIndex="5" />
+                     <DatePicker fx:id="datePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                     <Label fx:id="dateError" text="" style="-fx-text-fill: red;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                   </children>
                </GridPane>
                <!-- Bouton de soumission -->

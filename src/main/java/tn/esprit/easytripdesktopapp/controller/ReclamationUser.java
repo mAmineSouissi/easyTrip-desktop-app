@@ -37,9 +37,6 @@ public class ReclamationUser {
     private TextField searchField;
 
     @FXML
-    private ComboBox<String> statusComboBox;
-
-    @FXML
     private Label issueError; // Message d'erreur pour le champ "Problème"
 
     @FXML
@@ -52,8 +49,6 @@ public class ReclamationUser {
 
     @FXML
     void initialize() {
-        // Initialisation de la ComboBox des statuts
-        statusComboBox.setItems(FXCollections.observableArrayList("En attente", "En cours", "Résolu", "Fermé"));
         loadReclamations();
 
         // Gestion de la recherche en temps réel
@@ -171,7 +166,6 @@ public class ReclamationUser {
     private void clearFields() {
         issueField.clear();
         categoryField.clear();
-        statusComboBox.setValue(null);
         datePicker.setValue(null);
         issueError.setText("");
         categoryError.setText("");

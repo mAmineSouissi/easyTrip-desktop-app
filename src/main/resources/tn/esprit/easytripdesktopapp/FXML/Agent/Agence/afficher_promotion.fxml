@@ -2,16 +2,24 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="490.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Promotion.AfficherPromotion">
-    <children>
-        <Label layoutX="152.0" layoutY="14.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Liste des Promotions" />
-        <ListView fx:id="listViewPromotions" layoutX="10.0" layoutY="64.0" prefHeight="300" prefWidth="480" />
-        <Button layoutX="181.0" layoutY="399.0" onAction="#openUpdatePromotion" prefHeight="26.0" prefWidth="114.0" text="Modifier" />
-        <Button layoutX="23.0" layoutY="399.0" onAction="#openAddPromotion" text="Ajouter Promotion" />
-        <Button layoutX="347.0" layoutY="399.0" onAction="#deletePromotion" prefHeight="26.0" prefWidth="107.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Supprimer" />
-        <Button layoutX="14.0" layoutY="16.0" onAction="#refreshPromotions" text="Rafraîchir" />
-    </children>
-</AnchorPane>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.easytripdesktopapp.controllers.Promotion.AfficherPromotion">
+    <top>
+        <HBox spacing="10" alignment="CENTER">
+            <TextField fx:id="searchField" promptText="Rechercher par titre..." />
+            <Button text="Ajouter Promotion" onAction="#openAddPromotion" />
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane>
+            <FlowPane fx:id="cardContainer" hgap="10" vgap="10" minWidth="600" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
+                <!-- Les cartes de promotion seront ajoutées ici -->
+            </FlowPane>
+        </ScrollPane>
+    </center>
+</BorderPane>

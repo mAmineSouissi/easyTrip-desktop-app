@@ -4,148 +4,166 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AfficherPromotion implements Initializable {
 
     @FXML
-    private ListView<Promotion> listViewPromotions;
+    private FlowPane cardContainer;
 
-    private final ServicePromotion servicePromotion = new ServicePromotion();
+    @FXML
+    private TextField searchField;
+
+    private final CRUDService<Promotion> promotionService = new ServicePromotion();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadPromotions();
-        setupListViewCellFactory(); // Personnaliser l'affichage
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
+// Charge les promotions au démarrage
+    }
+
+
+
+    private void loadPromotions() {
+        cardContainer.getChildren().clear(); // Nettoyer avant de recharger
+
+        List<Promotion> promotions = promotionService.getAll(); // Récupérer les promotions de la BD
+
+        // Trier les promotions par pourcentage de réduction, de plus grand au plus petit
+        promotions.sort(Comparator.comparingDouble(Promotion::getDiscount_percentage).reversed());
+
+        for (Promotion promotion : promotions) {
+            VBox card = createPromotionCard(promotion);
+            cardContainer.getChildren().add(card); // Ajouter chaque carte au FlowPane
+        }
+    }
+
+    private VBox createPromotionCard(Promotion promotion) {
+        VBox card = new VBox();
+        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 1);");
+        card.setPrefWidth(200); // Définir une largeur fixe pour les cartes
+        card.setSpacing(10);
+
+        // Titre de la promotion
+        Label titleLabel = new Label(promotion.getTitle());
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        // Pourcentage de réduction
+        Label discountLabel = new Label("Réduction : " + promotion.getDiscount_percentage() + "%");
+
+        // Date de validité
+        Label dateLabel = new Label("Valide jusqu'au : " + promotion.getValid_until());
+
+        // Événement de clic sur la carte pour afficher les détails
+        card.setOnMouseClicked(event -> showPromotionDetail(promotion));
+
+        // Bouton pour modifier
+        Button btnModifier = new Button("Modifier");
+        btnModifier.setOnAction(event -> openUpdatePromotion(promotion));
+
+        // Bouton pour supprimer
+        Button btnSupprimer = new Button("Supprimer");
+        btnSupprimer.setOnAction(event -> confirmDelete(promotion));
+
+        // Ajouter les éléments à la carte
+        card.getChildren().addAll(titleLabel, discountLabel, dateLabel, btnModifier, btnSupprimer);
+        return card;
+    }
+
+
+    private void openUpdatePromotion(Promotion promotion) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/update_promotion.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Modifier Promotion");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(loader.load(), 400, 400);
+            stage.setScene(scene);
+
+            UpdatePromotion controller = loader.getController();
+            controller.setPromotion(promotion); // Passer les données de la promotion à mettre à jour
+
+            stage.showAndWait();
+            loadPromotions(); // Recharger les promotions après mise à jour
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    public void loadPromotions() {
-        listViewPromotions.getItems().clear();
-        List<Promotion> promotions = servicePromotion.getAll();
-        listViewPromotions.getItems().addAll(promotions);
-    }
-
-    @FXML
-    public void openAddPromotion(ActionEvent event) {
+    public void openAddPromotion(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/ajouter_promotion.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.show();
+            stage.setOnHiding(event -> loadPromotions());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-
-
-    @FXML
-    public void deletePromotion(ActionEvent event) {
-        Promotion selectedPromotion = listViewPromotions.getSelectionModel().getSelectedItem();
-        if (selectedPromotion == null) {
-            showAlert("Erreur", "Veuillez sélectionner une promotion à supprimer !", Alert.AlertType.ERROR);
-            return;
-        }
-
-        // Affichage d'une boîte de confirmation
+    private void confirmDelete(Promotion promotion) {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
         confirmation.setTitle("Confirmation de suppression");
         confirmation.setHeaderText(null);
-        confirmation.setContentText("Voulez-vous vraiment supprimer cette promotion ?");
-
-        Optional<ButtonType> result = confirmation.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            servicePromotion.delete(selectedPromotion); // 👈 Passer l'objet directement
-            showAlert("Succès", "Promotion supprimée avec succès !", Alert.AlertType.INFORMATION);
-            loadPromotions(); // Actualiser la liste
-        }
-    }
-
-
-    @FXML
-    public void refreshPromotions(ActionEvent event) {
-        loadPromotions();
-    }
-
-    private void openScene(String fxmlPath, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            AnchorPane root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void showAlert(String title, String message, Alert.AlertType alertType) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    private void setupListViewCellFactory() {
-        listViewPromotions.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Promotion promotion, boolean empty) {
-                super.updateItem(promotion, empty);
-                if (empty || promotion == null) {
-                    setText(null);
-                } else {
-                    setText("🎁 Titre: " + promotion.getTitle() + "\n" +
-                            "📖 Description: " + promotion.getDescription() + "\n" +
-                            "💲 Réduction: " + promotion.getDiscount_percentage() + "%\n" +
-                            "📅 Valable jusqu'à: " + promotion.getValid_until());
-                }
+        confirmation.setContentText("Voulez-vous vraiment supprimer la promotion " + promotion.getTitle() + " ?");
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                deletePromotion(promotion);
             }
         });
     }
 
-    @FXML
-    public void openUpdatePromotion(ActionEvent actionEvent) {
-        // Récupérer la promotion sélectionnée dans la liste
-        Promotion selectedPromotion = listViewPromotions.getSelectionModel().getSelectedItem();
+    private void deletePromotion(Promotion promotion) {
+        promotionService.delete(promotion);
+        loadPromotions(); // Rafraîchir la liste après suppression
+    }
 
-        if (selectedPromotion == null) {
-            showAlert("Erreur", "Veuillez sélectionner une promotion à modifier.", Alert.AlertType.WARNING);
-            return;
+    @FXML
+    public void handleSearch() {
+        String searchText = searchField.getText().toLowerCase();
+        cardContainer.getChildren().clear(); // Nettoyer avant de recharger
+
+        List<Promotion> promotions = promotionService.getAll(); // Récupérer les promotions de la BD
+
+        for (Promotion promotion : promotions) {
+            if (promotion.getTitle().toLowerCase().contains(searchText)) {
+                VBox card = createPromotionCard(promotion);
+                cardContainer.getChildren().add(card);
+            }
         }
 
-        try {
-            // Charger la fenêtre UpdatePromotion
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/update_promotion.fxml"));
-            Parent root = loader.load();
-
-            // Récupérer le contrôleur et lui passer la promotion sélectionnée
-            UpdatePromotion controller = loader.getController();
-            controller.setPromotion(selectedPromotion);  // Passer la promotion au contrôleur
-
-            // Ouvrir la fenêtre
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        // Si la barre de recherche est vide, rechargez toutes les promotions
+        if (searchText.isEmpty()) {
+            loadPromotions();
         }
     }
 
+    private void showPromotionDetail(Promotion promotion) {
+        Alert detailAlert = new Alert(Alert.AlertType.INFORMATION);
+        detailAlert.setTitle("Détails de la Promotion");
+        detailAlert.setHeaderText(null);
+        detailAlert.setContentText("Titre : " + promotion.getTitle() +
+                "\nDescription : " + promotion.getDescription() +
+                "\nRéduction : " + promotion.getDiscount_percentage() + "%" +
+                "\nValide jusqu'au : " + promotion.getValid_until());
+        detailAlert.showAndWait();
+    }
 }

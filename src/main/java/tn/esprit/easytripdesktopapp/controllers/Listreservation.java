@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.BorderPane;
@@ -27,6 +28,11 @@ public class Listreservation {
 
     @FXML
     void initialize() {
+        col1.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
+                cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
+        col2.setCellValueFactory(new PropertyValueFactory<>("places"));
+      // col3.setCellValueFactory(new PropertyValueFactory<>("prix"));
+        loadReservations1();
         loadReservations();
     }
 
@@ -35,7 +41,7 @@ public class Listreservation {
         ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
         listres.getChildren().clear();
 
-        int columns = 2;
+        int columns = 3;
         int row = 0;
         int col = 0;
 
@@ -67,6 +73,12 @@ public class Listreservation {
         }
     }
 
+    private void loadReservations1() {
+        List<Reservation> reservations = sr.getAll();
+        ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
+        table.setItems(observableReservations);
+    }
+
     private void modifierReservation(Reservation reservation) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/updatereservation.fxml"));
@@ -95,7 +107,17 @@ public class Listreservation {
         }
     }
 
+    @FXML
+    private TableView<Reservation> table;
+    @FXML
+    private TableColumn<Reservation, String> col1;
+    @FXML
+    private TableColumn<Reservation, Integer> col2;
+    @FXML
+    private TableColumn<Reservation, Double> col3;
 
+    @FXML
+    private Label totalp;
 
 
 }

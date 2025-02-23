@@ -9,6 +9,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import tn.esprit.models.Feedback;
 import tn.esprit.services.ServiceFeedback;
@@ -19,9 +22,6 @@ public class FeedbackAdmin {
 
     @FXML
     private DatePicker datePicker;
-
-    @FXML
-    private ListView<Feedback> feedbackList;
 
     @FXML
     private TextField messageField;
@@ -38,7 +38,9 @@ public class FeedbackAdmin {
     @FXML
     private TextField userIdField;
 
-    // Labels pour les messages d'erreur
+    @FXML
+    private HBox feedbackContainer;
+
     @FXML
     private Label userIdError;
 
@@ -57,86 +59,15 @@ public class FeedbackAdmin {
     @FXML
     private Label searchError;
 
-    // Méthode pour valider les entrées
-    private boolean validateInputs() {
-        boolean isValid = true;
-
-        // Réinitialiser les messages d'erreur
-        userIdError.setText("");
-        offerIdError.setText("");
-        ratingError.setText("");
-        messageError.setText("");
-        dateError.setText("");
-
-        // Validation de l'ID utilisateur
-        try {
-            int userId = Integer.parseInt(userIdField.getText().trim());
-            if (userId <= 0) {
-                userIdError.setText("L'ID utilisateur doit être un nombre positif.");
-                isValid = false;
-            }
-        } catch (NumberFormatException e) {
-            userIdError.setText("L'ID utilisateur doit être un nombre valide.");
-            isValid = false;
-        }
-
-        // Validation de l'ID de l'offre
-        try {
-            int offerId = Integer.parseInt(offerIdField.getText().trim());
-            if (offerId <= 0) {
-                offerIdError.setText("L'ID de l'offre doit être un nombre positif.");
-                isValid = false;
-            }
-        } catch (NumberFormatException e) {
-            offerIdError.setText("L'ID de l'offre doit être un nombre valide.");
-            isValid = false;
-        }
-
-        // Validation du message
-        if (messageField.getText().trim().isEmpty()) {
-            messageError.setText("Le champ message ne peut pas être vide.");
-            isValid = false;
-        }
-
-        // Validation de la date
-        if (datePicker.getValue() == null) {
-            dateError.setText("La date doit être sélectionnée.");
-            isValid = false;
-        } else if (datePicker.getValue().isAfter(java.time.LocalDate.now())) {
-            dateError.setText("La date ne peut pas être dans le futur.");
-            isValid = false;
-        }
-
-        // Validation de la note
-        if (ratingSpinner.getValue() == null || ratingSpinner.getValue() < 1 || ratingSpinner.getValue() > 5) {
-            ratingError.setText("La note doit être entre 1 et 5.");
-            isValid = false;
-        }
-
-        return isValid;
-    }
+    private Feedback selectedFeedback;
 
     @FXML
     void initialize() {
-        // Configuration du Spinner pour la note (1 à 5)
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 5, 1);
         ratingSpinner.setValueFactory(valueFactory);
 
-        // Chargement des feedbacks
         loadFeedbacks();
 
-        // Gestion de la sélection d'un feedback dans la ListView
-        feedbackList.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                userIdField.setText(String.valueOf(newSelection.getUserId()));
-                offerIdField.setText(String.valueOf(newSelection.getOfferId()));
-                ratingSpinner.getValueFactory().setValue(newSelection.getRating());
-                messageField.setText(newSelection.getMessage());
-                datePicker.setValue(newSelection.getDate().toLocalDate());
-            }
-        });
-
-        // Gestion de la recherche en temps réel
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
@@ -156,7 +87,7 @@ public class FeedbackAdmin {
     @FXML
     void deleteFeedback(ActionEvent event) {
         try {
-            Feedback selectedFeedback = feedbackList.getSelectionModel().getSelectedItem();
+            Feedback selectedFeedback = getSelectedFeedback();
             if (selectedFeedback == null) {
                 showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner un feedback à supprimer.");
                 return;
@@ -182,7 +113,7 @@ public class FeedbackAdmin {
                         String.valueOf(feedback.getOfferId()).contains(searchText) ||
                         String.valueOf(feedback.getRating()).contains(searchText) ||
                         feedback.getMessage().toLowerCase().contains(searchText));
-        feedbackList.setItems(filteredList);
+        displayFeedbacks(filteredList);
     }
 
     @FXML
@@ -191,7 +122,7 @@ public class FeedbackAdmin {
             if (!validateInputs()) {
                 return;
             }
-            Feedback selectedFeedback = feedbackList.getSelectionModel().getSelectedItem();
+            Feedback selectedFeedback = getSelectedFeedback();
             if (selectedFeedback == null) {
                 showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner un feedback à mettre à jour.");
                 return;
@@ -215,15 +146,61 @@ public class FeedbackAdmin {
     private void loadFeedbacks() {
         ServiceFeedback feedbackService = new ServiceFeedback();
         ObservableList<Feedback> feedbacks = FXCollections.observableArrayList(feedbackService.getAll());
-        feedbackList.setItems(feedbacks);
+        displayFeedbacks(feedbacks);
     }
 
-    private void clearFields() {
-        userIdField.clear();
-        offerIdField.clear();
-        ratingSpinner.getValueFactory().setValue(1);
-        messageField.clear();
-        datePicker.setValue(null);
+    private void displayFeedbacks(ObservableList<Feedback> feedbacks) {
+        feedbackContainer.getChildren().clear();
+
+        for (Feedback feedback : feedbacks) {
+            AnchorPane card = createFeedbackCard(feedback);
+            feedbackContainer.getChildren().add(card);
+        }
+    }
+
+    private AnchorPane createFeedbackCard(Feedback feedback) {
+        AnchorPane card = new AnchorPane();
+        card.getStyleClass().add("feedback-card");
+
+        Text userIdText = new Text("ID Utilisateur: " + feedback.getUserId());
+        Text offerIdText = new Text("ID Offre: " + feedback.getOfferId());
+        Text ratingText = new Text("Note: " + feedback.getRating());
+        Text messageText = new Text("Message: " + feedback.getMessage());
+        Text dateText = new Text("Date: " + feedback.getDate());
+
+        AnchorPane.setTopAnchor(userIdText, 10.0);
+        AnchorPane.setLeftAnchor(userIdText, 10.0);
+
+        AnchorPane.setTopAnchor(offerIdText, 30.0);
+        AnchorPane.setLeftAnchor(offerIdText, 10.0);
+
+        AnchorPane.setTopAnchor(ratingText, 50.0);
+        AnchorPane.setLeftAnchor(ratingText, 10.0);
+
+        AnchorPane.setTopAnchor(messageText, 70.0);
+        AnchorPane.setLeftAnchor(messageText, 10.0);
+
+        AnchorPane.setTopAnchor(dateText, 90.0);
+        AnchorPane.setLeftAnchor(dateText, 10.0);
+
+        card.getChildren().addAll(userIdText, offerIdText, ratingText, messageText, dateText);
+
+        card.setOnMouseClicked(event -> fillFormWithFeedback(feedback));
+
+        return card;
+    }
+
+    private void fillFormWithFeedback(Feedback feedback) {
+        this.selectedFeedback = feedback;
+        userIdField.setText(String.valueOf(feedback.getUserId()));
+        offerIdField.setText(String.valueOf(feedback.getOfferId()));
+        ratingSpinner.getValueFactory().setValue(feedback.getRating());
+        messageField.setText(feedback.getMessage());
+        datePicker.setValue(feedback.getDate().toLocalDate());
+    }
+
+    private Feedback getSelectedFeedback() {
+        return selectedFeedback;
     }
 
     private void showAlert(Alert.AlertType alertType, String message) {
@@ -232,5 +209,66 @@ public class FeedbackAdmin {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.show();
+    }
+
+    private void clearFields() {
+        userIdField.clear();
+        offerIdField.clear();
+        ratingSpinner.getValueFactory().setValue(1);
+        messageField.clear();
+        datePicker.setValue(null);
+        selectedFeedback = null;
+    }
+
+    private boolean validateInputs() {
+        boolean isValid = true;
+
+        userIdError.setText("");
+        offerIdError.setText("");
+        ratingError.setText("");
+        messageError.setText("");
+        dateError.setText("");
+
+        try {
+            int userId = Integer.parseInt(userIdField.getText().trim());
+            if (userId <= 0) {
+                userIdError.setText("L'ID utilisateur doit être un nombre positif.");
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            userIdError.setText("L'ID utilisateur doit être un nombre valide.");
+            isValid = false;
+        }
+
+        try {
+            int offerId = Integer.parseInt(offerIdField.getText().trim());
+            if (offerId <= 0) {
+                offerIdError.setText("L'ID de l'offre doit être un nombre positif.");
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
+            offerIdError.setText("L'ID de l'offre doit être un nombre valide.");
+            isValid = false;
+        }
+
+        if (messageField.getText().trim().isEmpty()) {
+            messageError.setText("Le champ message ne peut pas être vide.");
+            isValid = false;
+        }
+
+        if (datePicker.getValue() == null) {
+            dateError.setText("La date doit être sélectionnée.");
+            isValid = false;
+        } else if (datePicker.getValue().isAfter(java.time.LocalDate.now())) {
+            dateError.setText("La date ne peut pas être dans le futur.");
+            isValid = false;
+        }
+
+        if (ratingSpinner.getValue() == null || ratingSpinner.getValue() < 1 || ratingSpinner.getValue() > 5) {
+            ratingError.setText("La note doit être entre 1 et 5.");
+            isValid = false;
+        }
+
+        return isValid;
     }
 }

@@ -35,53 +35,45 @@ public class AfficherPromotion implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadPromotions();
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
-// Charge les promotions au démarrage
     }
 
 
 
     private void loadPromotions() {
-        cardContainer.getChildren().clear(); // Nettoyer avant de recharger
+        cardContainer.getChildren().clear();
 
-        List<Promotion> promotions = promotionService.getAll(); // Récupérer les promotions de la BD
+        List<Promotion> promotions = promotionService.getAll();
 
-        // Trier les promotions par pourcentage de réduction, de plus grand au plus petit
+
         promotions.sort(Comparator.comparingDouble(Promotion::getDiscount_percentage).reversed());
 
         for (Promotion promotion : promotions) {
             VBox card = createPromotionCard(promotion);
-            cardContainer.getChildren().add(card); // Ajouter chaque carte au FlowPane
+            cardContainer.getChildren().add(card);
         }
     }
 
     private VBox createPromotionCard(Promotion promotion) {
         VBox card = new VBox();
         card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 1);");
-        card.setPrefWidth(200); // Définir une largeur fixe pour les cartes
+        card.setPrefWidth(200);
         card.setSpacing(10);
 
-        // Titre de la promotion
         Label titleLabel = new Label(promotion.getTitle());
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-        // Pourcentage de réduction
         Label discountLabel = new Label("Réduction : " + promotion.getDiscount_percentage() + "%");
 
-        // Date de validité
         Label dateLabel = new Label("Valide jusqu'au : " + promotion.getValid_until());
 
-        // Événement de clic sur la carte pour afficher les détails
         card.setOnMouseClicked(event -> showPromotionDetail(promotion));
 
-        // Bouton pour modifier
         Button btnModifier = new Button("Modifier");
         btnModifier.setOnAction(event -> openUpdatePromotion(promotion));
 
-        // Bouton pour supprimer
         Button btnSupprimer = new Button("Supprimer");
         btnSupprimer.setOnAction(event -> confirmDelete(promotion));
 
-        // Ajouter les éléments à la carte
         card.getChildren().addAll(titleLabel, discountLabel, dateLabel, btnModifier, btnSupprimer);
         return card;
     }
@@ -97,10 +89,10 @@ public class AfficherPromotion implements Initializable {
             stage.setScene(scene);
 
             UpdatePromotion controller = loader.getController();
-            controller.setPromotion(promotion); // Passer les données de la promotion à mettre à jour
+            controller.setPromotion(promotion);
 
             stage.showAndWait();
-            loadPromotions(); // Recharger les promotions après mise à jour
+            loadPromotions();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -133,7 +125,7 @@ public class AfficherPromotion implements Initializable {
 
     private void deletePromotion(Promotion promotion) {
         promotionService.delete(promotion);
-        loadPromotions(); // Rafraîchir la liste après suppression
+        loadPromotions();
     }
 
     @FXML
@@ -150,7 +142,6 @@ public class AfficherPromotion implements Initializable {
             }
         }
 
-        // Si la barre de recherche est vide, rechargez toutes les promotions
         if (searchText.isEmpty()) {
             loadPromotions();
         }

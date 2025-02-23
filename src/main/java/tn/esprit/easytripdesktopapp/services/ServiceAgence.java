@@ -36,7 +36,7 @@ public class ServiceAgence implements CRUDService<Agence> {
     }
 
     @Override
-    public List<Agence> getAll() {
+    public  List<Agence> getAll() {
         List<Agence> agences = new ArrayList<>();
         String qry = "SELECT * FROM `agency`";
 

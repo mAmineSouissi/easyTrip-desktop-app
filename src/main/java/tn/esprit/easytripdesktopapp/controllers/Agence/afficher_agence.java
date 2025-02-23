@@ -1,12 +1,9 @@
 package tn.esprit.easytripdesktopapp.controllers.Agence;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -23,7 +20,6 @@ import tn.esprit.easytripdesktopapp.services.ServiceAgence;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -32,12 +28,11 @@ public class afficher_agence implements Initializable {
     @FXML
     private FlowPane cardContainer;
     @FXML
-    private VBox checkboxContainer;
+    private ComboBox<String> agenceComboBox; // Remplace les checkboxes
     @FXML
     private TextField searchField;
 
     private final CRUDService<Agence> agenceService = new ServiceAgence();
-    private List<CheckBox> checkBoxes = new ArrayList<>();
     private List<Agence> allAgences;
 
     @Override
@@ -46,24 +41,24 @@ public class afficher_agence implements Initializable {
 
         // Écouteur pour la recherche dynamique
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
+
+        // Écouteur pour filtrer les agences selon la sélection
+        agenceComboBox.setOnAction(event -> filterAgences());
     }
 
     private void loadData() {
         allAgences = agenceService.getAll();
-        loadCheckBoxes();
+        loadComboBox();
         loadAgences(allAgences);
     }
 
-    private void loadCheckBoxes() {
-        checkboxContainer.getChildren().clear();
-        checkBoxes.clear();
-
+    private void loadComboBox() {
+        agenceComboBox.getItems().clear();
+        agenceComboBox.getItems().add("Toutes les agences"); // Option pour afficher tout
         for (Agence agence : allAgences) {
-            CheckBox checkBox = new CheckBox(agence.getNom());
-            checkBox.setOnAction(event -> filterAgences());
-            checkBoxes.add(checkBox);
-            checkboxContainer.getChildren().add(checkBox);
+            agenceComboBox.getItems().add(agence.getNom());
         }
+        agenceComboBox.getSelectionModel().selectFirst();
     }
 
     private void loadAgences(List<Agence> agences) {
@@ -143,7 +138,7 @@ public class afficher_agence implements Initializable {
 
     private void deleteAgence(Agence agence) {
         agenceService.delete(agence);
-        loadData(); // Mettre à jour les agences et les checkboxes
+        loadData(); // Mettre à jour les agences et la liste déroulante
     }
 
     @FXML
@@ -162,24 +157,20 @@ public class afficher_agence implements Initializable {
         }
     }
 
+    @FXML
     private void filterAgences() {
-        List<Agence> filteredAgences = new ArrayList<>();
-        for (CheckBox checkBox : checkBoxes) {
-            if (checkBox.isSelected()) {
-                Agence agence = getAgenceFromCheckBox(checkBox);
-                if (agence != null) {
-                    filteredAgences.add(agence);
-                }
-            }
-        }
-        if (filteredAgences.isEmpty()) {
-            filteredAgences.addAll(allAgences);
-        }
-        loadAgences(filteredAgences);
-    }
+        String selectedAgence = agenceComboBox.getValue();
 
-    private Agence getAgenceFromCheckBox(CheckBox checkBox) {
-        return allAgences.stream().filter(a -> a.getNom().equals(checkBox.getText())).findFirst().orElse(null);
+        if (selectedAgence == null || selectedAgence.equals("Toutes les agences")) {
+            loadAgences(allAgences);
+            return;
+        }
+
+        List<Agence> filteredAgences = allAgences.stream()
+                .filter(a -> a.getNom().equals(selectedAgence))
+                .toList();
+
+        loadAgences(filteredAgences);
     }
 
     @FXML

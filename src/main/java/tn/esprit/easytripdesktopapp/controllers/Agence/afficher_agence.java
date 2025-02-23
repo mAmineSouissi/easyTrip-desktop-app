@@ -42,19 +42,23 @@ public class afficher_agence implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        allAgences = agenceService.getAll();
-        loadCheckBoxes(allAgences);
-        loadAgences(allAgences);
+        loadData();
 
         // Écouteur pour la recherche dynamique
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
-    private void loadCheckBoxes(List<Agence> agences) {
+    private void loadData() {
+        allAgences = agenceService.getAll();
+        loadCheckBoxes();
+        loadAgences(allAgences);
+    }
+
+    private void loadCheckBoxes() {
         checkboxContainer.getChildren().clear();
         checkBoxes.clear();
 
-        for (Agence agence : agences) {
+        for (Agence agence : allAgences) {
             CheckBox checkBox = new CheckBox(agence.getNom());
             checkBox.setOnAction(event -> filterAgences());
             checkBoxes.add(checkBox);
@@ -64,7 +68,6 @@ public class afficher_agence implements Initializable {
 
     private void loadAgences(List<Agence> agences) {
         cardContainer.getChildren().clear();
-
         for (Agence agence : agences) {
             VBox card = createAgenceCard(agence);
             cardContainer.getChildren().add(card);
@@ -106,47 +109,7 @@ public class afficher_agence implements Initializable {
         buttonBox.setAlignment(Pos.CENTER);
 
         card.getChildren().addAll(imageView, nomAgence, buttonBox);
-        card.setOnMouseClicked(event -> showAgenceDetails(agence));
-
         return card;
-    }
-
-    private void showAgenceDetails(Agence agence) {
-        Stage detailsStage = new Stage();
-        VBox detailsBox = new VBox(10);
-        detailsBox.setAlignment(Pos.CENTER);
-        detailsBox.setPadding(new Insets(20));
-
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(200);
-        imageView.setFitHeight(200);
-        imageView.setPreserveRatio(true);
-
-        if (agence.getImage() != null && !agence.getImage().isEmpty()) {
-            try {
-                Image img = new Image(agence.getImage());
-                imageView.setImage(img);
-            } catch (Exception e) {
-                imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
-            }
-        } else {
-            imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
-        }
-
-        Text nomLabel = new Text("Nom : " + agence.getNom());
-        Text adresseLabel = new Text("Adresse : " + agence.getAddress());
-        Text telephoneLabel = new Text("Téléphone : " + agence.getPhone());
-        Text emailLabel = new Text("Email : " + agence.getEmail());
-
-        Button closeButton = new Button("Fermer");
-        closeButton.setOnAction(event -> detailsStage.close());
-
-        detailsBox.getChildren().addAll(imageView, nomLabel, adresseLabel, telephoneLabel, emailLabel, closeButton);
-
-        Scene detailsScene = new Scene(detailsBox, 300, 400);
-        detailsStage.setScene(detailsScene);
-        detailsStage.setTitle("Détails de l'agence");
-        detailsStage.show();
     }
 
     private void openUpdateAgence(Agence agence) {
@@ -158,10 +121,8 @@ public class afficher_agence implements Initializable {
             update_agence controller = loader.getController();
             controller.setAgence(agence);
 
-            stage.setOnHiding(event -> {
-                allAgences = agenceService.getAll();
-                loadAgences(allAgences);
-            });
+            // Mise à jour dynamique après modification
+            stage.setOnHiding(event -> loadData());
 
             stage.show();
         } catch (IOException e) {
@@ -182,8 +143,7 @@ public class afficher_agence implements Initializable {
 
     private void deleteAgence(Agence agence) {
         agenceService.delete(agence);
-        allAgences = agenceService.getAll();
-        loadAgences(allAgences);
+        loadData(); // Mettre à jour les agences et les checkboxes
     }
 
     @FXML
@@ -193,10 +153,8 @@ public class afficher_agence implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
 
-            stage.setOnHiding(event -> {
-                allAgences = agenceService.getAll();
-                loadAgences(allAgences);
-            });
+            // Mise à jour dynamique après ajout
+            stage.setOnHiding(event -> loadData());
 
             stage.show();
         } catch (IOException e) {
@@ -209,7 +167,9 @@ public class afficher_agence implements Initializable {
         for (CheckBox checkBox : checkBoxes) {
             if (checkBox.isSelected()) {
                 Agence agence = getAgenceFromCheckBox(checkBox);
-                filteredAgences.add(agence);
+                if (agence != null) {
+                    filteredAgences.add(agence);
+                }
             }
         }
         if (filteredAgences.isEmpty()) {

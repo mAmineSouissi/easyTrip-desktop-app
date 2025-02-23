@@ -95,9 +95,11 @@ public class afficher_agence implements Initializable {
         nomAgence.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         Button btnModifier = new Button("Modifier");
+        btnModifier.getStyleClass().add("button-modifier"); // Appliquer le style Modifier
         btnModifier.setOnAction(event -> openUpdateAgence(agence));
 
         Button btnSupprimer = new Button("Supprimer");
+        btnSupprimer.getStyleClass().add("button-supprimer"); // Appliquer le style Supprimer
         btnSupprimer.setOnAction(event -> confirmDelete(agence));
 
         HBox buttonBox = new HBox(10, btnModifier, btnSupprimer);
@@ -105,6 +107,7 @@ public class afficher_agence implements Initializable {
 
         card.getChildren().addAll(imageView, nomAgence, buttonBox);
         return card;
+
     }
 
     private void openUpdateAgence(Agence agence) {

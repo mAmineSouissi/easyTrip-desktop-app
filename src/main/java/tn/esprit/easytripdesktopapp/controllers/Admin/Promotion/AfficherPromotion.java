@@ -1,16 +1,25 @@
-package tn.esprit.easytripdesktopapp.controllers.Agent.Promotion;
+package tn.esprit.easytripdesktopapp.controllers.Admin.Promotion;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class AfficherPromotion implements Initializable {
 
@@ -29,12 +38,15 @@ public class AfficherPromotion implements Initializable {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
+
     private void removeExpiredPromotions() {
         List<Promotion> promotions = promotionService.getAll();
-        java.util.Date today = new java.util.Date();
+        Date today = new Date();
 
         for (Promotion promotion : promotions) {
-            java.util.Date expirationDate = new java.util.Date(promotion.getValid_until().getTime() + (24 * 60 * 60 * 1000));
+
+            Date expirationDate = new Date(promotion.getValid_until().getTime() + (24 * 60 * 60 * 1000));
+
             if (expirationDate.before(today)) {
                 promotionService.delete(promotion);
                 System.out.println("Promotion supprimée : " + promotion.getTitle());
@@ -64,12 +76,68 @@ public class AfficherPromotion implements Initializable {
         titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
         Label discountLabel = new Label("Réduction : " + promotion.getDiscount_percentage() + "%");
+
         Label dateLabel = new Label("Valide jusqu'au : " + promotion.getValid_until());
 
         card.setOnMouseClicked(event -> showPromotionDetail(promotion));
 
-        card.getChildren().addAll(titleLabel, discountLabel, dateLabel);
+        Button btnModifier = new Button("Modifier");
+        btnModifier.setOnAction(event -> openUpdatePromotion(promotion));
+
+        Button btnSupprimer = new Button("Supprimer");
+        btnSupprimer.setOnAction(event -> confirmDelete(promotion));
+
+        card.getChildren().addAll(titleLabel, discountLabel, dateLabel, btnModifier, btnSupprimer);
         return card;
+    }
+
+    private void openUpdatePromotion(Promotion promotion) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Promotion/update_promotion.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("Modifier Promotion");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(loader.load(), 400, 400);
+            stage.setScene(scene);
+
+            UpdatePromotion controller = loader.getController();
+            controller.setPromotion(promotion);
+
+            stage.showAndWait();
+            loadPromotions();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void openAddPromotion(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Promotion/ajouter_promotion.fxml"));
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+            stage.setOnHiding(event -> loadPromotions());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void confirmDelete(Promotion promotion) {
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirmation de suppression");
+        confirmation.setHeaderText(null);
+        confirmation.setContentText("Voulez-vous vraiment supprimer la promotion " + promotion.getTitle() + " ?");
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                deletePromotion(promotion);
+            }
+        });
+    }
+
+    private void deletePromotion(Promotion promotion) {
+        promotionService.delete(promotion);
+        loadPromotions();
     }
 
     @FXML

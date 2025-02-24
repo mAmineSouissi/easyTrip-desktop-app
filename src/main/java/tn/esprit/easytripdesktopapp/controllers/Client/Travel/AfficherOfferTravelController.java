@@ -1,16 +1,19 @@
-package tn.esprit.easytripdesktopapp.controllers.Admin.Travel;
+package tn.esprit.easytripdesktopapp.controllers.Client.Travel;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.OfferTravel;
 import tn.esprit.easytripdesktopapp.services.ServiceOfferTravel;
@@ -128,26 +131,51 @@ public class AfficherOfferTravelController implements Initializable {
     }
 
     private void showOfferDetails(OfferTravel offer) {
-        Alert detailAlert = new Alert(Alert.AlertType.INFORMATION);
-        detailAlert.setTitle("Détails de l'Offre de Voyage");
-        detailAlert.setHeaderText(null);
-        detailAlert.setContentText(
+        Dialog<ButtonType> detailDialog = new Dialog<>();
+        detailDialog.setTitle("Détails de l'Offre de Voyage");
+        detailDialog.setHeaderText(null);
+
+        // Contenu du dialog
+        String content =
                 "🏝 Destination : " + offer.getDestination() +
                         "\n🚉 Départ : " + offer.getDeparture() +
                         "\n💰 Prix : " + offer.getPrice() + " €" +
                         "\n🏨 Hôtel : " + offer.getHotelName() +
                         "\n✈️ Vol : " + offer.getFlightName() +
-                        "\n📅 Départ : " + offer.getDeparture() + offer.getDeparture_date() + " - Arrivée : " + offer.getArrival_date() +
+                        "\n📅 Départ : " + offer.getDeparture_date() + " - Arrivée : " + offer.getArrival_date() +
                         "\n📖 Description : " + offer.getDiscription() +
                         "\n🏢 Agence : " + (offer.getAgence() != null ? offer.getAgence().getNom() : "Non spécifiée") +
                         "\n🎁 Promotion : " + (offer.getPromotion() != null ? offer.getPromotion().getTitle() : "Aucune") +
-                        "\n📂 Catégorie : " + offer.getCategory()
-        );
+                        "\n📂 Catégorie : " + offer.getCategory();
 
-        detailAlert.showAndWait();
+        TextArea textArea = new TextArea(content);
+        textArea.setEditable(false);
+        textArea.setWrapText(true);
+
+        detailDialog.getDialogPane().setContent(textArea);
+
+        // Bouton "Réserve"
+        ButtonType reserveButtonType = new ButtonType("Réserver", ButtonBar.ButtonData.OK_DONE);
+        detailDialog.getDialogPane().getButtonTypes().addAll(reserveButtonType, ButtonType.CANCEL);
+
+        // Gestion de l'action du bouton "Réserve"
+        detailDialog.setResultConverter(dialogButton -> {
+            if (dialogButton == reserveButtonType) {
+                // Logique pour réserver l'offre ici
+                makeReservation(offer); // Appeler une méthode pour gérer la réservation
+                return ButtonType.OK;
+            }
+            return null;
+        });
+
+        detailDialog.showAndWait();
     }
 
-
+    private void makeReservation(OfferTravel offer) {
+        // Logique pour la réservation de l'offre
+        System.out.println("Réservation effectuée pour l'offre : " + offer.getId());
+        // Ajoutez votre logique de réservation ici (par exemple, ouvrir une nouvelle fenêtre ou appeler un service)
+    }
 
 
 

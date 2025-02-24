@@ -1,132 +1,101 @@
-/* Root background */
 .root {
-    -fx-background-color: #f9f9f9; /* Lighter background for a clean, modern look */
+    -fx-background-color: #f4f4f4; /* Light Gray Background for the whole window */
 }
 
-/* Label Styling */
-Label {
-    -fx-font-size: 16px; /* Slightly smaller for a more professional feel */
-    -fx-font-weight: 600; /* Semi-bold for readability */
-    -fx-text-fill: #333333; /* Dark Gray for better contrast */
-    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Dashboard Title */
-.dashboard-title {
-    -fx-font-size: 28px; /* Larger size for the main title */
-    -fx-font-weight: 700; /* Bold title for emphasis */
-    -fx-padding: 0 0 20 0;
-    -fx-text-fill: #333333; /* Darker color for contrast */
-    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* Table Styling */
-.table-view {
-    -fx-background-color: white;
-    -fx-table-cell-border-color: #dddddd; /* Light border color for a softer look */
-    -fx-border-radius: 5px; /* Rounded corners for a smooth, professional finish */
-}
-
-/* Table Header Styling */
-.table-view .column-header {
-    -fx-background-color: #f0f0f0; /* Subtle background color for table headers */
+.navbar {
+    -fx-background-color: #333; /* Dark background for the navigation bar */
     -fx-padding: 10px;
-    -fx-font-weight: 600;
-    -fx-font-size: 16px;
-    -fx-text-fill: #555555; /* Darker text for better readability */
+    -fx-alignment: center;
 }
 
-/* Table Row Styling */
-.table-view .table-row-cell {
-    -fx-background-color: white;
-}
-
-/* Odd Row Highlighting */
-.table-view .table-row-cell:odd {
-    -fx-background-color: #f9f9f9; /* Light background for odd rows */
-}
-
-/* Button Styling */
-.edit-button {
-    -fx-background-color: #28a745; /* Green for edit actions */
+.nav-label {
     -fx-text-fill: white;
     -fx-font-size: 14px;
-    -fx-font-weight: 600; /* Semi-bold text for emphasis */
+    -fx-font-weight: bold;
+    -fx-cursor: hand; /* Pointer cursor for clickable items */
+    -fx-padding: 5px;
+}
+
+.nav-label:hover {
+    -fx-background-color: #444; /* Hover effect for navigation labels */
     -fx-border-radius: 5px;
-    -fx-min-width: 80px;
-    -fx-padding: 8px 16px;
+}
+
+.profile-button {
+    -fx-background-color: #007bff; /* Blue background for buttons */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px;
+    -fx-border-radius: 5px;
+    -fx-font-weight: bold;
     -fx-cursor: hand;
 }
 
-.edit-button:hover {
-    -fx-background-color: #218838; /* Darker green on hover */
+.profile-button:hover{
+    -fx-background-color: #0056b3; /* Darker blue on hover */
 }
 
-/* Delete Button Styling */
-.delete-button {
-    -fx-background-color: #dc3545; /* Red for delete actions */
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-font-weight: 600;
+.profile-button:pressed {
+    -fx-background-color: #004377; /* Even darker blue on button press */
+}
+
+/* Profile Image */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
     -fx-border-radius: 5px;
-    -fx-min-width: 80px;
-    -fx-padding: 8px 16px;
-    -fx-cursor: hand;
+    -fx-background-radius: 5px;
+    -fx-spacing: 5px;
 }
 
-.delete-button:hover {
-    -fx-background-color: #c82333; /* Darker red on hover */
-}
-
-/* ListView Styling */
-#userListView {
-    -fx-background-color: white;
-    -fx-border-color: #dddddd;
-    -fx-border-radius: 5px;
-    -fx-padding: 10px;
-    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* ListView Item Styling */
-#userListView .list-cell {
-    -fx-background-color: white;
-    -fx-border-color: #f0f0f0;
-    -fx-border-width: 0 0 1 0;
-    -fx-padding: 12px;
+.card-label {
     -fx-font-size: 14px;
     -fx-text-fill: #333333;
 }
 
-/* Hover effect for ListView items */
-#userListView .list-cell:hover {
-    -fx-background-color: #f8f9fa; /* Subtle hover effect for items */
-    -fx-cursor: hand; /* Pointer cursor on hover */
-}
-
-/* Highlight selected ListView Item */
-#userListView .list-cell:focused {
-    -fx-background-color: #d1e7dd; /* Light green for selected items */
-}
-
-/* Logout Button Styling */
-.logout-button {
-    -fx-background-color: #007bff; /* Professional blue for logout button */
+.edit-button {
+    -fx-background-color: #4CAF50;
     -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-font-weight: 700; /* Bold for emphasis */
-    -fx-border-radius: 5px;
-    -fx-min-width: 120px;
-    -fx-padding: 12px;
-    -fx-cursor: hand;
 }
 
-.logout-button:hover {
-    -fx-background-color: #0056b3; /* Darker blue on hover */
+.delete-button {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
 }
 
-/* ImageView Styling */
-#image {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 5); /* Subtle shadow for depth */
-    -fx-border-radius: 5px; /* Rounded corners for image */
+.profile-button {
+    -fx-background-radius: 5px;
+    -fx-padding: 15px;
+}
+
+.profile-image {
+    -fx-border-radius: 50%;
     -fx-padding: 5px;
+}
+
+/* General Style for Logout Button */
+.logout-button {
+    -fx-background-color: #FF5C5C;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -fx-padding: 10px;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px; /* Rounded corners */
+    -fx-cursor: hand; /* Cursor becomes a hand when hovered */
+    -fx-font-weight: bold; /* Bold text */
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.25), 5, 0.5, 1, 1); /* Subtle inner shadow */
+    -fx-alignment: center; /* Text centered */
+}
+
+/* Hover Effect for Logout Button */
+.logout-button:hover {
+    -fx-background-color: #FF4040; /* Darker red on hover */
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.35), 5, 0.5, 1, 1); /* Stronger shadow effect */
+}
+
+/* Focus Effect for Logout Button */
+.logout-button:focused {
+    -fx-border-color: #FF5C5C; /* Highlight border on focus */
+    -fx-border-width: 2px; /* Border thickness */
 }

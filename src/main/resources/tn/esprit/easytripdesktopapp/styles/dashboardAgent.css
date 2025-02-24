@@ -22,7 +22,7 @@
     -fx-border-radius: 5px;
 }
 
-.profile-button, .logout-button {
+.profile-button{
     -fx-background-color: #007bff; /* Blue background for buttons */
     -fx-text-fill: white;
     -fx-font-size: 14px;
@@ -32,11 +32,11 @@
     -fx-cursor: hand;
 }
 
-.profile-button:hover, .logout-button:hover {
+.profile-button:hover {
     -fx-background-color: #0056b3; /* Darker blue on hover */
 }
 
-.profile-button:pressed, .logout-button:pressed {
+.profile-button:pressed{
     -fx-background-color: #004377; /* Even darker blue on button press */
 }
 
@@ -102,4 +102,31 @@
 .text-field:focused, .password-field:focused {
     -fx-border-color: #0078d7; /* Blue border when focused */
     -fx-background-color: #f9f9f9;
+}
+
+
+.logout-button {
+    -fx-background-color: #FF5C5C;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -fx-padding: 10px;
+    -fx-border-radius: 25px;
+    -fx-background-radius: 25px; /* Rounded corners */
+    -fx-cursor: hand; /* Cursor becomes a hand when hovered */
+    -fx-font-weight: bold; /* Bold text */
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.25), 5, 0.5, 1, 1); /* Subtle inner shadow */
+    -fx-alignment: center; /* Text centered */
+}
+
+/* Hover Effect for Logout Button */
+.logout-button:hover {
+    -fx-background-color: #FF4040; /* Darker red on hover */
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.35), 5, 0.5, 1, 1); /* Stronger shadow effect */
+}
+
+/* Focus Effect for Logout Button */
+.logout-button:focused {
+    -fx-border-color: #FF5C5C; /* Highlight border on focus */
+    -fx-border-width: 2px; /* Border thickness */
 }

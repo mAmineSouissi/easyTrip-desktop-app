@@ -19,28 +19,20 @@ import java.util.ResourceBundle;
 
 public class LoginController {
 
+    private final ServiceUser serviceUser = new ServiceUser();
     public Label greetingLabel;
     @FXML
     private TextField emailField;
-
     @FXML
     private PasswordField passwordField;
-
     @FXML
     private Button loginButton;
-
     @FXML
     private Button signUpButton;
-
-
-
     @FXML
     private Button langEnglishButton;
-
     @FXML
     private Button langFrenchButton;
-
-    private final ServiceUser serviceUser = new ServiceUser();
     private ResourceBundle bundle;
 
     public void initialize() {
@@ -108,7 +100,8 @@ public class LoginController {
     @FXML
     void onClick(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/SignUp.fxml"), bundle);
+            ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/SignUp.fxml"), loginBundle);
             Parent root = loader.load();
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

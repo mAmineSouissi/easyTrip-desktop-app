@@ -99,27 +99,10 @@ public class ServiceHotel implements CRUDService<Hotel> {
         }
     }
 
-    @Override
-    public Optional<Hotel> getById(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getById'");
-    }
 
-    @Override
-    public List<Hotel> search(String keyword) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'search'");
-    }
 
-    @Override
-    public boolean exists(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'exists'");
-    }
 
-    @Override
-    public long count() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'count'");
-    }
+
+
+
 }

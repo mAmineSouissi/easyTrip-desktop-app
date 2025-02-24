@@ -99,23 +99,12 @@ public class ServiceAgence implements CRUDService<Agence> {
         }
     }
 
-    @Override
-    public Optional<Agence> getById(int id) {
-        return Optional.empty();
-    }
 
-    @Override
-    public List<Agence> search(String keyword) {
-        return List.of();
-    }
 
-    @Override
-    public boolean exists(int id) {
-        return false;
-    }
 
-    @Override
-    public long count() {
-        return 0;
-    }
+
+
+
+
+
 }

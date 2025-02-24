@@ -2,7 +2,7 @@ package tn.esprit.easytripdesktopapp.models;
 
 public class Ticket {
     private int idTicket;
-    private int flightNumber; // Changé en minuscule pour correspondre aux conventions Java
+    private int flightNumber;
     private String airline;
     private String departureCity;
     private String arrivalCity;
@@ -10,15 +10,18 @@ public class Ticket {
     private String departureTime;
     private String arrivalDate;
     private String arrivalTime;
-    private String ticketClass; // Economy, Business, First
+    private String ticketClass;
     private float price;
-    private String ticketType; // one-way, round-trip
+    private String ticketType;
+    private String cityImage;
+    private int agencyId; // Référence à l'agence
+    private int promotionId; // Référence à la promotion
 
     public Ticket() {}
 
-    public Ticket(int idTicket, int flightNumber, String airline, String departureCity, String arrivalCity, String departureDate, String departureTime, String arrivalDate, String arrivalTime, String ticketClass, float price, String ticketType) {
+    public Ticket(int idTicket, int flightNumber, String airline, String departureCity, String arrivalCity, String departureDate, String departureTime, String arrivalDate, String arrivalTime, String ticketClass, float price, String ticketType, String cityImage, int agencyId, int promotionId) {
         this.idTicket = idTicket;
-        this.flightNumber = flightNumber; // Changé en minuscule
+        this.flightNumber = flightNumber;
         this.airline = airline;
         this.departureCity = departureCity;
         this.arrivalCity = arrivalCity;
@@ -29,14 +32,17 @@ public class Ticket {
         this.ticketClass = ticketClass;
         this.price = price;
         this.ticketType = ticketType;
+        this.cityImage = cityImage;
+        this.agencyId = agencyId; // Initialisation de l'ID de l'agence
+        this.promotionId = promotionId; // Initialisation de l'ID de la promotion
     }
 
     // Getters and Setters
     public int getIdTicket() { return idTicket; }
     public void setIdTicket(int idTicket) { this.idTicket = idTicket; }
 
-    public int getFlightNumber() { return flightNumber; } // Changé en minuscule
-    public void setFlightNumber(int flightNumber) { this.flightNumber = flightNumber; } // Changé en minuscule
+    public int getFlightNumber() { return flightNumber; }
+    public void setFlightNumber(int flightNumber) { this.flightNumber = flightNumber; }
 
     public String getAirline() { return airline; }
     public void setAirline(String airline) { this.airline = airline; }
@@ -68,11 +74,20 @@ public class Ticket {
     public String getTicketType() { return ticketType; }
     public void setTicketType(String ticketType) { this.ticketType = ticketType; }
 
+    public String getCityImage() { return cityImage; }
+    public void setCityImage(String cityImage) { this.cityImage = cityImage; }
+
+    public int getAgencyId() { return agencyId; } // Getter pour l'ID de l'agence
+    public void setAgencyId(int agencyId) { this.agencyId = agencyId; } // Setter pour l'ID de l'agence
+
+    public int getPromotionId() { return promotionId; } // Getter pour l'ID de la promotion
+    public void setPromotionId(int promotionId) { this.promotionId = promotionId; } // Setter pour l'ID de la promotion
+
     @Override
     public String toString() {
         return "Ticket{" +
                 "idTicket=" + idTicket +
-                ", flightNumber=" + flightNumber + // Changé en minuscule
+                ", flightNumber=" + flightNumber +
                 ", airline='" + airline + '\'' +
                 ", departureCity='" + departureCity + '\'' +
                 ", arrivalCity='" + arrivalCity + '\'' +
@@ -83,6 +98,9 @@ public class Ticket {
                 ", ticketClass='" + ticketClass + '\'' +
                 ", price=" + price +
                 ", ticketType='" + ticketType + '\'' +
+                ", cityImage='" + cityImage + '\'' +
+                ", agencyId=" + agencyId + // Affichage de l'ID de l'agence
+                ", promotionId=" + promotionId + // Affichage de l'ID de la promotion
                 '}';
     }
 }

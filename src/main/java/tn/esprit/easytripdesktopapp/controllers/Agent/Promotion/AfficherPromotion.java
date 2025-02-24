@@ -1,4 +1,4 @@
-package tn.esprit.easytripdesktopapp.controllers.Promotion;
+package tn.esprit.easytripdesktopapp.controllers.Agent.Promotion;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,19 +7,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import tn.esprit.easytripdesktopapp.controllers.Admin.Promotion.UpdatePromotion;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AfficherPromotion implements Initializable {
 
@@ -33,18 +31,31 @@ public class AfficherPromotion implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        removeExpiredPromotions();
         loadPromotions();
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
 
+    private void removeExpiredPromotions() {
+        List<Promotion> promotions = promotionService.getAll();
+        java.util.Date today = new java.util.Date();
+
+        for (Promotion promotion : promotions) {
+
+            java.util.Date expirationDate = new java.util.Date(promotion.getValid_until().getTime() + (24 * 60 * 60 * 1000));
+
+            if (expirationDate.before(today)) {
+                promotionService.delete(promotion);
+                System.out.println("Promotion supprimée : " + promotion.getTitle());
+            }
+        }
+    }
 
     private void loadPromotions() {
         cardContainer.getChildren().clear();
 
         List<Promotion> promotions = promotionService.getAll();
-
-
         promotions.sort(Comparator.comparingDouble(Promotion::getDiscount_percentage).reversed());
 
         for (Promotion promotion : promotions) {
@@ -78,10 +89,9 @@ public class AfficherPromotion implements Initializable {
         return card;
     }
 
-
     private void openUpdatePromotion(Promotion promotion) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/update_promotion.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Promotion/update_promotion.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Modifier Promotion");
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -101,7 +111,7 @@ public class AfficherPromotion implements Initializable {
     @FXML
     public void openAddPromotion(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/ajouter_promotion.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Promotion/ajouter_promotion.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.show();
@@ -131,9 +141,9 @@ public class AfficherPromotion implements Initializable {
     @FXML
     public void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
-        cardContainer.getChildren().clear(); // Nettoyer avant de recharger
+        cardContainer.getChildren().clear();
 
-        List<Promotion> promotions = promotionService.getAll(); // Récupérer les promotions de la BD
+        List<Promotion> promotions = promotionService.getAll();
 
         for (Promotion promotion : promotions) {
             if (promotion.getTitle().toLowerCase().contains(searchText)) {

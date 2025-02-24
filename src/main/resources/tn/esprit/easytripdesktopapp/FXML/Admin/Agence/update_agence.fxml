@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="460.0" prefWidth="268.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agence.update_agence">
+<AnchorPane prefHeight="460.0" prefWidth="268.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.Agence.update_agence">
     <children>
         <Label style="-fx-font-size: 20; -fx-font-weight: bold;" text="Modifier l'Agence" AnchorPane.leftAnchor="10" AnchorPane.topAnchor="10" />
 

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="490.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Travel.AfficherOfferTravelController">
+<AnchorPane prefHeight="490.0" prefWidth="490.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.Travel.AfficherOfferTravelController">
     <children>
         <Label layoutX="152.0" layoutY="14.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="List of Offer_Travels" />
         <ListView fx:id="listViewPromotions" layoutX="10.0" layoutY="64.0" prefHeight="300" prefWidth="480" />

@@ -1,4 +1,4 @@
-package tn.esprit.easytripdesktopapp.controllers.Travel;
+package tn.esprit.easytripdesktopapp.controllers.Agent.Travel;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

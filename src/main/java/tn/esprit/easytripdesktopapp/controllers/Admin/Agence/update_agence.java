@@ -1,4 +1,4 @@
-package tn.esprit.easytripdesktopapp.controllers.Agence;
+package tn.esprit.easytripdesktopapp.controllers.Admin.Agence;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;

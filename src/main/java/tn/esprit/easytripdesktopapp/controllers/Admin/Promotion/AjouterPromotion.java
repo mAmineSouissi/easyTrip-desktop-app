@@ -1,15 +1,11 @@
-package tn.esprit.easytripdesktopapp.controllers.Promotion;
+package tn.esprit.easytripdesktopapp.controllers.Admin.Promotion;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
-import tn.esprit.easytripdesktopapp.models.Agence;
 import tn.esprit.easytripdesktopapp.models.Promotion;
-import tn.esprit.easytripdesktopapp.services.ServiceAgence;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
-
-import java.time.LocalDate;
 
 public class AjouterPromotion {
 
@@ -34,6 +30,12 @@ public class AjouterPromotion {
             return;
         }
 
+        // Vérifier si la date est avant aujourd'hui
+        if (validUntil.getValue().isBefore(java.time.LocalDate.now())) {
+            showAlert("Erreur", "La date de validité ne peut pas être antérieure à aujourd'hui !", Alert.AlertType.ERROR);
+            return;
+        }
+
         try {
             // Convertir discountPercentage en float
             float discount = Float.parseFloat(discountPercentage.getText());
@@ -53,6 +55,7 @@ public class AjouterPromotion {
             showAlert("Erreur", "Le pourcentage de réduction doit être un nombre valide !", Alert.AlertType.ERROR);
         }
     }
+
     private void showAlert(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

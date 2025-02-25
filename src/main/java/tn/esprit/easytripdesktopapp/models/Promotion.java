@@ -1,7 +1,5 @@
 package tn.esprit.easytripdesktopapp.models;
 
-import tn.esprit.easytripdesktopapp.models.Ticket;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,9 +11,11 @@ public class Promotion {
     private float discount_percentage;
     private Date validUntil;
     private List<Ticket> tickets; // Liste des tickets associés à cette promotion
+    private List<Hotel> hotels; // Liste des hôtels associés à cette promotion
 
     public Promotion() {
-        this.tickets = new ArrayList<>(); // Initialisation de la liste des tickets
+        this.tickets = new ArrayList<>();
+        this.hotels = new ArrayList<>();
     }
 
     public Promotion(int id, String title, String description, float discount_percentage, Date validUntil) {
@@ -24,7 +24,8 @@ public class Promotion {
         this.description = description;
         this.discount_percentage = discount_percentage;
         this.validUntil = validUntil;
-        this.tickets = new ArrayList<>(); // Initialisation de la liste des tickets
+        this.tickets = new ArrayList<>();
+        this.hotels = new ArrayList<>();
     }
 
     // Getters et Setters
@@ -43,17 +44,22 @@ public class Promotion {
     public Date getValidUntil() { return validUntil; }
     public void setValidUntil(Date validUntil) { this.validUntil = validUntil; }
 
-    public List<Ticket> getTickets() { return tickets; } // Getter pour la liste des tickets
-    public void setTickets(List<Ticket> tickets) { this.tickets = tickets; } // Setter pour la liste des tickets
+    public List<Ticket> getTickets() { return tickets; }
+    public void setTickets(List<Ticket> tickets) { this.tickets = tickets; }
 
-    // Méthode pour ajouter un ticket à la promotion
-    public void addTicket(Ticket ticket) {
-        this.tickets.add(ticket);
+    public List<Hotel> getHotels() { return hotels; }
+    public void setHotels(List<Hotel> hotels) { this.hotels = hotels; }
+
+    // Méthode pour ajouter un hôtel à la promotion
+    public void addHotel(Hotel hotel) {
+        this.hotels.add(hotel);
+        hotel.setPromotion(this);
     }
 
-    // Méthode pour supprimer un ticket de la promotion
-    public void removeTicket(Ticket ticket) {
-        this.tickets.remove(ticket);
+    // Méthode pour supprimer un hôtel de la promotion
+    public void removeHotel(Hotel hotel) {
+        this.hotels.remove(hotel);
+        hotel.setPromotion(null);
     }
 
     @Override
@@ -64,7 +70,8 @@ public class Promotion {
                 ", description='" + description + '\'' +
                 ", discount_percentage=" + discount_percentage +
                 ", validUntil=" + validUntil +
-                ", tickets=" + tickets.size() + // Affichage du nombre de tickets associés
+                ", tickets=" + tickets.size() +
+                ", hotels=" + hotels.size() +
                 '}';
     }
 }

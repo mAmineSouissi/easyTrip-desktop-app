@@ -1,6 +1,7 @@
 package tn.esprit.easytripdesktopapp.controllers.Client;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,6 +33,9 @@ public class DetailTicket {
 
     @FXML
     private Label ticketTypeLabel;
+
+    @FXML
+    private Button reserveButton; // Bouton Réserver
 
     private Ticket ticket;
 
@@ -70,6 +74,20 @@ public class DetailTicket {
             priceLabel.setText("Prix : " + ticket.getPrice() + " €");
             ticketClassLabel.setText("Classe : " + ticket.getTicketClass());
             ticketTypeLabel.setText("Type : " + ticket.getTicketType());
+        }
+    }
+
+    // Gestionnaire d'événements pour le bouton Réserver
+    @FXML
+    private void handleReserveButton() {
+        if (ticket != null) {
+            int ticketId = ticket.getIdTicket(); // Récupérer l'ID du ticket
+            System.out.println("Ticket réservé avec l'ID : " + ticketId);
+
+            // Vous pouvez également afficher une boîte de dialogue ou effectuer une autre action ici
+            // Par exemple, ouvrir une nouvelle fenêtre pour confirmer la réservation
+        } else {
+            System.out.println("Aucun ticket sélectionné.");
         }
     }
 }

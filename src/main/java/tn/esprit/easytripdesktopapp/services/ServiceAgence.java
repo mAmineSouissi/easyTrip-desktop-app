@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 public class ServiceAgence implements CRUDService<Agence> {
 
-    private Connection cnx ;
+    private Connection cnx;
 
-    public ServiceAgence(){
+    public ServiceAgence() {
         cnx = MyDataBase.getInstance().getCnx();
     }
 
@@ -36,7 +36,7 @@ public class ServiceAgence implements CRUDService<Agence> {
     }
 
     @Override
-    public  List<Agence> getAll() {
+    public List<Agence> getAll() {
         List<Agence> agences = new ArrayList<>();
         String qry = "SELECT * FROM `agency`";
 
@@ -103,7 +103,6 @@ public class ServiceAgence implements CRUDService<Agence> {
             System.out.println(e.getMessage());
         }
     }
-
 
     @Override
     public Optional<Agence> getById(int id) {
@@ -175,5 +174,23 @@ public class ServiceAgence implements CRUDService<Agence> {
             System.out.println(e.getMessage());
         }
         return 0;
+    }
+
+    public List<String> getAllAgencyEmails() {
+        List<String> emails = new ArrayList<>();
+        String query = "SELECT email FROM `agency`"; // Assurez-vous que le nom de la table est correct
+
+        try (PreparedStatement preparedStatement = cnx.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                String email = resultSet.getString("email");
+                emails.add(email);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage()); // Gérer l'exception de manière appropriée
+        }
+
+        return emails;
     }
 }

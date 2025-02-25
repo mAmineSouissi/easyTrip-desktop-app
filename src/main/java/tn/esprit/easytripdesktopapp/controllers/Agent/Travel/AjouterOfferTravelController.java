@@ -2,15 +2,10 @@ package tn.esprit.easytripdesktopapp.controllers.Agent.Travel;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Agence;
 import tn.esprit.easytripdesktopapp.models.Category;
@@ -21,7 +16,7 @@ import tn.esprit.easytripdesktopapp.services.ServiceAgence;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 
 import java.io.File;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class AjouterOfferTravelController {
@@ -100,7 +95,7 @@ public class AjouterOfferTravelController {
             String hotelName = tfHotelName.getText();
             String flightName = tfFlightName.getText();
             String description = taDescription.getText();
-            float price = Float.parseFloat(tfPrice.getText());
+            float price = Float.parseFloat(tfPrice.getText()); // Prix saisi par l'utilisateur
             Agence agence = cbAgence.getValue();
             Promotion promotion = cbPromotion.getValue(); // Peut être null
             Category category = cbCategory.getValue();
@@ -123,7 +118,11 @@ public class AjouterOfferTravelController {
                 return;
             }
 
-            OfferTravel offer = new OfferTravel(0, departure, destination, departureDate, arrivalDate, hotelName, flightName, description, price, imagePath, agence, promotion, category);
+            // Calculer le prix final après application de la promotion
+            float finalPrice = getFinalPrice(price, promotion);
+
+            // Créer l'offre avec le prix final
+            OfferTravel offer = new OfferTravel(0, departure, destination, departureDate, arrivalDate, hotelName, flightName, description, finalPrice, imagePath, agence, promotion, category);
             serviceOfferTravel.add(offer);
 
             showAlert("Succès", "Offre ajoutée avec succès !", Alert.AlertType.INFORMATION);
@@ -173,5 +172,12 @@ public class AjouterOfferTravelController {
         alert.showAndWait();
     }
 
-
+    // Méthode pour calculer le prix final
+    private float getFinalPrice(float price, Promotion promotion) {
+        if (promotion != null) {
+            return price - (price * promotion.getDiscount_percentage() / 100);
+        } else {
+            return price;
+        }
+    }
 }

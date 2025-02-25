@@ -42,6 +42,8 @@ public class UpdateOfferTravelController implements Initializable {
     private ServicePromotion servicePromotion = new ServicePromotion();
     private String imagePath = "";
 
+    private float initialPrice; // Pour stocker le prix initial (avant promotion)
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadAgences();
@@ -60,13 +62,11 @@ public class UpdateOfferTravelController implements Initializable {
 
             // Conversion Date → LocalDate
             if (selectedOffer.getDeparture_date() != null) {
-                // Assurez-vous d'utiliser la méthode getDeparture_date() pour récupérer la date de départ
                 Date sqlDepartureDate = new Date(selectedOffer.getDeparture_date().getTime());
                 dpDepartureDate.setValue(sqlDepartureDate.toLocalDate());
             }
 
             if (selectedOffer.getArrival_date() != null) {
-                // Assurez-vous d'utiliser la méthode getArrival_date() pour récupérer la date d'arrivée
                 Date sqlArrivalDate = new Date(selectedOffer.getArrival_date().getTime());
                 dpArrivalDate.setValue(sqlArrivalDate.toLocalDate());
             }
@@ -74,7 +74,10 @@ public class UpdateOfferTravelController implements Initializable {
             tfHotelName.setText(selectedOffer.getHotelName());
             tfFlightName.setText(selectedOffer.getFlightName());
             taDescription.setText(selectedOffer.getDiscription());
-            tfPrice.setText(String.valueOf(selectedOffer.getPrice()));
+
+            // Récupérer le prix initial (avant promotion)
+            initialPrice = getInitialPrice(selectedOffer.getPrice(), selectedOffer.getPromotion());
+            tfPrice.setText(String.valueOf(initialPrice)); // Afficher le prix initial
 
             // Sélectionner l'agence et la promotion correspondantes
             cbAgence.setValue(selectedOffer.getAgence());
@@ -102,9 +105,9 @@ public class UpdateOfferTravelController implements Initializable {
             String hotelName = tfHotelName.getText();
             String flightName = tfFlightName.getText();
             String description = taDescription.getText();
-            float price = Float.parseFloat(tfPrice.getText());
+            float initialPrice = Float.parseFloat(tfPrice.getText()); // Prix initial saisi par l'utilisateur
             Agence agence = cbAgence.getValue();
-            Promotion promotion = cbPromotion.getValue();
+            Promotion promotion = cbPromotion.getValue(); // Nouvelle promotion sélectionnée
             Category category = cbCategory.getValue();
 
             // Vérification des champs
@@ -117,6 +120,9 @@ public class UpdateOfferTravelController implements Initializable {
             Date departureDate = (departureLocalDate != null) ? Date.valueOf(departureLocalDate) : null;
             Date arrivalDate = (arrivalLocalDate != null) ? Date.valueOf(arrivalLocalDate) : null;
 
+            // Calculer le prix final après application de la nouvelle promotion
+            float finalPrice = getFinalPrice(initialPrice, promotion);
+
             // Mettre à jour l'offre
             selectedOffer.setDeparture(departure);
             selectedOffer.setDestination(destination);
@@ -125,7 +131,7 @@ public class UpdateOfferTravelController implements Initializable {
             selectedOffer.setHotelName(hotelName);
             selectedOffer.setFlightName(flightName);
             selectedOffer.setDiscription(description);
-            selectedOffer.setPrice(price);
+            selectedOffer.setPrice(finalPrice); // Enregistrer le prix final après promotion
             selectedOffer.setAgence(agence);
             selectedOffer.setPromotion(promotion);
             selectedOffer.setCategory(category);
@@ -206,5 +212,23 @@ public class UpdateOfferTravelController implements Initializable {
     private void closeWindow() {
         Stage stage = (Stage) btnAjouter.getScene().getWindow();
         stage.close();
+    }
+
+    // Méthode pour calculer le prix final après application de la promotion
+    private float getFinalPrice(float initialPrice, Promotion promotion) {
+        if (promotion != null) {
+            return initialPrice - (initialPrice * promotion.getDiscount_percentage() / 100);
+        } else {
+            return initialPrice;
+        }
+    }
+
+    // Méthode pour récupérer le prix initial avant application de la promotion
+    private float getInitialPrice(float currentPrice, Promotion promotion) {
+        if (promotion != null) {
+            return currentPrice / (1 - (promotion.getDiscount_percentage() / 100));
+        } else {
+            return currentPrice;
+        }
     }
 }

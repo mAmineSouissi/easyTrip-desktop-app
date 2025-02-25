@@ -150,13 +150,7 @@ public class OfferTravel {
         this.category = category;
     }
 
-    public float getFinalPrice() {
-        if (promotion != null) {
-            return price - (price * promotion.getDiscount_percentage() / 100);
-        } else {
-            return price;
-        }
-    }
+
 
     @Override
     public String toString() {

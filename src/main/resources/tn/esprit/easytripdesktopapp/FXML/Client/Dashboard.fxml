@@ -20,6 +20,7 @@
 
         <!-- Centered Navigation Items -->
         <Label styleClass="nav-label" text="Travel Offers" />
+        <Button styleClass="nav-label" text="Reservation" onAction="#navigateToReservation" />
         <Label styleClass="nav-label" text="Other Offers" />
 
         <!-- Spacer to push profile and logout to the right -->

@@ -1,0 +1,73 @@
+/* Conteneur de la barre de recherche */
+.hbox {
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+/* Champ de recherche */
+#searchField {
+    -fx-pref-width: 250px;
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+}
+
+/* Bouton Ajouter Promotion aligné à droite */
+#addPromotionButton {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
+    -fx-alignment: center-right;
+}
+
+#addPromotionButton:hover {
+    -fx-background-color: #2980b9;
+}
+
+#addPromotionButton:pressed {
+    -fx-background-color: #1f618d;
+}
+
+/* Bouton Supprimer en rouge */
+.delete-button {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
+}
+
+.delete-button:hover {
+    -fx-background-color: #c0392b;
+}
+
+.delete-button:pressed {
+    -fx-background-color: #a93226;
+}
+
+/* Bouton Modifier en bleu ciel */
+.modify-button {
+    -fx-background-color: #5dade2;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8px 12px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
+}
+
+.modify-button:hover {
+    -fx-background-color: #2e86c1;
+}
+
+.modify-button:pressed {
+    -fx-background-color: #21618c;
+}

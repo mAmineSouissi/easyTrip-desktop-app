@@ -17,7 +17,7 @@ public class MainFX extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Charger le fichier FXML pour la gestion des hôtels
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Agent/AffichageHotel.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/AffichageHotelClient.fxml"));
         try {
             Parent root = loader.load();
             Scene scene = new Scene(root);

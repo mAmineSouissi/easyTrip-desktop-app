@@ -61,4 +61,16 @@ public class DetailHotel {
             numRoomLabel.setText("Nombre de chambres: " + hotel.getNumRoom());
         }
     }
+    @FXML
+    private void handleReserveButton() {
+        if (hotel != null) {
+            int Id = hotel.getId(); // Récupérer l'ID du ticket
+            System.out.println("Offer Hotel réservé avec l'ID : " + Id);
+
+            // Vous pouvez également afficher une boîte de dialogue ou effectuer une autre action ici
+            // Par exemple, ouvrir une nouvelle fenêtre pour confirmer la réservation
+        } else {
+            System.out.println("Aucun ticket sélectionné.");
+        }
+    }
 }

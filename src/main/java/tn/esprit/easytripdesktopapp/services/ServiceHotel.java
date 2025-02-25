@@ -7,7 +7,6 @@ import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ServiceHotel implements CRUDService<Hotel> {
     private Connection cnx;
@@ -18,7 +17,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public void add(Hotel hotel) {
-        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`) VALUES (?,?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agence_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, hotel.getName());
@@ -30,6 +29,8 @@ public class ServiceHotel implements CRUDService<Hotel> {
             pstm.setString(7, hotel.getTypeRoom());
             pstm.setInt(8, hotel.getNumRoom());
             pstm.setString(9, hotel.getImage());
+            pstm.setInt(10, hotel.getPromotion() != null ? hotel.getPromotion().getId() : null);
+            pstm.setInt(11, hotel.getAgence() != null ? hotel.getAgence().getId() : null);
             pstm.executeUpdate();
             System.out.println("Hôtel ajouté avec succès !");
         } catch (SQLException e) {
@@ -56,6 +57,8 @@ public class ServiceHotel implements CRUDService<Hotel> {
                 h.setTypeRoom(rs.getString("type_room"));
                 h.setNumRoom(rs.getInt("num_room"));
                 h.setImage(rs.getString("image"));
+                // Récupérer la promotion et l'agence associées
+                // (Vous devrez implémenter les services pour Promotion et Agence)
                 hotels.add(h);
             }
         } catch (SQLException e) {
@@ -66,7 +69,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public void update(Hotel hotel) {
-        String qry = "UPDATE `hotels` SET `name`=?, `adresse`=?, `city`=?, `rating`=?, `description`=?, `price`=?, `type_room`=?, `num_room`=?, `image`=? WHERE `id_hotel`=?";
+        String qry = "UPDATE `hotels` SET `name`=?, `adresse`=?, `city`=?, `rating`=?, `description`=?, `price`=?, `type_room`=?, `num_room`=?, `image`=?, `promotion_id`=?, `agence_id`=? WHERE `id_hotel`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, hotel.getName());
@@ -78,7 +81,9 @@ public class ServiceHotel implements CRUDService<Hotel> {
             pstm.setString(7, hotel.getTypeRoom());
             pstm.setInt(8, hotel.getNumRoom());
             pstm.setString(9, hotel.getImage());
-            pstm.setInt(10, hotel.getId()); // ID de l'hôtel à mettre à jour
+            pstm.setInt(10, hotel.getPromotion() != null ? hotel.getPromotion().getId() : null);
+            pstm.setInt(11, hotel.getAgence() != null ? hotel.getAgence().getId() : null);
+            pstm.setInt(12, hotel.getId());
             pstm.executeUpdate();
             System.out.println("Hôtel mis à jour avec succès !");
         } catch (SQLException e) {
@@ -91,18 +96,11 @@ public class ServiceHotel implements CRUDService<Hotel> {
         String qry = "DELETE FROM `hotels` WHERE `id_hotel`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setInt(1, hotel.getId()); // ID de l'hôtel à supprimer
+            pstm.setInt(1, hotel.getId());
             pstm.executeUpdate();
             System.out.println("Hôtel supprimé avec succès !");
         } catch (SQLException e) {
             System.out.println("Erreur lors de la suppression de l'hôtel : " + e.getMessage());
         }
     }
-
-
-
-
-
-
-
 }

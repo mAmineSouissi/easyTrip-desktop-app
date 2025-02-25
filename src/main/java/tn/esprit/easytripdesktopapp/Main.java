@@ -1,4 +1,4 @@
-package tn.esprit;
+package tn.esprit.easytripdesktopapp;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

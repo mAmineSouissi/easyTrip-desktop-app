@@ -1,4 +1,4 @@
-package tn.esprit.controller;
+package tn.esprit.easytripdesktopapp.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,8 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.Node;
-import tn.esprit.models.Feedback;
-import tn.esprit.services.ServiceFeedback;
+import tn.esprit.easytripdesktopapp.models.Feedback;
+import tn.esprit.easytripdesktopapp.services.ServiceFeedback;
 
 import java.sql.Date;
 

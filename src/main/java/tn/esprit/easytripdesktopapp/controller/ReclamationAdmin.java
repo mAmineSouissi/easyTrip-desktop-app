@@ -1,4 +1,4 @@
-package tn.esprit.controller;
+package tn.esprit.easytripdesktopapp.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,8 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import tn.esprit.models.Reclamation;
-import tn.esprit.services.ServiceReclamation;
+import tn.esprit.easytripdesktopapp.models.Reclamation;
+import tn.esprit.easytripdesktopapp.services.ServiceReclamation;
 
 import java.sql.Date;
 import java.time.LocalDate;

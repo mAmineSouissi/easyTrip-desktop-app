@@ -1,4 +1,4 @@
-package tn.esprit.controller;
+package tn.esprit.easytripdesktopapp.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +17,6 @@ public class Home {
     }
 
 
-
     @FXML
     void navigateToAdminReclamation(ActionEvent event) {
         navigate(event, "/ReclamationAdmin.fxml");
@@ -27,7 +26,7 @@ public class Home {
     @FXML
     void navigateToUserFeedback(ActionEvent event) {
 
-            navigate(event, "/FeedbackUser.fxml");
+        navigate(event, "/FeedbackUser.fxml");
 
 
     }
@@ -37,21 +36,23 @@ public class Home {
 
         navigate(event, "/ReclamationUser.fxml");
     }
+
     @FXML
     private void navigate(ActionEvent event, String fxmlPath) {
 
 
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
-                Scene scene = new Scene(root);
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
-            } catch (Exception e) {
-                e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Navigation Error: " + e.getMessage());
-            }
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error: " + e.getMessage());
         }
+    }
+
     @FXML
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
@@ -61,6 +62,6 @@ public class Home {
         alert.showAndWait();
     }
 
-    }
+}
 
 

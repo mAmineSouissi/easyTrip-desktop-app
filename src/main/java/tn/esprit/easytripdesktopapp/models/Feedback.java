@@ -38,5 +38,17 @@ public class Feedback {
 
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
+
+    @Override
+    public String toString() {
+        return "Feedback{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", offerId=" + offerId +
+                ", rating=" + rating +
+                ", message='" + message + '\'' +
+                ", date=" + date +
+                '}';
+    }
 }
 

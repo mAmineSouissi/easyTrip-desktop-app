@@ -84,13 +84,17 @@ public class AffichageHotelClient {
             Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
             priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
 
+            // Afficher la promotion si elle existe
+            Label promotionLabel = new Label("Promotion: " + (hotel.getPromotion() != null ? hotel.getPromotion().getDiscount_percentage() + "% de réduction" : "Aucune promotion"));
+            promotionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
+
             // Bouton pour voir les détails
             Button detailsButton = new Button("Voir les détails");
             detailsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
             detailsButton.setOnAction(e -> showHotelDetails(hotel));
 
             // Ajouter les éléments à la carte
-            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, detailsButton);
+            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, promotionLabel, detailsButton);
 
             // Ajouter la carte au conteneur
             cardContainer.getChildren().add(card);
@@ -141,13 +145,17 @@ public class AffichageHotelClient {
             Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
             priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
 
+            // Afficher la promotion si elle existe
+            Label promotionLabel = new Label("Promotion: " + (hotel.getPromotion() != null ? hotel.getPromotion().getDiscount_percentage() + "% de réduction" : "Aucune promotion"));
+            promotionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
+
             // Bouton pour voir les détails
             Button detailsButton = new Button("Voir les détails");
             detailsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
             detailsButton.setOnAction(e -> showHotelDetails(hotel));
 
             // Ajouter les éléments à la carte
-            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, detailsButton);
+            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, promotionLabel, detailsButton);
 
             // Ajouter la carte au conteneur
             cardContainer.getChildren().add(card);

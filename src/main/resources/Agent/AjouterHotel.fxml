@@ -37,6 +37,9 @@
 
          <TextField fx:id="numroom" promptText="Nombre de chambres" />
 
+         <!-- Ajouter un ComboBox pour les promotions -->
+         <ComboBox fx:id="promotionComboBox" promptText="Sélectionner une promotion" />
+
          <HBox spacing="20">
             <ImageView fx:id="image" fitHeight="120" fitWidth="120" style="-fx-border-color: black;" />
             <Button text="Choisir Image" onAction="#chooseImage" />

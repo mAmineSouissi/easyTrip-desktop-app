@@ -2,6 +2,7 @@ package tn.esprit.easytripdesktopapp.services;
 
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Hotel;
+import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 
 import java.sql.*;
@@ -17,7 +18,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public void add(Hotel hotel) {
-        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agence_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, hotel.getName());
@@ -29,8 +30,20 @@ public class ServiceHotel implements CRUDService<Hotel> {
             pstm.setString(7, hotel.getTypeRoom());
             pstm.setInt(8, hotel.getNumRoom());
             pstm.setString(9, hotel.getImage());
-            pstm.setInt(10, hotel.getPromotion() != null ? hotel.getPromotion().getId() : null);
-            pstm.setInt(11, hotel.getAgence() != null ? hotel.getAgence().getId() : null);
+
+            // Gestion des valeurs null pour promotion_id et agence_id
+            if (hotel.getPromotion() != null) {
+                pstm.setInt(10, hotel.getPromotion().getId());
+            } else {
+                pstm.setNull(10, java.sql.Types.INTEGER); // Définir la valeur NULL pour promotion_id
+            }
+
+            if (hotel.getAgence() != null) {
+                pstm.setInt(11, hotel.getAgence().getId());
+            } else {
+                pstm.setNull(11, java.sql.Types.INTEGER); // Définir la valeur NULL pour agence_id
+            }
+
             pstm.executeUpdate();
             System.out.println("Hôtel ajouté avec succès !");
         } catch (SQLException e) {
@@ -57,8 +70,14 @@ public class ServiceHotel implements CRUDService<Hotel> {
                 h.setTypeRoom(rs.getString("type_room"));
                 h.setNumRoom(rs.getInt("num_room"));
                 h.setImage(rs.getString("image"));
-                // Récupérer la promotion et l'agence associées
-                // (Vous devrez implémenter les services pour Promotion et Agence)
+
+                // Récupérer la promotion associée
+                int promotionId = rs.getInt("promotion_id");
+                if (!rs.wasNull()) { // Vérifier si promotion_id n'est pas NULL
+                    Promotion promotion = new ServicePromotion().getById(promotionId); // Récupérer la promotion par son ID
+                    h.setPromotion(promotion);
+                }
+
                 hotels.add(h);
             }
         } catch (SQLException e) {
@@ -69,7 +88,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public void update(Hotel hotel) {
-        String qry = "UPDATE `hotels` SET `name`=?, `adresse`=?, `city`=?, `rating`=?, `description`=?, `price`=?, `type_room`=?, `num_room`=?, `image`=?, `promotion_id`=?, `agence_id`=? WHERE `id_hotel`=?";
+        String qry = "UPDATE `hotels` SET `name`=?, `adresse`=?, `city`=?, `rating`=?, `description`=?, `price`=?, `type_room`=?, `num_room`=?, `image`=?, `promotion_id`=?, `agency_id`=? WHERE `id_hotel`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, hotel.getName());
@@ -81,8 +100,20 @@ public class ServiceHotel implements CRUDService<Hotel> {
             pstm.setString(7, hotel.getTypeRoom());
             pstm.setInt(8, hotel.getNumRoom());
             pstm.setString(9, hotel.getImage());
-            pstm.setInt(10, hotel.getPromotion() != null ? hotel.getPromotion().getId() : null);
-            pstm.setInt(11, hotel.getAgence() != null ? hotel.getAgence().getId() : null);
+
+            // Gestion des valeurs null pour promotion_id et agence_id
+            if (hotel.getPromotion() != null) {
+                pstm.setInt(10, hotel.getPromotion().getId());
+            } else {
+                pstm.setNull(10, java.sql.Types.INTEGER); // Définir la valeur NULL pour promotion_id
+            }
+
+            if (hotel.getAgence() != null) {
+                pstm.setInt(11, hotel.getAgence().getId());
+            } else {
+                pstm.setNull(11, java.sql.Types.INTEGER); // Définir la valeur NULL pour agence_id
+            }
+
             pstm.setInt(12, hotel.getId());
             pstm.executeUpdate();
             System.out.println("Hôtel mis à jour avec succès !");

@@ -10,9 +10,12 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Hotel;
+import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
+import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 
 import java.io.File;
+import java.util.List;
 
 public class AjouterHotel {
 
@@ -34,6 +37,8 @@ public class AjouterHotel {
     private TextField numroom;
     @FXML
     private ImageView image;
+    @FXML
+    private ComboBox<String> promotionComboBox; // Nouveau ComboBox pour les promotions
 
     @FXML
     private Button chooseImageButton;
@@ -41,6 +46,20 @@ public class AjouterHotel {
     private String imageUrl;
 
     private final ServiceHotel hotelService = new ServiceHotel();
+    private final ServicePromotion promotionService = new ServicePromotion();
+
+    @FXML
+    public void initialize() {
+        // Charger les promotions dans le ComboBox
+        loadPromotions();
+    }
+
+    private void loadPromotions() {
+        List<Promotion> promotions = promotionService.getAll();
+        for (Promotion promotion : promotions) {
+            promotionComboBox.getItems().add(promotion.getTitle());
+        }
+    }
 
     @FXML
     private void save() {
@@ -55,6 +74,10 @@ public class AjouterHotel {
             int nbChambres = Integer.parseInt(numroom.getText());
             String img = imageUrl;
 
+            // Récupérer la promotion sélectionnée
+            String promotionTitle = promotionComboBox.getValue();
+            Promotion promotion = promotionService.getByTitle(promotionTitle);
+
             Hotel hotel = new Hotel();
             hotel.setName(nom);
             hotel.setAdresse(addr);
@@ -65,6 +88,7 @@ public class AjouterHotel {
             hotel.setTypeRoom(typeChambre);
             hotel.setNumRoom(nbChambres);
             hotel.setImage(img);
+            hotel.setPromotion(promotion); // Associer la promotion à l'hôtel
 
             hotelService.add(hotel);
             name.getScene().getWindow().hide();

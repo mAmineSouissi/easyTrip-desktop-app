@@ -87,6 +87,10 @@ public class AffichageHotel {
             Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
             priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
 
+            // Afficher la promotion si elle existe
+            Label promotionLabel = new Label("Promotion: " + (hotel.getPromotion() != null ? hotel.getPromotion().getTitle() : "Aucune promotion"));
+            promotionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
+
             // Boutons pour modifier et supprimer
             HBox buttonBox = new HBox(10);
             Button updateButton = new Button("Modifier");
@@ -100,7 +104,7 @@ public class AffichageHotel {
             buttonBox.getChildren().addAll(updateButton, deleteButton);
 
             // Ajouter les éléments à la carte
-            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, buttonBox);
+            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, promotionLabel, buttonBox);
 
             // Ajouter la carte au conteneur
             cardContainer.getChildren().add(card);
@@ -151,6 +155,10 @@ public class AffichageHotel {
             Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
             priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
 
+            // Afficher la promotion si elle existe
+            Label promotionLabel = new Label("Promotion: " + (hotel.getPromotion() != null ? hotel.getPromotion().getTitle() : "Aucune promotion"));
+            promotionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
+
             // Boutons pour modifier et supprimer
             HBox buttonBox = new HBox(10);
             Button updateButton = new Button("Modifier");
@@ -164,7 +172,7 @@ public class AffichageHotel {
             buttonBox.getChildren().addAll(updateButton, deleteButton);
 
             // Ajouter les éléments à la carte
-            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, buttonBox);
+            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, promotionLabel, buttonBox);
 
             // Ajouter la carte au conteneur
             cardContainer.getChildren().add(card);

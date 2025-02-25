@@ -39,6 +39,9 @@ public class DetailHotel {
     @FXML
     private Label numRoomLabel;
 
+    @FXML
+    private Label promotionLabel; // Nouveau Label pour afficher la promotion
+
     private Hotel hotel;
 
     // Méthode pour définir l'hôtel à afficher
@@ -59,8 +62,16 @@ public class DetailHotel {
             descriptionLabel.setText("Description: " + hotel.getDescription());
             typeRoomLabel.setText("Type de chambre: " + hotel.getTypeRoom());
             numRoomLabel.setText("Nombre de chambres: " + hotel.getNumRoom());
+
+            // Afficher la promotion si elle existe
+            if (hotel.getPromotion() != null) {
+                promotionLabel.setText("Promotion: " + hotel.getPromotion().getDiscount_percentage() + "% de réduction");
+            } else {
+                promotionLabel.setText("Promotion: Aucune promotion");
+            }
         }
     }
+
     @FXML
     private void handleReserveButton() {
         if (hotel != null) {

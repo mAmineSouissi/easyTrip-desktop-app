@@ -4,8 +4,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
-
 <?import javafx.scene.control.Button?>
+
 <VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.DetailHotel" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
     <ImageView fx:id="hotelImage" fitWidth="300" fitHeight="200" preserveRatio="true" />
     <Label fx:id="nameLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
@@ -16,5 +16,6 @@
     <Label fx:id="descriptionLabel" wrapText="true" />
     <Label fx:id="typeRoomLabel" />
     <Label fx:id="numRoomLabel" />
+    <Label fx:id="promotionLabel" style="-fx-text-fill: #FF5722;" /> <!-- Nouveau Label pour la promotion -->
     <Button fx:id="reserveButton" text="Réserver" onAction="#handleReserveButton" />
 </VBox>

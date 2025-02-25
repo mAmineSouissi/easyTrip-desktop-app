@@ -8,9 +8,12 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Hotel;
+import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
+import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 
 import java.io.File;
+import java.util.List;
 
 public class ModifierHotel {
 
@@ -32,10 +35,13 @@ public class ModifierHotel {
     private TextField numroom;
     @FXML
     private ImageView imageView; // Pour afficher l'image sélectionnée
+    @FXML
+    private ComboBox<String> promotionComboBox; // Nouveau ComboBox pour les promotions
 
     private String imageUrl; // Pour stocker l'URL de l'image
     private Hotel hotelToUpdate;
     private final ServiceHotel hotelService = new ServiceHotel();
+    private final ServicePromotion promotionService = new ServicePromotion();
 
     // Méthode pour initialiser les champs avec les informations de l'hôtel à mettre à jour
     public void setHotel(Hotel hotel) {
@@ -55,6 +61,22 @@ public class ModifierHotel {
             imageView.setImage(img);
             imageUrl = hotel.getImage(); // Stocker l'URL de l'image
         }
+
+        // Charger les promotions dans le ComboBox
+        loadPromotions();
+
+        // Sélectionner la promotion actuelle de l'hôtel
+        if (hotel.getPromotion() != null) {
+            promotionComboBox.setValue(hotel.getPromotion().getTitle());
+        }
+    }
+
+    // Méthode pour charger les promotions dans le ComboBox
+    private void loadPromotions() {
+        List<Promotion> promotions = promotionService.getAll();
+        for (Promotion promotion : promotions) {
+            promotionComboBox.getItems().add(promotion.getTitle());
+        }
     }
 
     // Méthode pour enregistrer les modifications
@@ -67,9 +89,14 @@ public class ModifierHotel {
         hotelToUpdate.setRating(Integer.parseInt(rating.getText()));
         hotelToUpdate.setDescription(description.getText());
         hotelToUpdate.setPrice(Float.parseFloat(price.getText()));
-        hotelToUpdate.setTypeRoom(typeroom.getValue()); // Récupérer la valeur sélectionnée dans le ComboBox
+        hotelToUpdate.setTypeRoom(typeroom.getValue());
         hotelToUpdate.setNumRoom(Integer.parseInt(numroom.getText()));
-        hotelToUpdate.setImage(imageUrl); // Utiliser l'URL de l'image sélectionnée
+        hotelToUpdate.setImage(imageUrl);
+
+        // Récupérer la promotion sélectionnée
+        String promotionTitle = promotionComboBox.getValue();
+        Promotion promotion = promotionService.getByTitle(promotionTitle); // Récupérer la promotion par son titre
+        hotelToUpdate.setPromotion(promotion); // Associer la promotion à l'hôtel
 
         // Appeler le service pour mettre à jour l'hôtel dans la base de données
         hotelService.update(hotelToUpdate);

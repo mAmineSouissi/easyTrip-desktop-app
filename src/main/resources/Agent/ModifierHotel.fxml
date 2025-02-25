@@ -6,6 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
 
 <?import java.lang.String?>
 <AnchorPane prefHeight="500.0" prefWidth="600.0" style="-fx-background-color: #f4f4f4;"
@@ -34,8 +35,11 @@
 
         <TextField fx:id="numroom" layoutX="50.0" layoutY="310.0" prefWidth="500.0" promptText="Nombre de chambres" />
 
+        <!-- ComboBox pour les promotions -->
+        <ComboBox fx:id="promotionComboBox" layoutX="50.0" layoutY="350.0" prefWidth="500.0" promptText="Sélectionner une promotion" />
+
         <!-- HBox pour l'image et le bouton Upload -->
-        <HBox layoutX="50.0" layoutY="350.0" spacing="10">
+        <HBox layoutX="50.0" layoutY="390.0" spacing="10">
             <ImageView fx:id="imageView" fitHeight="120" fitWidth="120" style="-fx-border-color: black;" />
             <Button text="Upload" onAction="#uploadImage" style="-fx-background-color: #007bff; -fx-text-fill: white;" />
         </HBox>

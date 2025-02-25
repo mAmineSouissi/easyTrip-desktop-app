@@ -5,6 +5,7 @@
     -fx-text-fill: #2980b9; /* A more muted, professional blue */
     -fx-padding: 0 0 20 0;
     -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font style */
+    -fx-alignment: center; /* Center alignment for better appearance */
 }
 
 /* Label */
@@ -88,4 +89,22 @@
 
 .button:hover {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.8, 0, 1);
+}
+
+/* Handle Right-to-Left (RTL) Support */
+.rtl {
+    -fx-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -fx-text-align: right; /* Align text to the right */
+    -fx-direction: rtl; /* Set right-to-left direction */
+}
+
+/* Add some responsiveness for different languages */
+@media (max-width: 600px) {
+    .greeting-text {
+        -fx-font-size: 28px; /* Adjust font size for smaller screens */
+    }
+
+    .input-container {
+        -fx-spacing: 10px; /* Reduce spacing for smaller screens */
+    }
 }

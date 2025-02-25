@@ -82,9 +82,11 @@ public class AfficherPromotion implements Initializable {
         card.setOnMouseClicked(event -> showPromotionDetail(promotion));
 
         Button btnModifier = new Button("Modifier");
+        btnModifier.getStyleClass().add("modify-button");
         btnModifier.setOnAction(event -> openUpdatePromotion(promotion));
 
         Button btnSupprimer = new Button("Supprimer");
+        btnSupprimer.getStyleClass().add("delete-button");
         btnSupprimer.setOnAction(event -> confirmDelete(promotion));
 
         card.getChildren().addAll(titleLabel, discountLabel, dateLabel, btnModifier, btnSupprimer);

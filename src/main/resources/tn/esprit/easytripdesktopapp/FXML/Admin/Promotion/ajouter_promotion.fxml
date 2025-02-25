@@ -7,15 +7,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="403.0" prefWidth="541.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.Promotion.AjouterPromotion">
+<AnchorPane prefHeight="473.0" prefWidth="541.0" stylesheets="@../../styles/style4.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.Promotion.AjouterPromotion">
     <children>
         <Label styleClass="title-label" text="Ajouter une Promotion" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10" />
 
         <TextField fx:id="title" promptText="Titre" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="50" />
-        <TextArea fx:id="description" promptText="Description" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="100" />
-        <TextField fx:id="discountPercentage" layoutX="10.0" layoutY="291.0" promptText="Pourcentage (%)" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955" AnchorPane.topAnchor="291.0" />
-        <DatePicker fx:id="validUntil" layoutX="10.0" layoutY="326.0" promptText="Date d'expiration" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955" AnchorPane.topAnchor="326.0" />
+        <TextArea fx:id="description" layoutX="10.0" layoutY="129.0" promptText="Description" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955" AnchorPane.topAnchor="129.0" />
+        <TextField fx:id="discountPercentage" layoutX="10.0" layoutY="230.0" promptText="Pourcentage (%)" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955" AnchorPane.topAnchor="230.0" />
+        <DatePicker fx:id="validUntil" layoutX="10.0" layoutY="290.0" promptText="Date d'expiration" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955" AnchorPane.topAnchor="290.0" />
 
-        <Button layoutX="229.0" layoutY="363.0" onAction="#save" styleClass="save-button" text="Sauvegarder" AnchorPane.leftAnchor="229.0" AnchorPane.topAnchor="363.0" />
+        <Button layoutX="210.0" layoutY="422.0" onAction="#save" styleClass="save-button" text="Sauvegarder" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="422.0" />
     </children>
 </AnchorPane>

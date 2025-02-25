@@ -112,7 +112,7 @@ public class afficher_agence implements Initializable {
 
     private void openUpdateAgence(Agence agence) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/Agence/update_agence.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Agence/update_agence.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
 
@@ -147,7 +147,7 @@ public class afficher_agence implements Initializable {
     @FXML
     public void openAddAgence(ActionEvent actionEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Agence/Agence/ajouter_agence.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Agence/ajouter_agence.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
 

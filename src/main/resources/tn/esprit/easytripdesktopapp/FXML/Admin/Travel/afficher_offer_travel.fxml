@@ -10,7 +10,7 @@
 <?import javafx.geometry.Insets?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.Travel.AfficherOfferTravelController">
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.Travel.AfficherOfferTravelController" stylesheets="@../../styles/style6.css">
 
     <!-- Barre de recherche en haut -->
     <top>

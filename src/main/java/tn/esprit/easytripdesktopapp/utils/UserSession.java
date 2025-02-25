@@ -35,6 +35,7 @@ public class UserSession {
     }
 
     public void clearSession() {
+        this.user = null;
         instance = null;
     }
 }

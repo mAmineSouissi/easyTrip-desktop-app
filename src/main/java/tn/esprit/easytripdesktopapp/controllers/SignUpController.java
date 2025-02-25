@@ -19,6 +19,8 @@ import tn.esprit.easytripdesktopapp.services.ServiceUser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -65,6 +67,20 @@ public class SignUpController {
 
     private String imageUrl;
 
+    private ResourceBundle bundle;
+
+
+    @FXML
+    public void initialize() {
+        bundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+        roleComboBox.setItems(FXCollections.observableArrayList(AccountType.Agent, AccountType.Client));
+        roleComboBox.getSelectionModel().select(AccountType.Client);
+        imageUrl = "http://localhost/img/profile/defaultPic.jpg";
+        Image img = new Image(imageUrl);
+        image.setImage(img);
+
+    }
+
     @FXML
     void onClick(ActionEvent event) {
         String name = nameField.getText();
@@ -76,17 +92,17 @@ public class SignUpController {
         String role = String.valueOf(roleComboBox.getValue());
 
         if (name.isEmpty() || surname.isEmpty() || password.isEmpty() || email.isEmpty() || phone.isEmpty() || address.isEmpty() || role.isEmpty()) {
-            showAlert("Error", "All fields must be filled!");
+            showAlert(bundle.getString("error"), bundle.getString("validation_error_empty_fields"));
             return;
         }
 
         if (!isValidEmail(email)) {
-            showAlert("Error", "Invalid email format!");
+            showAlert(bundle.getString("error"), bundle.getString("validation_error_invalid_email"));
             return;
         }
 
         if (!isValidPhone(phone)) {
-            showAlert("Error", "Invalid phone number format!");
+            showAlert(bundle.getString("error"), bundle.getString("validation_error_invalid_phone"));
             return;
         }
 
@@ -98,9 +114,9 @@ public class SignUpController {
         serviceUser.add(newUser);
 
         if (serviceUser.getAll() != null) {
-            showAlert("Success", "User created successfully!");
+            showAlert(bundle.getString("success"), bundle.getString("userCreatedvalid"));
         } else {
-            showAlert("Error", "User creation failed!");
+            showAlert(bundle.getString("error"), bundle.getString("userCreatedinvalid"));
         }
 
         resetFields();
@@ -130,20 +146,12 @@ public class SignUpController {
         resetFields();
     }
 
-    @FXML
-    public void initialize() {
-        roleComboBox.setItems(FXCollections.observableArrayList(AccountType.Agent, AccountType.Client));
-        roleComboBox.getSelectionModel().select(AccountType.Client);
-        imageUrl = "file:///home/cardinal/Documents/GitHub/easyTrip-desktop-app/src/main/resources/tn/esprit/easytripdesktopapp/assets/defaultPic.jpg";
-        Image img = new Image(imageUrl);
-        image.setImage(img);
-
-    }
 
     @FXML
     private void goBack(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"));
+            ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"), loginBundle);
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -156,22 +164,25 @@ public class SignUpController {
 
     @FXML
     private void chooseImage() {
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif", "*.bmp"));
-
 
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
         if (selectedFile != null) {
+            // Extract the filename from the selected file
+            String fileName = selectedFile.getName();
 
-            imageUrl = selectedFile.toURI().toString();
+            // Maintain the base URL and replace only the filename
+            String baseUrl = "http://localhost/img/profile/";
+            imageUrl = baseUrl + fileName;
 
-
+            // Set the new image in the ImageView
             Image img = new Image(imageUrl);
             image.setImage(img);
         }
     }
+
 
     // Email Validation
     private boolean isValidEmail(String email) {

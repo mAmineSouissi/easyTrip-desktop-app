@@ -32,6 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AgentDashboardController implements Initializable {
+    public Label manageOfferHotel;
     @FXML
     private ImageView profilePic;
 
@@ -273,6 +274,19 @@ public class AgentDashboardController implements Initializable {
     public void navigateToAgency(MouseEvent mouseEvent) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/afficher_agence.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("login_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToHotel(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));

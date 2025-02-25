@@ -1,4 +1,5 @@
 package tn.esprit.easytripdesktopapp.services;
+
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.OfferTravel;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
@@ -15,8 +16,9 @@ import java.util.Optional;
 
 public class ServicePromotion implements CRUDService<Promotion> {
 
-    private Connection cnx;
-    public ServicePromotion(){
+    private final Connection cnx;
+
+    public ServicePromotion() {
         cnx = MyDataBase.getInstance().getCnx();
     }
 
@@ -42,8 +44,7 @@ public class ServicePromotion implements CRUDService<Promotion> {
         List<Promotion> promotions = new ArrayList<>();
         String qry = "SELECT * FROM `promotion`";
 
-        try (Statement stm = cnx.createStatement();
-             ResultSet rs = stm.executeQuery(qry)) {
+        try (Statement stm = cnx.createStatement(); ResultSet rs = stm.executeQuery(qry)) {
 
             while (rs.next()) {
                 Promotion promotion = new Promotion();
@@ -101,6 +102,23 @@ public class ServicePromotion implements CRUDService<Promotion> {
 
     @Override
     public Promotion getById(int id) {
+        String qry = "SELECT * FROM `promotion` WHERE `id`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                Promotion p = new Promotion();
+                p.setId(rs.getInt("id"));
+                p.setTitle(rs.getString("title"));
+                p.setDescription(rs.getString("description"));
+                p.setDiscount_percentage(rs.getFloat("discount_percentage"));
+                p.setValid_until(rs.getDate("valid_until"));
+                return p;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de la promotion par ID : " + e.getMessage());
+        }
         return null;
     }
 
@@ -177,8 +195,7 @@ public class ServicePromotion implements CRUDService<Promotion> {
     @Override
     public long count() {
         String qry = "SELECT COUNT(*) FROM `promotion`";
-        try (Statement stm = cnx.createStatement();
-             ResultSet rs = stm.executeQuery(qry)) {
+        try (Statement stm = cnx.createStatement(); ResultSet rs = stm.executeQuery(qry)) {
 
             if (rs.next()) {
                 return rs.getLong(1);
@@ -187,6 +204,28 @@ public class ServicePromotion implements CRUDService<Promotion> {
             System.out.println(e.getMessage());
         }
         return 0;
+    }
+
+
+    public Promotion getByTitle(String title) {
+        String qry = "SELECT * FROM `promotion` WHERE `title`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, title);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                Promotion p = new Promotion();
+                p.setId(rs.getInt("id"));
+                p.setTitle(rs.getString("title"));
+                p.setDescription(rs.getString("description"));
+                p.setDiscount_percentage(rs.getFloat("discount_percentage"));
+                p.setValid_until(rs.getDate("valid_until"));
+                return p;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de la promotion par titre : " + e.getMessage());
+        }
+        return null;
     }
 
 

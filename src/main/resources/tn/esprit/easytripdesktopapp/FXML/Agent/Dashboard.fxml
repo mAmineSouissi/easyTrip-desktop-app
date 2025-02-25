@@ -20,6 +20,7 @@
 
         <!-- Centered Navigation Items -->
         <Label fx:id="manageAgencyLabel" onMouseClicked="#navigateToAgency" styleClass="nav-label" text="%manage_agency" />
+        <Label fx:id="manageOfferHotel" onMouseClicked="#navigateToHotel" styleClass="nav-label" text="%manage_hotel_tickets" />
         <Label fx:id="manageFeedbackLabel" styleClass="nav-label" text="%manage_feedback" />
         <Label fx:id="manageReclamationsLabel" styleClass="nav-label" text="%manage_reclamations" />
 

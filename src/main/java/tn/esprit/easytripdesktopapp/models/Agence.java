@@ -7,8 +7,12 @@ public class Agence {
     private int id,user_id;
     private String name, address, phone, email , image;
     private List<OfferTravel> offerTravels;
+    private List<Ticket> tickets; // Liste des tickets associés à cette agence
+    private List<Hotel> hotels;
 
     public Agence() {
+        this.tickets = new ArrayList<>();
+        this.hotels = new ArrayList<>();
     }
 
     public Agence(int id, String name, String address, String phone, String email , String image, int user_id) {
@@ -20,7 +24,26 @@ public class Agence {
         this.image = image;
         this.user_id = user_id;
         this.offerTravels = new ArrayList<>();
+        this.tickets = new ArrayList<>();
+        this.hotels = new ArrayList<>();
 
+    }
+
+    public List<Ticket> getTickets() { return tickets; }
+    public void setTickets(List<Ticket> tickets) { this.tickets = tickets; }
+
+    public List<Hotel> getHotels() { return hotels; }
+    public void setHotels(List<Hotel> hotels) { this.hotels = hotels; }
+
+    // Méthode pour ajouter un hôtel à l'agence
+    public void addHotel(Hotel hotel) {
+        this.hotels.add(hotel);
+        hotel.setAgence(this);
+    }
+
+    public void removeHotel(Hotel hotel) {
+        this.hotels.remove(hotel);
+        hotel.setAgence(null);
     }
 
     public int getId() {
@@ -113,6 +136,8 @@ public class Agence {
                 ", email='" + email + '\'' +
                 "    image='" + image + '\'' +
                 ", offerTravels=" + offerTravels +
+                ", tickets=" + tickets.size() +
+                ", hotels=" + hotels.size() +
                 '}' ;
     }
 }

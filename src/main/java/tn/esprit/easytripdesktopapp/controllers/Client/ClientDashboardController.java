@@ -37,6 +37,9 @@ public class ClientDashboardController implements Initializable {
     public Label manageOfferLabel;
     public Label otherOffersLabel;
     public Label coming_soon;
+    public Label manageOfferHotel;
+    public Label hotelOffersLabel;
+    public Label ticketsOffersLabel;
     @FXML
     private Label welcomeLabel;
 
@@ -77,7 +80,8 @@ public class ClientDashboardController implements Initializable {
         }
         coming_soon.setText(bundle.getString("coming_soon"));
         manageOfferLabel.setText(bundle.getString("travel_offers"));
-        otherOffersLabel.setText(bundle.getString("other_offers"));
+        hotelOffersLabel.setText(bundle.getString("offer_hotel"));
+        ticketsOffersLabel.setText(bundle.getString("offer_tickets"));
         editProfile.setText(bundle.getString("profile_button"));
         logOutButton.setText(bundle.getString("logout_button"));
     }
@@ -240,10 +244,7 @@ public class ClientDashboardController implements Initializable {
                 session.clearSession();
                 System.out.println("User logged out successfully.");
                 try {
-                    ResourceBundle loginBundle = ResourceBundle.getBundle(
-                            "tn.esprit.easytripdesktopapp.i18n.messages",
-                            Locale.getDefault()
-                    );
+                    ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"), loginBundle);
                     Parent root = loader.load();
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -280,7 +281,7 @@ public class ClientDashboardController implements Initializable {
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
     }
-  
+
     public void navigateToHotelAffichage(MouseEvent mouseEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/AffichageHotelClient.fxml"));
@@ -293,7 +294,7 @@ public class ClientDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-  
+
     public void navigateToReservation(ActionEvent actionEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/addreservation.fxml"));
@@ -307,4 +308,16 @@ public class ClientDashboardController implements Initializable {
         }
     }
 
+    public void navigateToTicktsAffichage(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/AffichageTicketClient.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Tickets");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

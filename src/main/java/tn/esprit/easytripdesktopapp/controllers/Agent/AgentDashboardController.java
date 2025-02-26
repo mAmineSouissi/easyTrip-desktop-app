@@ -286,11 +286,12 @@ public class AgentDashboardController implements Initializable {
 
     public void navigateToHotel(MouseEvent mouseEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"));
+            ResourceBundle bundelResources = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"),bundelResources);
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle(bundle.getString("login_screen_title"));
+            stage.setTitle(bundle.getString("offers_screen_title"));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

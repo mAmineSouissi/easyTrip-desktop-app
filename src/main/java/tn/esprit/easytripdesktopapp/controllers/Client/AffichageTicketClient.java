@@ -1,7 +1,9 @@
 package tn.esprit.easytripdesktopapp.controllers.Client;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,6 +24,8 @@ import tn.esprit.easytripdesktopapp.utils.CurrencyConverter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AffichageTicketClient {
@@ -184,7 +188,7 @@ public class AffichageTicketClient {
 
     private void showTicketDetails(Ticket ticket) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/DetailTicket.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/DetailTicket.fxml"));
             Parent root = loader.load();
 
             DetailTicket detailController = loader.getController();
@@ -192,7 +196,7 @@ public class AffichageTicketClient {
 
             Stage stage = new Stage();
             stage.setTitle("Détails du Ticket");
-            stage.setScene(new Scene(root, 600, 400));
+            stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -206,5 +210,21 @@ public class AffichageTicketClient {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void goBack(ActionEvent actionEvent) {
+        Stage stage;
+        try {
+            ResourceBundle resourcesBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), resourcesBundle);
+            Parent root = loader.load();
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Client Dashboard");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
+        }
     }
 }

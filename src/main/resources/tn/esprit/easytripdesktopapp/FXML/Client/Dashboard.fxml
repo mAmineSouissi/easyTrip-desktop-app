@@ -22,10 +22,10 @@
         <Region HBox.hgrow="ALWAYS" />
 
         <!-- Centered Navigation Items -->
-        <Label styleClass="nav-label" text="Travel Offers" />
-         <Label fx:id="manageOfferHotel" onMouseClicked="#navigateToHotelAffichage" styleClass="nav-label" text="%offer_hotel" />
+        <Label fx:id="manageOfferLabel" styleClass="nav-label" text="Travel Offers" />
+        <Label fx:id="hotelOffersLabel" onMouseClicked="#navigateToHotelAffichage" styleClass="nav-label" text="%offer_hotel" />
         <Button styleClass="nav-label" text="Reservation" onAction="#navigateToReservation" />
-        <Label styleClass="nav-label" text="Other Offers" />
+        <Label fx:id="ticketsOffersLabel" onMouseClicked="#navigateToTicktsAffichage" styleClass="nav-label" text="%offer_tickets" />
 
         <!-- Spacer to push profile and logout to the right -->
         <Region HBox.hgrow="ALWAYS" />
@@ -44,7 +44,7 @@
     </HBox>
 
     <!-- Centered "Coming Soon..." Text -->
-    <Label layoutX="353.0" layoutY="262.0" styleClass="coming-soon" text="Coming Soon..."
+    <Label fx:id="coming_soon" layoutX="353.0" layoutY="262.0" styleClass="coming-soon" text="Coming Soon..."
         AnchorPane.leftAnchor="353.0" AnchorPane.topAnchor="262.0" />
 
 </AnchorPane>

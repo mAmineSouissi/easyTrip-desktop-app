@@ -81,7 +81,14 @@ public class AffichageHotelClient {
                 ratingBox.getChildren().add(starLabel);
             }
 
-            Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
+            // Calculer le prix réduit en fonction de la promotion
+            float prixReduit = hotel.getPrice();
+            if (hotel.getPromotion() != null) {
+                float discount = hotel.getPromotion().getDiscount_percentage();
+                prixReduit = hotel.getPrice() * (1 - discount / 100); // Appliquer la réduction
+            }
+
+            Label priceLabel = new Label("Prix: " + prixReduit + " €");
             priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
 
             // Afficher la promotion si elle existe
@@ -142,7 +149,14 @@ public class AffichageHotelClient {
                 ratingBox.getChildren().add(starLabel);
             }
 
-            Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
+            // Calculer le prix réduit en fonction de la promotion
+            float prixReduit = hotel.getPrice();
+            if (hotel.getPromotion() != null) {
+                float discount = hotel.getPromotion().getDiscount_percentage();
+                prixReduit = hotel.getPrice() * (1 - discount / 100); // Appliquer la réduction
+            }
+
+            Label priceLabel = new Label("Prix: " + prixReduit + " €");
             priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
 
             // Afficher la promotion si elle existe

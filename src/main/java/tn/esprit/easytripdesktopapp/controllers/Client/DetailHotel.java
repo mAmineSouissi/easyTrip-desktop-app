@@ -58,7 +58,15 @@ public class DetailHotel {
             addressLabel.setText("Adresse: " + hotel.getAdresse());
             cityLabel.setText("Ville: " + hotel.getCity());
             ratingLabel.setText("Note: " + hotel.getRating());
-            priceLabel.setText("Prix: " + hotel.getPrice() + " €");
+
+            // Calculer le prix réduit en fonction de la promotion
+            float prixReduit = hotel.getPrice();
+            if (hotel.getPromotion() != null) {
+                float discount = hotel.getPromotion().getDiscount_percentage();
+                prixReduit = hotel.getPrice() * (1 - discount / 100); // Appliquer la réduction
+            }
+
+            priceLabel.setText("Prix: " + prixReduit + " €");
             descriptionLabel.setText("Description: " + hotel.getDescription());
             typeRoomLabel.setText("Type de chambre: " + hotel.getTypeRoom());
             numRoomLabel.setText("Nombre de chambres: " + hotel.getNumRoom());

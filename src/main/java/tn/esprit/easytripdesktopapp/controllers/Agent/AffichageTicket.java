@@ -59,6 +59,11 @@ public class AffichageTicket {
         // Recharger les tickets lorsque la devise change
         currencyComboBox.setOnAction(e -> loadTickets());
 
+        // Ajouter un Listener sur le champ de recherche pour la recherche dynamique
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            applyFilters(); // Appliquer les filtres à chaque changement de texte
+        });
+
         loadTickets(); // Charger les tickets au démarrage
     }
 

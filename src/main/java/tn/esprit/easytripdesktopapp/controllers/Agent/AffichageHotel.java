@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
 import tn.esprit.easytripdesktopapp.models.Hotel;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,13 @@ public class AffichageHotel {
         ratingFilter.getItems().addAll(1, 2, 3, 4, 5);
         priceFilter.getItems().addAll(50f, 100f, 150f, 200f, 250f, 300f);
 
-        loadHotels();  // Charger les hôtels à l'initialisation
+        // Charger les hôtels à l'initialisation
+        loadHotels();
+
+        // Ajouter un Listener sur le champ de recherche pour la recherche dynamique
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            applyFilters(); // Appliquer les filtres à chaque changement de texte
+        });
     }
 
     // Méthode pour charger les hôtels dans la CardView

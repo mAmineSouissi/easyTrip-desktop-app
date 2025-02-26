@@ -15,7 +15,8 @@ public class Hotel {
     private String image;
     private Promotion promotion;
     private  int promotionId;
-    private Agence agence; // Référence à l'agence associée
+    private Agence agence;
+    private int userId;
 
     public int getPromotionId() {
         return promotionId;
@@ -27,7 +28,7 @@ public class Hotel {
 
     public Hotel() {}
 
-    public Hotel(int id, String name, String adresse, String city, int rating, String description, float price, String typeRoom, int numRoom, String image, Promotion promotion, Agence agence, int promotionID) {
+    public Hotel(int id, String name, String adresse, String city, int rating, String description, float price, String typeRoom, int numRoom, String image, Promotion promotion, Agence agence, int promotionID,int userId) {
         this.id = id;
         this.name = name;
         this.adresse = adresse;
@@ -41,6 +42,15 @@ public class Hotel {
         this.promotion = promotion;
         this.agence = agence;
         this.promotionId = promotionID;
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     // Getters and Setters

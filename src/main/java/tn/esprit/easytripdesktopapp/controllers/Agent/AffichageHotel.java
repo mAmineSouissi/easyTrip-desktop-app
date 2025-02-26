@@ -12,8 +12,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
+import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
 import tn.esprit.easytripdesktopapp.models.Hotel;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +42,10 @@ public class AffichageHotel {
     @FXML
     private Button backButton;  // Bouton pour retourner à l'accueil
 
-    private final CRUDService<Hotel> hotelService = new ServiceHotel();  // Service pour gérer les hôtels
+    private final ServiceHotel hotelService = new ServiceHotel();  // Service pour gérer les hôtels
     private List<Hotel> hotels;  // Liste des hôtels pour garder une référence
 
+    UserSession session=UserSession.getInstance();
     @FXML
     public void initialize() {
         // Initialiser les filtres
@@ -55,7 +59,7 @@ public class AffichageHotel {
     @FXML
     private void loadHotels() {
         cardContainer.getChildren().clear();  // Effacer les cartes existantes
-        hotels = hotelService.getAll();
+        hotels = hotelService.getByUserId(session.getUser().getId());
 
         for (Hotel hotel : hotels) {
             // Créer une carte pour chaque hôtel
@@ -191,7 +195,7 @@ public class AffichageHotel {
     @FXML
     private void goToAddHotel() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/AjouterHotel.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/AjouterHotel.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root, 600, 400);
@@ -210,7 +214,7 @@ public class AffichageHotel {
 
     private void updateHotel(Hotel hotel) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/ModifierHotel.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/ModifierHotel.fxml"));
             Parent root = loader.load();
 
             ModifierHotel modifierController = loader.getController();
@@ -248,7 +252,7 @@ public class AffichageHotel {
     @FXML
     private void goToAccueil() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/Accueil.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"));
             Parent root = loader.load();
 
             // Fermer la fenêtre actuelle

@@ -14,12 +14,13 @@ public class Ticket {
     private float price;
     private String ticketType;
     private String cityImage;
-    private int agencyId; // Référence à l'agence
-    private int promotionId; // Référence à la promotion
+    private int agencyId;
+    private int promotionId;
+    private int userId;
 
     public Ticket() {}
 
-    public Ticket(int idTicket, int flightNumber, String airline, String departureCity, String arrivalCity, String departureDate, String departureTime, String arrivalDate, String arrivalTime, String ticketClass, float price, String ticketType, String cityImage, int agencyId, int promotionId) {
+    public Ticket(int idTicket, int flightNumber, String airline, String departureCity, String arrivalCity, String departureDate, String departureTime, String arrivalDate, String arrivalTime, String ticketClass, float price, String ticketType, String cityImage, int agencyId, int promotionId, int userId) {
         this.idTicket = idTicket;
         this.flightNumber = flightNumber;
         this.airline = airline;
@@ -35,6 +36,15 @@ public class Ticket {
         this.cityImage = cityImage;
         this.agencyId = agencyId; // Initialisation de l'ID de l'agence
         this.promotionId = promotionId; // Initialisation de l'ID de la promotion
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     // Getters and Setters

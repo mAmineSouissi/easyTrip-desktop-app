@@ -8,6 +8,7 @@ import tn.esprit.easytripdesktopapp.models.Ticket;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServiceTicket;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -15,6 +16,8 @@ import java.util.List;
 
 public class AjouterTicket {
 
+    private final ServiceTicket ticketService = new ServiceTicket();
+    private final ServicePromotion promotionService = new ServicePromotion(); // Service pour gérer les promotions
     @FXML
     private TextField flightNumber;
     @FXML
@@ -46,8 +49,7 @@ public class AjouterTicket {
     @FXML
     private Button uploadButton;
 
-    private final ServiceTicket ticketService = new ServiceTicket();
-    private final ServicePromotion promotionService = new ServicePromotion(); // Service pour gérer les promotions
+    UserSession session= UserSession.getInstance();
 
     @FXML
     public void initialize() {
@@ -93,9 +95,7 @@ public class AjouterTicket {
     private void uploadImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choisir une image");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
-        );
+        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif"));
         Stage stage = (Stage) uploadButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
@@ -120,7 +120,7 @@ public class AjouterTicket {
                 String tType = ticketType.getValue();
                 String cityImg = cityImage.getText();
                 int agId = Integer.parseInt(agencyId.getText());
-                String promoTitle = promotionTitle.getValue(); // Récupérer le titre de la promotion sélectionnée
+                String promoTitle = promotionTitle.getValue();
 
                 // Récupérer l'ID de la promotion à partir du titre
                 Promotion selectedPromotion = promotionService.getByTitle(promoTitle);
@@ -143,7 +143,8 @@ public class AjouterTicket {
                 ticket.setTicketType(tType);
                 ticket.setCityImage(cityImg);
                 ticket.setAgencyId(agId);
-                ticket.setPromotionId(selectedPromotion.getId()); // Utiliser l'ID de la promotion
+                ticket.setPromotionId(selectedPromotion.getId());
+                ticket.setUserId(session.getUser().getId());
 
                 ticketService.add(ticket);
                 flightNumber.getScene().getWindow().hide();
@@ -168,7 +169,7 @@ public class AjouterTicket {
         if (ticketType.getValue() == null) errors.append("Type de billet requis.\n");
         if (cityImage.getText().isEmpty()) errors.append("Image de la ville requise.\n");
         if (agencyId.getText().isEmpty()) errors.append("ID de l'agence requis.\n");
-        if (promotionTitle.getValue() == null) errors.append("Promotion requise.\n"); // Validation de la promotion
+        if (promotionTitle.getValue() == null) errors.append("Promotion requise.\n");
 
         try {
             float pr = Float.parseFloat(price.getText());

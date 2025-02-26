@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ServiceTicket implements CRUDService<Ticket> {
-    private Connection cnx;
+    private final Connection cnx;
 
     public ServiceTicket() {
         cnx = MyDataBase.getInstance().getCnx();
@@ -18,7 +18,7 @@ public class ServiceTicket implements CRUDService<Ticket> {
 
     @Override
     public void add(Ticket ticket) {
-        String qry = "INSERT INTO `tickets`(`flight_number`, `airline`, `departure_city`, `arrival_city`, `departure_date`, `departure_time`, `arrival_date`, `arrival_time`, `ticket_class`, `price`, `ticket_type`, `city_image`, `agency_id`, `promotion_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `tickets`(`flight_number`, `airline`, `departure_city`, `arrival_city`, `departure_date`, `departure_time`, `arrival_date`, `arrival_time`, `ticket_class`, `price`, `ticket_type`, `city_image`, `agency_id`, `promotion_id`,`user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, ticket.getFlightNumber());
@@ -35,6 +35,7 @@ public class ServiceTicket implements CRUDService<Ticket> {
             pstm.setString(12, ticket.getCityImage());
             pstm.setInt(13, ticket.getAgencyId()); // Ajout de l'ID de l'agence
             pstm.setInt(14, ticket.getPromotionId()); // Ajout de l'ID de la promotion
+            pstm.setInt(15, ticket.getUserId());
             pstm.executeUpdate();
             System.out.println("Ticket ajouté avec succès !");
         } catch (SQLException e) {
@@ -132,6 +133,41 @@ public class ServiceTicket implements CRUDService<Ticket> {
     @Override
     public long count() {
         return 0;
+    }
+
+    public List<Ticket> getTicketsByUserId(int userId) {
+        List<Ticket> tickets = new ArrayList<>();
+        String qry = "SELECT * FROM `tickets` WHERE `user_id` = ?";
+
+        try {
+            PreparedStatement pst = cnx.prepareStatement(qry);
+            pst.setInt(1, userId);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Ticket t = new Ticket();
+                t.setIdTicket(rs.getInt("id_ticket"));
+                t.setFlightNumber(rs.getInt("flight_number"));
+                t.setAirline(rs.getString("airline"));
+                t.setDepartureCity(rs.getString("departure_city"));
+                t.setArrivalCity(rs.getString("arrival_city"));
+                t.setDepartureDate(rs.getString("departure_date"));
+                t.setDepartureTime(rs.getString("departure_time"));
+                t.setArrivalDate(rs.getString("arrival_date"));
+                t.setArrivalTime(rs.getString("arrival_time"));
+                t.setTicketClass(rs.getString("ticket_class"));
+                t.setPrice(rs.getFloat("price"));
+                t.setTicketType(rs.getString("ticket_type"));
+                t.setCityImage(rs.getString("city_image"));
+                t.setAgencyId(rs.getInt("agency_id"));
+                t.setPromotionId(rs.getInt("promotion_id"));
+
+                tickets.add(t);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des tickets pour l'utilisateur " + userId + " : " + e.getMessage());
+        }
+        return tickets;
     }
 
 

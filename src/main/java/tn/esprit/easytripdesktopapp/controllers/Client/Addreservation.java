@@ -34,21 +34,8 @@ public class Addreservation {
     void ajouterR(ActionEvent event) {
         System.out.println("Name:" + session.getUser().getName());
         try {
-           /* if (!allFieldsFilled()) {
-                afficherErreur("Veuillez remplir tous les champs obligatoires.");
-                return;
-            }
-            if (!isValidPhoneNumber(phoneres.getText())) {
-                afficherErreur("Veuillez saisir un numéro de téléphone valide.");
-                return;
-            }
-            if (!isValidEmail(mailres.getText())) {
-                afficherErreur("Veuillez saisir un E-mail valide.");
-                return;
-            }
-            */
             Reservation r = new Reservation();
-            r.setUserId(session.getUser().getId());
+            r.setUser_id(session.getUser().getId());
             r.setNom(session.getUser().getName());
             r.setPrenom(session.getUser().getSurname());
             r.setPhone(Integer.parseInt(session.getUser().getPhone()));

@@ -56,7 +56,7 @@ public class Listreservation {
 
             Label infoLabel = new Label(String.format("👤 %s %s \n📧 %s\n📞 %d \n📅 %s",
                     reservation.getNom(), reservation.getPrenom(), reservation.getEmail(),
-                    reservation.getPhone(), reservation.getOrdreDate()));
+                    reservation.getPhone(), reservation.getOrderDate()));
             infoLabel.setStyle("-fx-font-size: 14px;");
 
             Button btnModifier = new Button("Modifier");
@@ -100,7 +100,7 @@ public class Listreservation {
     }
 
     private void supprimerReservation(Reservation reservation) {
-        sr.delete(reservation.getIdReservation());
+        sr.delete(reservation.getId());
         loadReservations("");
         System.out.println("Réservation supprimée : " + reservation.getNom());
     }

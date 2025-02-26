@@ -13,11 +13,13 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.AffichageTicketClient" stylesheets="@../styles3.css" prefWidth="800" prefHeight="600">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.AffichageTicketClient"
+            stylesheets="@../../styles/styles3.css" prefWidth="800" prefHeight="600">
     <!-- Image de fond -->
     <children>
         <ImageView fitWidth="800" fitHeight="600">
-            <Image url="@../../assets/ticket-background.jpg" />
+            <Image url="@../../assets/ticket-background.jpg"/>
         </ImageView>
     </children>
 
@@ -28,15 +30,20 @@
     <!-- Titre -->
     <top>
         <VBox spacing="10" alignment="CENTER">
-            <Label text="Recherche de Tickets" styleClass="title" />
+            <HBox alignment="CENTER" prefHeight="61.0" prefWidth="760.0" style="-fx-spacing: 250px;">
+                <children>
+                    <Label styleClass="title" text="Recherche tickets" />
+                    <Button fx:id="btnBack" onAction="#goBack" mnemonicParsing="false" style="-fx-background-color: red;" styleClass="action-button" text="Back" />
+                </children>
+            </HBox>
 
             <!-- Filtres de recherche -->
             <HBox spacing="10" alignment="CENTER">
-                <TextField fx:id="searchField" promptText="Rechercher par compagnie ou ville" />
-                <ComboBox fx:id="priceFilter" promptText="Prix maximum" />
-                <ComboBox fx:id="currencyComboBox" promptText="Devise" />
-                <Button text="Filtrer" onAction="#applyFilters" styleClass="action-button" />
-                <Button text="Réinitialiser" onAction="#resetFilters" styleClass="action-button" />
+                <TextField fx:id="searchField" promptText="Rechercher par compagnie ou ville"/>
+                <ComboBox fx:id="priceFilter" promptText="Prix maximum"/>
+                <ComboBox fx:id="currencyComboBox" promptText="Devise"/>
+                <Button text="Filtrer" onAction="#applyFilters" styleClass="action-button"/>
+                <Button text="Réinitialiser" onAction="#resetFilters" styleClass="action-button"/>
             </HBox>
         </VBox>
     </top>
@@ -46,11 +53,12 @@
         <VBox spacing="20" alignment="CENTER">
             <!-- HBox pour le bouton Retour à l'accueil -->
             <HBox spacing="20" alignment="CENTER">
-                <Button fx:id="backButton" text="Retour à l'accueil" onAction="#goToAccueil" styleClass="action-button" />
+                <Button fx:id="backButton" text="Retour à l'accueil" onAction="#goToAccueil"
+                        styleClass="action-button"/>
             </HBox>
 
             <!-- FlowPane pour contenir les cartes des tickets horizontalement -->
-            <FlowPane fx:id="cardContainer" alignment="CENTER" />
+            <FlowPane fx:id="cardContainer" alignment="CENTER"/>
         </VBox>
     </center>
 </BorderPane>

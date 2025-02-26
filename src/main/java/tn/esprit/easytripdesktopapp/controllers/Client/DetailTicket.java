@@ -6,7 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import tn.esprit.easytripdesktopapp.models.Reservation;
 import tn.esprit.easytripdesktopapp.models.Ticket;
+import tn.esprit.easytripdesktopapp.services.ServiceReservation;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 public class DetailTicket {
 
@@ -38,6 +41,10 @@ public class DetailTicket {
     private Button reserveButton; // Bouton Réserver
 
     private Ticket ticket;
+
+    UserSession session = UserSession.getInstance();
+
+    private ServiceReservation sr = new ServiceReservation();
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
@@ -80,14 +87,19 @@ public class DetailTicket {
     // Gestionnaire d'événements pour le bouton Réserver
     @FXML
     private void handleReserveButton() {
-        if (ticket != null) {
-            int ticketId = ticket.getIdTicket(); // Récupérer l'ID du ticket
-            System.out.println("Ticket réservé avec l'ID : " + ticketId);
-
-            // Vous pouvez également afficher une boîte de dialogue ou effectuer une autre action ici
-            // Par exemple, ouvrir une nouvelle fenêtre pour confirmer la réservation
-        } else {
-            System.out.println("Aucun ticket sélectionné.");
+        System.out.println("Name:" + session.getUser().getName());
+        try {
+            Reservation r = new Reservation();
+            r.setUser_id(session.getUser().getId());
+            r.setNom(session.getUser().getName());
+            r.setPrenom(session.getUser().getSurname());
+            r.setPhone(Integer.parseInt(session.getUser().getPhone()));
+            r.setEmail(session.getUser().getEmail());
+            r.setTicket_id(ticket.getIdTicket());
+            sr.addWithTicketOnly(r);
+            System.out.println("Réservation ajoutée avec succès");
+        } catch (NumberFormatException e) {
+            System.out.println("Le téléphone doit être un nombre valide.");
         }
     }
 }

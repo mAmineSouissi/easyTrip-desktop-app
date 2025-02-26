@@ -1,7 +1,9 @@
 package tn.esprit.easytripdesktopapp.controllers.Client;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,13 +16,17 @@ import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Hotel;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AffichageHotelClient {
 
+    public Button btnBack;
     @FXML
     private FlowPane cardContainer;  // FlowPane pour contenir les cartes des hôtels horizontalement
 
@@ -39,11 +45,16 @@ public class AffichageHotelClient {
     private final CRUDService<Hotel> hotelService = new ServiceHotel();  // Service pour gérer les hôtels
     private List<Hotel> hotels;  // Liste des hôtels pour garder une référence
 
+    UserSession session=UserSession.getInstance();
+    private ResourceBundle bundle;
+
     @FXML
     public void initialize() {
         // Initialiser les filtres
         ratingFilter.getItems().addAll(1, 2, 3, 4, 5);
         priceFilter.getItems().addAll(50f, 100f, 150f, 200f, 250f, 300f);
+        bundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+
 
         loadHotels();  // Charger les hôtels à l'initialisation
     }
@@ -51,7 +62,7 @@ public class AffichageHotelClient {
     // Méthode pour charger les hôtels dans la CardView
     @FXML
     private void loadHotels() {
-        cardContainer.getChildren().clear();  // Effacer les cartes existantes
+        cardContainer.getChildren().clear();
         hotels = hotelService.getAll();
 
         for (Hotel hotel : hotels) {
@@ -174,7 +185,7 @@ public class AffichageHotelClient {
     // Afficher les détails de l'hôtel
     private void showHotelDetails(Hotel hotel) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/DetailHotel.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/DetailHotel.fxml"));
             Parent root = loader.load();
 
             DetailHotel detailController = loader.getController();
@@ -193,7 +204,7 @@ public class AffichageHotelClient {
     @FXML
     private void goToAccueil() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/AccueilClient.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/AffichageHotelClient.fxml"));
             Parent root = loader.load();
 
             // Fermer la fenêtre actuelle
@@ -214,5 +225,21 @@ public class AffichageHotelClient {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void goBack(ActionEvent actionEvent) {
+        Stage stage;
+        try {
+            ResourceBundle resourcesBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), resourcesBundle);
+            Parent root = loader.load();
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Screen");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
+        }
     }
 }

@@ -13,11 +13,14 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AffichageTicket" stylesheets="@../styles3.css" prefWidth="800" prefHeight="600">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AffichageTicket"
+            stylesheets="@../../styles/styles3.css"
+            prefWidth="800" prefHeight="600">
     <!-- Image de fond -->
     <children>
         <ImageView fitWidth="800" fitHeight="600">
-            <Image url="@../images/ticket-background.jpg" />
+            <Image url="@../../assets/ticket-background.jpg"/>
         </ImageView>
     </children>
 
@@ -28,15 +31,15 @@
     <!-- Titre -->
     <top>
         <VBox spacing="10" alignment="CENTER">
-            <Label text="Gestion des Tickets" styleClass="title" />
+            <Label text="Gestion des Tickets" styleClass="title"/>
 
             <!-- Filtres de recherche -->
             <HBox spacing="10" alignment="CENTER">
-                <TextField fx:id="searchField" promptText="Rechercher par compagnie ou ville" />
-                <ComboBox fx:id="priceFilter" promptText="Prix maximum" />
-                <ComboBox fx:id="currencyComboBox" promptText="Devise" />
-                <Button text="Filtrer" onAction="#applyFilters" styleClass="action-button" />
-                <Button text="Réinitialiser" onAction="#resetFilters" styleClass="action-button" />
+                <TextField fx:id="searchField" promptText="Rechercher par compagnie ou ville"/>
+                <ComboBox fx:id="priceFilter" promptText="Prix maximum"/>
+                <ComboBox fx:id="currencyComboBox" promptText="Devise"/>
+                <Button text="Filtrer" onAction="#applyFilters" styleClass="action-button"/>
+                <Button text="Réinitialiser" onAction="#resetFilters" styleClass="action-button"/>
             </HBox>
         </VBox>
     </top>
@@ -46,13 +49,14 @@
         <VBox spacing="20" alignment="CENTER">
             <!-- HBox pour les boutons Ajouter, Rafraîchir, Retour à l'accueil -->
             <HBox spacing="20" alignment="CENTER">
-                <Button fx:id="addButton" text="Ajouter Ticket" onAction="#goToAddTicket" styleClass="action-button" />
-                <Button fx:id="refreshButton" text="Rafraîchir" onAction="#refreshTickets" styleClass="action-button" />
-                <Button fx:id="backButton" text="Retour à l'accueil" onAction="#goToAccueil" styleClass="action-button" />
+                <Button fx:id="addButton" text="Ajouter Ticket" onAction="#goToAddTicket" styleClass="action-button"/>
+                <Button fx:id="refreshButton" text="Rafraîchir" onAction="#refreshTickets" styleClass="action-button"/>
+                <Button fx:id="backButton" text="Retour à l'accueil" onAction="#goToAccueil"
+                        styleClass="action-button"/>
             </HBox>
 
             <!-- FlowPane pour contenir les cartes des tickets horizontalement -->
-            <FlowPane fx:id="cardContainer" alignment="CENTER" />
+            <FlowPane fx:id="cardContainer" alignment="CENTER"/>
         </VBox>
     </center>
 </BorderPane>

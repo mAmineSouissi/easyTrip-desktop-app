@@ -20,6 +20,7 @@ import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Ticket;
 import tn.esprit.easytripdesktopapp.services.ServiceTicket;
 import tn.esprit.easytripdesktopapp.utils.CurrencyConverter;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,24 +29,20 @@ import java.util.stream.Collectors;
 
 public class AffichageTicket {
 
+    private final ServiceTicket ticketService = new ServiceTicket();
+    private final CurrencyConverter currencyConverter = new CurrencyConverter();
+    UserSession session = UserSession.getInstance();
     @FXML
     private FlowPane cardContainer; // Conteneur pour les cartes de tickets
-
     @FXML
     private TextField searchField; // Champ de recherche
-
     @FXML
     private ComboBox<Float> priceFilter; // Filtre par prix maximum
-
     @FXML
     private ComboBox<String> currencyComboBox; // Sélection de la devise
-
     @FXML
     private Button backButton; // Bouton pour retourner à l'accueil
-
-    private final CRUDService<Ticket> ticketService = new ServiceTicket();
     private List<Ticket> tickets;
-    private CurrencyConverter currencyConverter = new CurrencyConverter();
 
     @FXML
     public void initialize() {
@@ -64,8 +61,8 @@ public class AffichageTicket {
 
     @FXML
     private void loadTickets() {
-        cardContainer.getChildren().clear(); // Vider le conteneur avant de le remplir
-        tickets = ticketService.getAll(); // Récupérer tous les tickets
+        cardContainer.getChildren().clear();
+        tickets = ticketService.getTicketsByUserId(session.getUser().getId());
 
         for (Ticket ticket : tickets) {
             // Créer une carte pour chaque ticket
@@ -156,12 +153,7 @@ public class AffichageTicket {
         Float maxPrice = priceFilter.getValue();
 
         // Filtrer les tickets en fonction des critères
-        List<Ticket> filteredTickets = tickets.stream()
-                .filter(ticket -> ticket.getAirline().toLowerCase().contains(searchText) ||
-                        ticket.getDepartureCity().toLowerCase().contains(searchText) ||
-                        ticket.getArrivalCity().toLowerCase().contains(searchText))
-                .filter(ticket -> maxPrice == null || ticket.getPrice() <= maxPrice)
-                .collect(Collectors.toList());
+        List<Ticket> filteredTickets = tickets.stream().filter(ticket -> ticket.getAirline().toLowerCase().contains(searchText) || ticket.getDepartureCity().toLowerCase().contains(searchText) || ticket.getArrivalCity().toLowerCase().contains(searchText)).filter(ticket -> maxPrice == null || ticket.getPrice() <= maxPrice).collect(Collectors.toList());
 
         // Effacer les cartes actuelles et afficher les tickets filtrés
         cardContainer.getChildren().clear();
@@ -181,7 +173,7 @@ public class AffichageTicket {
     @FXML
     private void goToAccueil() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/Accueil.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"));
             Parent root = loader.load();
 
             // Fermer la fenêtre actuelle
@@ -197,7 +189,7 @@ public class AffichageTicket {
 
     private void updateTicket(Ticket ticket) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/ModifierTicket.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/ModifierTicket.fxml"));
             Parent root = loader.load();
 
             ModifierTicketController modifierController = loader.getController();
@@ -229,7 +221,7 @@ public class AffichageTicket {
     @FXML
     private void goToAddTicket() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/AjouterTicket.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/AjouterTicket.fxml"));
             Parent root = loader.load();
 
             Scene scene = new Scene(root, 600, 400);
@@ -245,7 +237,7 @@ public class AffichageTicket {
 
     @FXML
     private void refreshTickets() {
-        loadTickets(); // Recharger les tickets
+        loadTickets();
     }
 
     private void showAlert(String title, String content) {

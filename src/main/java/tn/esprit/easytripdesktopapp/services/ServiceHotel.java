@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceHotel implements CRUDService<Hotel> {
-    private Connection cnx;
+    private final Connection cnx;
 
     public ServiceHotel() {
         cnx = MyDataBase.getInstance().getCnx();
@@ -18,7 +18,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public void add(Hotel hotel) {
-        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`,`user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, hotel.getName());
@@ -30,18 +30,18 @@ public class ServiceHotel implements CRUDService<Hotel> {
             pstm.setString(7, hotel.getTypeRoom());
             pstm.setInt(8, hotel.getNumRoom());
             pstm.setString(9, hotel.getImage());
+            pstm.setInt(10, hotel.getUserId());
 
-            // Gestion des valeurs null pour promotion_id et agence_id
             if (hotel.getPromotion() != null) {
                 pstm.setInt(10, hotel.getPromotion().getId());
             } else {
-                pstm.setNull(10, java.sql.Types.INTEGER); // Définir la valeur NULL pour promotion_id
+                pstm.setNull(10, java.sql.Types.INTEGER);
             }
 
             if (hotel.getAgence() != null) {
                 pstm.setInt(11, hotel.getAgence().getId());
             } else {
-                pstm.setNull(11, java.sql.Types.INTEGER); // Définir la valeur NULL pour agence_id
+                pstm.setNull(11, java.sql.Types.INTEGER);
             }
 
             pstm.executeUpdate();
@@ -71,7 +71,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
                 h.setNumRoom(rs.getInt("num_room"));
                 h.setImage(rs.getString("image"));
                 h.setPromotionId(rs.getInt("promotion_id"));
-
+                h.setUserId(rs.getInt("user_id"));
 
 
                 if (!rs.wasNull()) {
@@ -137,9 +137,50 @@ public class ServiceHotel implements CRUDService<Hotel> {
     }
 
     @Override
-    public Hotel getById(int user_id) {
+    public Hotel getById(int id) {
         return null;
     }
+
+    public List<Hotel> getByUserId(int user_id) {
+        String qry = "SELECT * FROM `hotels` WHERE `user_id` = ?";
+        List<Hotel> hotels = new ArrayList<>();
+
+        try {
+            PreparedStatement pst = cnx.prepareStatement(qry);
+            pst.setInt(1, user_id);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                Hotel hotel = new Hotel();
+                hotel.setId(rs.getInt("id_hotel"));
+                hotel.setName(rs.getString("name"));
+                hotel.setAdresse(rs.getString("adresse"));
+                hotel.setCity(rs.getString("city"));
+                hotel.setRating(rs.getInt("rating"));
+                hotel.setDescription(rs.getString("description"));
+                hotel.setPrice(rs.getFloat("price"));
+                hotel.setTypeRoom(rs.getString("type_room"));
+                hotel.setNumRoom(rs.getInt("num_room"));
+                hotel.setImage(rs.getString("image"));
+                hotel.setPromotionId(rs.getInt("promotion_id"));
+                hotel.setUserId(rs.getInt("user_id"));
+
+                // Load promotion if applicable
+                if (!rs.wasNull()) {
+                    Promotion promotion = new ServicePromotion().getById(rs.getInt("promotion_id"));
+                    hotel.setPromotion(promotion);
+                }
+
+                hotels.add(hotel); // Add hotel to the list
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des hôtels par user_id : " + e.getMessage());
+        }
+
+        return hotels;
+    }
+
+
 
     @Override
     public List<Hotel> search(String keyword) {

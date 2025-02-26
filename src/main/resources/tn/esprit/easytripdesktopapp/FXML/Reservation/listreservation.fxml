@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="766.0" prefWidth="1043.0" stylesheets="@../../styles/style.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.Listreservation">
+    <children>
+        <Label layoutX="27.0" layoutY="14.0" prefHeight="26.0" prefWidth="554.0" text="Liste des réservations:"
+               textFill="#2a2fbf">
+            <font>
+                <Font size="26.0"/>
+            </font>
+        </Label>
+
+        <Button layoutX="35.0" layoutY="667.0" mnemonicParsing="false" onAction="#retour" prefHeight="22.0"
+                prefWidth="112.0" text="Retour"/>
+        <ScrollPane layoutX="27.0" layoutY="75.0" prefHeight="374.0" prefWidth="986.0">
+            <content>
+                <GridPane fx:id="listres" hgap="15" style="-fx-padding: 10; -fx-alignment: center;" vgap="15"/>
+            </content>
+        </ScrollPane>
+        <AnchorPane layoutX="542.0" layoutY="460.0" maxWidth="1.7976931348623157E308" prefHeight="247.0"
+                    prefWidth="470.0" style="-fx-background-color: white; -fx-border-color: black;">
+            <children>
+                <TableView fx:id="table" layoutX="14.0" layoutY="7.0" prefHeight="206.0" prefWidth="434.0"
+                           stylesheets="@../../styles/style.css">
+                    <columns>
+                        <TableColumn fx:id="col1" prefWidth="71.20001220703125" text="Nom"/>
+                        <TableColumn fx:id="col2" minWidth="0.0" prefWidth="95.199951171875" text="Personne"/>
+                        <TableColumn fx:id="col3" minWidth="0.0" prefWidth="79.2000732421875" text="Prix"/>
+                    </columns>
+                </TableView>
+
+                <Label layoutX="304.0" layoutY="215.0" text="Prix total"/>
+                <Label fx:id="totalp" layoutX="409.0" layoutY="215.0" text="0.0"/>
+            </children>
+        </AnchorPane>
+        <TextField fx:id="searchField" layoutX="251.0" layoutY="14.0" onKeyReleased="#handleSearch" prefHeight="40.0"
+                   prefWidth="290.0" promptText="Rechercher par nom..."/>
+    </children>
+</AnchorPane>

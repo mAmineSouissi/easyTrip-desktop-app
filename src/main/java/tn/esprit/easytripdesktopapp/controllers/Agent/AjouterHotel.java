@@ -13,6 +13,7 @@ import tn.esprit.easytripdesktopapp.models.Hotel;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.File;
 import java.util.List;
@@ -47,6 +48,8 @@ public class AjouterHotel {
 
     private final ServiceHotel hotelService = new ServiceHotel();
     private final ServicePromotion promotionService = new ServicePromotion();
+
+    UserSession session = UserSession.getInstance();
 
     @FXML
     public void initialize() {
@@ -88,7 +91,9 @@ public class AjouterHotel {
             hotel.setTypeRoom(typeChambre);
             hotel.setNumRoom(nbChambres);
             hotel.setImage(img);
-            hotel.setPromotion(promotion); // Associer la promotion à l'hôtel
+            hotel.setPromotion(promotion);
+            hotel.setUserId(session.getUser().getId());
+            // Associer la promotion à l'hôtel
 
             hotelService.add(hotel);
             name.getScene().getWindow().hide();

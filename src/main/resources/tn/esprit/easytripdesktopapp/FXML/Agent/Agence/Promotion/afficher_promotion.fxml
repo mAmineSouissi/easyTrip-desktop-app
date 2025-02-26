@@ -7,19 +7,23 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.Promotion.AfficherPromotion">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.Promotion.AfficherPromotion" stylesheets="@../../../styles/style9.css">
     <top>
         <HBox spacing="10" alignment="CENTER">
             <TextField fx:id="searchField" promptText="Rechercher par titre..." />
-
         </HBox>
     </top>
     <center>
-        <ScrollPane>
-            <FlowPane fx:id="cardContainer" hgap="10" vgap="10" minWidth="600" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
-                <!-- Les cartes de promotion seront ajoutées ici -->
-            </FlowPane>
-        </ScrollPane>
+        <VBox alignment="TOP_CENTER" spacing="10" style="-fx-padding: 15;">
+            <!-- Titre "Liste des Promotions" -->
+            <Label styleClass="title-label" text="Liste des Promotions" />
+
+            <!-- ScrollPane avec FlowPane pour les cartes -->
+            <ScrollPane fitToWidth="true" fitToHeight="true">
+                <FlowPane fx:id="cardContainer" hgap="10" vgap="10" minWidth="600" />
+            </ScrollPane>
+        </VBox>
     </center>
 </BorderPane>

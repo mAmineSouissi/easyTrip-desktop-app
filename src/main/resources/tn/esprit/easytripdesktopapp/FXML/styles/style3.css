@@ -1,35 +1,85 @@
-/* Conteneur de la barre de recherche */
-.hbox {
-    -fx-padding: 10px;
-    -fx-alignment: center;
+/* Style général pour la page */
+/* Style général pour le BorderPane */
+BorderPane {
+    -fx-background-color: #f4f4f4; /* Couleur de fond légère */
+    -fx-padding: 20; /* Espacement autour du BorderPane */
 }
 
-/* Champ de recherche */
-#searchField {
-    -fx-pref-width: 250px;
-    -fx-padding: 5px;
-    -fx-font-size: 14px;
+/* Style pour le HBox en haut (contenant la barre de recherche et le bouton) */
+HBox {
+    -fx-alignment: center; /* Centrer les éléments horizontalement */
+    -fx-spacing: 10; /* Espacement entre les éléments */
+    -fx-padding: 10; /* Espacement intérieur */
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-radius: 8; /* Bordures arrondies */
+    -fx-background-radius: 8; /* Bordures arrondies pour le fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); /* Ombre légère */
 }
 
-/* Bouton Ajouter Promotion aligné à droite */
-#addPromotionButton {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 8px 15px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
-    -fx-alignment: center-right;
+/* Style pour le TextField (barre de recherche) */
+TextField {
+    -fx-pref-width: 300; /* Largeur préférée */
+    -fx-pref-height: 35; /* Hauteur préférée */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Couleur de la bordure */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-padding: 5; /* Espacement intérieur */
 }
 
-#addPromotionButton:hover {
-    -fx-background-color: #2980b9;
+/* Style pour le bouton "Ajouter Promotion" */
+Button {
+    -fx-pref-width: 150; /* Largeur préférée */
+    -fx-pref-height: 35; /* Hauteur préférée */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-background-color: #4CAF50; /* Fond vert */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
+    -fx-cursor: hand; /* Curseur en forme de main au survol */
 }
 
-#addPromotionButton:pressed {
-    -fx-background-color: #1f618d;
+Button:hover {
+    -fx-background-color: #45a049; /* Changement de couleur au survol */
+}
+
+/* Style pour le ScrollPane */
+ScrollPane {
+    -fx-background-color: transparent; /* Fond transparent */
+    -fx-fit-to-width: true; /* Adapter la largeur au contenu */
+    -fx-fit-to-height: true; /* Adapter la hauteur au contenu */
+    -fx-padding: 10; /* Espacement intérieur */
+}
+
+/* Style pour le VBox dans le ScrollPane */
+VBox {
+    -fx-alignment: center; /* Centrer le contenu */
+    -fx-spacing: 15; /* Espacement entre les éléments */
+    -fx-padding: 20; /* Espacement intérieur */
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-radius: 8; /* Bordures arrondies */
+    -fx-background-radius: 8; /* Bordures arrondies pour le fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); /* Ombre légère */
+}
+
+/* Style pour le Label du titre "Liste des Promotions" */
+/* Style pour le Label du titre "Liste des Promotions" */
+.promotion-title {
+    -fx-font-size: 28px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-text-fill: #333333; /* Couleur du texte */
+    -fx-alignment: center; /* Centrer le texte dans le Label */
+    -fx-padding: 10; /* Espacement intérieur */
+    -fx-max-width: infinity; /* Prend toute la largeur disponible */
+}
+
+/* Style pour le FlowPane (conteneur des cartes de promotion) */
+FlowPane {
+    -fx-alignment: center; /* Centrer les éléments */
+    -fx-hgap: 15; /* Espacement horizontal entre les éléments */
+    -fx-vgap: 15; /* Espacement vertical entre les éléments */
+    -fx-padding: 10; /* Espacement intérieur */
 }
 
 /* Bouton Supprimer en rouge */

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.FlowPane?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.Travel.AfficherOfferTravelController">
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.Travel.AfficherOfferTravelController" stylesheets="@../../../styles/style7.css">
 
 
     <!-- Barre de recherche en haut -->

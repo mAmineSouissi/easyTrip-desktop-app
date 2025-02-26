@@ -7,24 +7,27 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
-
 <?import javafx.scene.layout.Region?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.Promotion.AfficherPromotion" stylesheets="@../../styles/style3.css">
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@../../styles/style3.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.Promotion.AfficherPromotion">
     <top>
         <HBox spacing="10">
             <Region HBox.hgrow="ALWAYS" />
             <TextField fx:id="searchField" promptText="Rechercher par titre..." />
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="addPromotionButton" text="Ajouter Promotion" onAction="#openAddPromotion" />
+            <Button fx:id="addPromotionButton" onAction="#openAddPromotion" text="Ajouter Promotion" />
         </HBox>
-
-
     </top>
     <center>
         <ScrollPane>
-            <FlowPane fx:id="cardContainer" hgap="10" vgap="10" minWidth="600" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
-                <!-- Les cartes de promotion seront ajoutées ici -->
-            </FlowPane>
+            <VBox alignment="CENTER" prefHeight="179.0" prefWidth="600.0" spacing="10"> <!-- Centrer le contenu horizontalement -->
+                <!-- Titre des promotions -->
+                <Label prefHeight="44.0" prefWidth="306.0" styleClass="promotion-title" text="Liste des Promotions" textAlignment="CENTER" />
+
+                <!-- Conteneur des cartes de promotion -->
+                <FlowPane fx:id="cardContainer" hgap="10" minWidth="600" vgap="10" />
+            </VBox>
         </ScrollPane>
     </center>
 </BorderPane>

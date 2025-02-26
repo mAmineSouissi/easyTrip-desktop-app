@@ -31,7 +31,7 @@ TextField {
 
 /* Style pour les boutons */
 Button {
-    -fx-pref-width: 100; /* Largeur préférée */
+    -fx-pref-width: 120; /* Largeur préférée */
     -fx-pref-height: 35; /* Hauteur préférée */
     -fx-font-size: 14px; /* Taille de la police */
     -fx-background-color: #4CAF50; /* Fond vert */
@@ -57,16 +57,6 @@ ComboBox {
     -fx-background-radius: 5; /* Bordures arrondies pour le fond */
 }
 
-/* Style pour le titre "La liste des offres de voyages" */
-.title-label {
-    -fx-font-size: 24px; /* Taille de la police */
-    -fx-font-weight: bold; /* Texte en gras */
-    -fx-text-fill: #333333; /* Couleur du texte */
-    -fx-alignment: center; /* Centrer le texte */
-    -fx-padding: 10; /* Espacement intérieur */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3); /* Ombre légère */
-}
-
 /* Style pour le ScrollPane */
 ScrollPane {
     -fx-background-color: transparent; /* Fond transparent */
@@ -78,7 +68,40 @@ ScrollPane {
 /* Style pour le FlowPane (conteneur des cartes) */
 FlowPane {
     -fx-alignment: top-left; /* Aligner les éléments en haut à gauche */
-    -fx-hgap: 15; /* Espacement horizontal entre les éléments */
-    -fx-vgap: 15; /* Espacement vertical entre les éléments */
+    -fx-hgap: 10; /* Espacement horizontal entre les éléments */
+    -fx-vgap: 10; /* Espacement vertical entre les éléments */
     -fx-padding: 10; /* Espacement intérieur */
+}
+/* Style pour le bouton Modifier */
+.button-modifier {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-pref-width: 80; /* Largeur préférée */
+    -fx-pref-height: 30; /* Hauteur préférée */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
+    -fx-cursor: hand; /* Curseur en forme de main au survol */
+}
+
+.button-modifier:hover {
+    -fx-background-color: #1976D2; /* Changement de couleur au survol */
+}
+
+/* Style pour le bouton Supprimer */
+.button-supprimer {
+    -fx-background-color: #f44336; /* Fond rouge */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-pref-width: 80; /* Largeur préférée */
+    -fx-pref-height: 30; /* Hauteur préférée */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
+    -fx-cursor: hand; /* Curseur en forme de main au survol */
+}
+
+.button-supprimer:hover {
+    -fx-background-color: #d32f2f; /* Changement de couleur au survol */
 }

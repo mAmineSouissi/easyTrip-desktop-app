@@ -91,7 +91,7 @@ public class AfficherOfferTravelController implements Initializable {
         destinationText.getStyleClass().add("card-title");
         destinationText.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
-        Text priceText = new Text("Prix : " + offer.getPrice() + " €");
+        Text priceText = new Text("Prix : " + offer.getPrice() + " DT");
         priceText.setStyle("-fx-font-size: 14px;");
 
         Button btnModifier = new Button("Modifier");

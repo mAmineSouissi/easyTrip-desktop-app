@@ -10,25 +10,30 @@ public class Reservation {
     private String prenom;
     private int phone;
     private String email;
+    private int places;
+    private int userId;
 
-    public Reservation() {
-    }
 
-    public Reservation(int idReservation, Date ordreDate, String nom, String prenom, int phone, String email) {
+    public Reservation() {}
+
+
+    public Reservation(int idReservation, Date ordreDate, String nom, String prenom, int phone, String email, int places, int userId) {
         this.idReservation = idReservation;
         this.ordreDate = ordreDate;
         this.nom = nom;
         this.prenom = prenom;
         this.phone = phone;
         this.email = email;
+        this.places = places;
+        this.userId = userId;
     }
 
-    public Reservation(Date ordreDate, String nom, String prenom, int phone, String email) {
-        this.ordreDate = ordreDate;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.phone = phone;
-        this.email = email;
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getIdReservation() {
@@ -79,6 +84,14 @@ public class Reservation {
         this.email = email;
     }
 
+    public int getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(int places) {
+        this.places = places;
+    }
+
     @Override
     public String toString() {
         return "Reservation{" +
@@ -88,6 +101,7 @@ public class Reservation {
                 ", prenom='" + prenom + '\'' +
                 ", phone=" + phone +
                 ", email='" + email + '\'' +
+                ", places=" + places +
                 '}';
     }
 }

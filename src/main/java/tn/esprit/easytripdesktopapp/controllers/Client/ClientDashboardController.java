@@ -19,6 +19,7 @@ import tn.esprit.easytripdesktopapp.utils.UserSession;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
@@ -279,7 +280,7 @@ public class ClientDashboardController implements Initializable {
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
     }
-
+  
     public void navigateToHotelAffichage(MouseEvent mouseEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/AffichageHotelClient.fxml"));
@@ -292,4 +293,18 @@ public class ClientDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+  
+    public void navigateToReservation(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/addreservation.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Screen");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -1,0 +1,54 @@
+/* styles3.css */
+.ticket-grid {
+    -fx-padding: 10;
+}
+
+.ticket-card {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);
+}
+
+.ticket-card:hover {
+    -fx-background-color: #e0e0e0;
+    -fx-cursor: hand;
+}
+
+.action-button {
+    -fx-font-size: 14px;
+    -fx-background-color: #4facfe;
+    -fx-text-fill: white;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: #00f2fe;
+    -fx-text-fill: #4facfe;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.delete-button {
+    -fx-background-color: #f44336;
+}
+
+.delete-button:hover {
+    -fx-background-color: #d32f2f;
+}
+.root {
+    -fx-background-image: url("images/ticket-background.jpg");
+    -fx-background-size: 100% 100%;  /* Ajuste la taille de l’image */
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+}
+
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4facfe;
+}

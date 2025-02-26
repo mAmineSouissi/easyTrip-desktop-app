@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.text.Font?>
+
+<GridPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.ModifierTicketController" stylesheets="@../styles4.css" alignment="CENTER" hgap="10" vgap="10" prefWidth="600" prefHeight="500">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Modifier un Ticket" styleClass="title" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+
+    <Label text="Numéro de vol :" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+    <TextField fx:id="flightNumber" promptText="Numéro de vol" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+    <Label text="Compagnie aérienne :" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+    <TextField fx:id="airline" promptText="Compagnie aérienne" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+    <Label text="Ville de départ :" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+    <TextField fx:id="departureCity" promptText="Ville de départ" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+    <Label text="Ville d'arrivée :" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+    <TextField fx:id="arrivalCity" promptText="Ville d'arrivée" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+    <Label text="Date de départ :" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+    <TextField fx:id="departureDate" promptText="Date de départ (YYYY-MM-DD)" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+
+    <Label text="Heure de départ :" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+    <TextField fx:id="departureTime" promptText="Heure de départ (HH:MM)" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+
+    <Label text="Date d'arrivée :" GridPane.rowIndex="7" GridPane.columnIndex="0" />
+    <TextField fx:id="arrivalDate" promptText="Date d'arrivée (YYYY-MM-DD)" GridPane.rowIndex="7" GridPane.columnIndex="1" />
+
+    <Label text="Heure d'arrivée :" GridPane.rowIndex="8" GridPane.columnIndex="0" />
+    <TextField fx:id="arrivalTime" promptText="Heure d'arrivée (HH:MM)" GridPane.rowIndex="8" GridPane.columnIndex="1" />
+
+    <Label text="Classe :" GridPane.rowIndex="9" GridPane.columnIndex="0" />
+    <TextField fx:id="ticketClass" promptText="Classe (Economy, Business, First)" GridPane.rowIndex="9" GridPane.columnIndex="1" />
+
+    <Label text="Prix :" GridPane.rowIndex="10" GridPane.columnIndex="0" />
+    <TextField fx:id="price" promptText="Prix" GridPane.rowIndex="10" GridPane.columnIndex="1" />
+
+    <Label text="Type :" GridPane.rowIndex="11" GridPane.columnIndex="0" />
+    <TextField fx:id="ticketType" promptText="Type (one-way, round-trip)" GridPane.rowIndex="11" GridPane.columnIndex="1" />
+
+    <!-- Nouveau champ pour l'image de la ville -->
+    <Label text="Image de la ville :" GridPane.rowIndex="12" GridPane.columnIndex="0" />
+    <TextField fx:id="cityImage" promptText="URL de l'image de la ville" editable="false" GridPane.rowIndex="12" GridPane.columnIndex="1" />
+    <Button fx:id="uploadButton" text="Upload" onAction="#uploadImage" GridPane.rowIndex="12" GridPane.columnIndex="2" />
+
+    <!-- Bouton Modifier -->
+    <Button text="Modifier" onAction="#saveChanges" styleClass="action-button" GridPane.rowIndex="13" GridPane.columnSpan="2" GridPane.halignment="CENTER" />
+</GridPane>

@@ -1,0 +1,79 @@
+/* Style global pour le BorderPane */
+.root {
+    -fx-background-color: #f4f4f4; /* Couleur de fond douce */
+}
+
+/* Style pour les HBox */
+.hbox {
+    -fx-background-color: #ffffff; /* Couleur de fond blanche */
+    -fx-padding: 10;
+    -fx-border-radius: 5;
+    -fx-background-insets: 0, 0;
+}
+
+/* Style pour les Labels */
+.label {
+    -fx-font-size: 14px; /* Taille de police */
+    -fx-text-fill: #333333; /* Couleur du texte */
+}
+
+/* Style pour le TextField */
+.text-field {
+    -fx-background-color: #ffffff; /* Couleur de fond blanche */
+    -fx-border-color: #cccccc; /* Couleur de bordure */
+    -fx-border-radius: 5; /* Bords arrondis */
+    -fx-padding: 5; /* Espacement interne */
+}
+
+/* Style pour le ComboBox */
+.combo-box {
+    -fx-background-color: #ffffff; /* Couleur de fond blanche */
+    -fx-border-color: #cccccc; /* Couleur de bordure */
+    -fx-border-radius: 5; /* Bords arrondis */
+}
+
+/* Style pour le Button */
+.button {
+    -fx-background-color: #4caf50; /* Couleur de fond verte */
+    -fx-text-fill: white; /* Couleur du texte en blanc */
+    -fx-padding: 10; /* Espacement interne */
+    -fx-border-radius: 5; /* Bords arrondis */
+}
+
+.button:hover {
+    -fx-background-color: #45a049; /* Couleur au survol */
+}
+
+/* Style pour le ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent; /* Fond transparent */
+}
+
+/* Style pour le FlowPane */
+.flow-pane {
+    -fx-padding: 10; /* Espacement autour des éléments */
+}
+
+/* Style pour le bouton Supprimer */
+.button-supprimer {
+    -fx-background-color: #e74c3c; /* Rouge */
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-padding: 10; /* Espacement interne */
+    -fx-border-radius: 5; /* Bords arrondis */
+}
+
+.button-supprimer:hover {
+    -fx-background-color: #c0392b; /* Rouge foncé au survol */
+}
+
+/* Style pour le bouton Modifier */
+.button-modifier {
+    -fx-background-color: #3498db; /* Bleu ciel */
+    -fx-text-fill: white; /* Texte en blanc */
+    -fx-padding: 10; /* Espacement interne */
+    -fx-border-radius: 5; /* Bords arrondis */
+}
+
+.button-modifier:hover {
+    -fx-background-color: #2980b9; /* Bleu foncé au survol */
+}

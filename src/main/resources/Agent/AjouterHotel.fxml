@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.CheckBox?>
 
 <?import java.lang.String?>
 <AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AjouterHotel">
@@ -24,7 +25,7 @@
          <TextField fx:id="description" promptText="Description de l'hôtel" />
          <TextField fx:id="price" promptText="Prix par nuit" />
 
-         <!-- Remplacer le TextField par un ComboBox pour le type de chambre -->
+         <!-- ComboBox pour le type de chambre -->
          <ComboBox fx:id="typeroom" promptText="Type de chambre">
             <items>
                <javafx.collections.FXCollections fx:factory="observableArrayList">
@@ -37,8 +38,11 @@
 
          <TextField fx:id="numroom" promptText="Nombre de chambres" />
 
-         <!-- Ajouter un ComboBox pour les promotions -->
-         <ComboBox fx:id="promotionComboBox" promptText="Sélectionner une promotion" />
+         <!-- CheckBox pour activer/désactiver la promotion -->
+         <CheckBox fx:id="promotionSwitch" text="Activer Promotion" onAction="#togglePromotion" />
+
+         <!-- ComboBox pour les promotions (désactivé par défaut) -->
+         <ComboBox fx:id="promotionComboBox" promptText="Sélectionner une promotion" disable="true" />
 
          <HBox spacing="20">
             <ImageView fx:id="image" fitHeight="120" fitWidth="120" style="-fx-border-color: black;" />

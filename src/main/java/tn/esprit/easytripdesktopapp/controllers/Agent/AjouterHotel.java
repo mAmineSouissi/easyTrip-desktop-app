@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.CheckBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -32,16 +33,15 @@ public class AjouterHotel {
     @FXML
     private TextField price;
     @FXML
-    private ComboBox<String> typeroom; // Utilisation d'un ComboBox pour le type de chambre
+    private ComboBox<String> typeroom;
     @FXML
     private TextField numroom;
     @FXML
     private ImageView image;
     @FXML
-    private ComboBox<String> promotionComboBox; // Nouveau ComboBox pour les promotions
-
+    private ComboBox<String> promotionComboBox;
     @FXML
-    private Button chooseImageButton;
+    private CheckBox promotionSwitch;
 
     private String imageUrl;
 
@@ -62,6 +62,16 @@ public class AjouterHotel {
     }
 
     @FXML
+    private void togglePromotion() {
+        if (promotionSwitch.isSelected()) {
+            promotionComboBox.setDisable(false); // Activer le ComboBox des promotions
+        } else {
+            promotionComboBox.setDisable(true); // Désactiver le ComboBox des promotions
+            promotionComboBox.setValue(null);   // Effacer la sélection de la promotion
+        }
+    }
+
+    @FXML
     private void save() {
         if (validateFields()) {
             String nom = name.getText();
@@ -70,13 +80,21 @@ public class AjouterHotel {
             int note = Integer.parseInt(rating.getText());
             String desc = description.getText();
             float prix = Float.parseFloat(price.getText());
-            String typeChambre = typeroom.getValue(); // Récupérer la valeur sélectionnée dans le ComboBox
+            String typeChambre = typeroom.getValue();
             int nbChambres = Integer.parseInt(numroom.getText());
             String img = imageUrl;
 
-            // Récupérer la promotion sélectionnée
-            String promotionTitle = promotionComboBox.getValue();
-            Promotion promotion = promotionService.getByTitle(promotionTitle);
+            // Gérer la promotion
+            Promotion promotion = null;
+            if (promotionSwitch.isSelected()) {
+                String promotionTitle = promotionComboBox.getValue();
+                if (promotionTitle != null) {
+                    promotion = promotionService.getByTitle(promotionTitle);
+                }
+            }
+
+            // Appliquer la promotion au prix
+            float finalPrice = calculateDiscountedPrice(prix, promotion);
 
             Hotel hotel = new Hotel();
             hotel.setName(nom);
@@ -84,15 +102,23 @@ public class AjouterHotel {
             hotel.setCity(ville);
             hotel.setRating(note);
             hotel.setDescription(desc);
-            hotel.setPrice(prix);
+            hotel.setPrice(finalPrice); // Utiliser le prix après promotion
             hotel.setTypeRoom(typeChambre);
             hotel.setNumRoom(nbChambres);
             hotel.setImage(img);
-            hotel.setPromotion(promotion); // Associer la promotion à l'hôtel
+            hotel.setPromotion(promotion);
 
             hotelService.add(hotel);
             name.getScene().getWindow().hide();
         }
+    }
+
+    private float calculateDiscountedPrice(float originalPrice, Promotion promotion) {
+        if (promotion != null) {
+            float discountPercentage = promotion.getDiscount_percentage();
+            return originalPrice * (1 - discountPercentage / 100);
+        }
+        return originalPrice; // Si aucune promotion n'est sélectionnée, retourner le prix original
     }
 
     private boolean validateFields() {

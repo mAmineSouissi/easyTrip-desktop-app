@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Hotel;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +40,8 @@ public class AffichageHotelClient {
     private final CRUDService<Hotel> hotelService = new ServiceHotel();  // Service pour gérer les hôtels
     private List<Hotel> hotels;  // Liste des hôtels pour garder une référence
 
+    UserSession session=UserSession.getInstance();
+
     @FXML
     public void initialize() {
         // Initialiser les filtres
@@ -51,7 +54,7 @@ public class AffichageHotelClient {
     // Méthode pour charger les hôtels dans la CardView
     @FXML
     private void loadHotels() {
-        cardContainer.getChildren().clear();  // Effacer les cartes existantes
+        cardContainer.getChildren().clear();
         hotels = hotelService.getAll();
 
         for (Hotel hotel : hotels) {
@@ -174,7 +177,7 @@ public class AffichageHotelClient {
     // Afficher les détails de l'hôtel
     private void showHotelDetails(Hotel hotel) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/DetailHotel.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/DetailHotel.fxml"));
             Parent root = loader.load();
 
             DetailHotel detailController = loader.getController();

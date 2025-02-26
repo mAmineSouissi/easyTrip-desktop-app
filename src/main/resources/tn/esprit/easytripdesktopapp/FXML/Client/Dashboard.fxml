@@ -24,6 +24,7 @@
 
         <!-- Centered Navigation Items -->
         <Label fx:id="manageOfferLabel" styleClass="nav-label" text="%travel_offers"/>
+        <Label fx:id="manageOfferHotel" onMouseClicked="#navigateToHotelAffichage" styleClass="nav-label" text="%offer_hotel" />
         <Label fx:id="otherOffersLabel" styleClass="nav-label" text="%other_offers"/>
 
         <!-- Spacer to push profile and logout to the right -->

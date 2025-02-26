@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import tn.esprit.easytripdesktopapp.models.Hotel;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 public class DetailHotel {
 
@@ -44,6 +45,8 @@ public class DetailHotel {
 
     private Hotel hotel;
 
+    UserSession session = UserSession.getInstance();
+
     // Méthode pour définir l'hôtel à afficher
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
@@ -74,6 +77,7 @@ public class DetailHotel {
 
     @FXML
     private void handleReserveButton() {
+        int userID=session.getUser().getId();
         if (hotel != null) {
             int Id = hotel.getId(); // Récupérer l'ID du ticket
             System.out.println("Offer Hotel réservé avec l'ID : " + Id);
@@ -81,7 +85,7 @@ public class DetailHotel {
             // Vous pouvez également afficher une boîte de dialogue ou effectuer une autre action ici
             // Par exemple, ouvrir une nouvelle fenêtre pour confirmer la réservation
         } else {
-            System.out.println("Aucun ticket sélectionné.");
+            System.out.println("Aucun Hotel sélectionné.");
         }
     }
 }

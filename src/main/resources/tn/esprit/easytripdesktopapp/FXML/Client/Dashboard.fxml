@@ -7,10 +7,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 
-<AnchorPane prefHeight="553.0" prefWidth="911.0" stylesheets="@../../styles/dashboardClient.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.ClientDashboardController">
+<AnchorPane prefHeight="553.0" prefWidth="911.0" stylesheets="@../../styles/dashboardClient.css"
+    xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.ClientDashboardController">
 
     <!-- Navigation Bar -->
-    <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+    <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+        AnchorPane.topAnchor="0">
 
         <!-- Welcome Text on the Left -->
         <Label fx:id="welcomeLabel" styleClass="nav-label" text="Welcome, User" />
@@ -20,6 +23,7 @@
 
         <!-- Centered Navigation Items -->
         <Label styleClass="nav-label" text="Travel Offers" />
+         <Label fx:id="manageOfferHotel" onMouseClicked="#navigateToHotelAffichage" styleClass="nav-label" text="%offer_hotel" />
         <Button styleClass="nav-label" text="Reservation" onAction="#navigateToReservation" />
         <Label styleClass="nav-label" text="Other Offers" />
 
@@ -27,16 +31,20 @@
         <Region HBox.hgrow="ALWAYS" />
 
         <!-- Profile Button -->
-        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button" text="Profile" />
+        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button"
+            text="Profile" />
 
         <!-- LogOut Button -->
-        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button" text="LogOut" />
+        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button"
+            text="LogOut" />
 
         <!-- Profile Image -->
-        <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
+        <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true"
+            preserveRatio="true" styleClass="profile-image" />
     </HBox>
 
     <!-- Centered "Coming Soon..." Text -->
-    <Label layoutX="353.0" layoutY="262.0" styleClass="coming-soon" text="Coming Soon..." AnchorPane.leftAnchor="353.0" AnchorPane.topAnchor="262.0" />
+    <Label layoutX="353.0" layoutY="262.0" styleClass="coming-soon" text="Coming Soon..."
+        AnchorPane.leftAnchor="353.0" AnchorPane.topAnchor="262.0" />
 
 </AnchorPane>

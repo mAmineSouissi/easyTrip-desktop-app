@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 public class ClientDashboardController implements Initializable {
     public ImageView profilePic;
     public Button logOutButton;
-    public Label manageOfferLabel;
+    public Label travelOfferLabel;
     public Label otherOffersLabel;
     public Label coming_soon;
     public Label manageOfferHotel;
@@ -79,7 +79,7 @@ public class ClientDashboardController implements Initializable {
             welcomeLabel.setText(bundle.getString("welcome_guest"));
         }
         coming_soon.setText(bundle.getString("coming_soon"));
-        manageOfferLabel.setText(bundle.getString("travel_offers"));
+        travelOfferLabel.setText(bundle.getString("travel_offers"));
         hotelOffersLabel.setText(bundle.getString("offer_hotel"));
         ticketsOffersLabel.setText(bundle.getString("offer_tickets"));
         editProfile.setText(bundle.getString("profile_button"));
@@ -315,6 +315,19 @@ public class ClientDashboardController implements Initializable {
             Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Offer Tickets");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToTravelClient(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/afficher_offer_travel.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

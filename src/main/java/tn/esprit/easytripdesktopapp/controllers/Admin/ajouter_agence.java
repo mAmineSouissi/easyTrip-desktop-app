@@ -11,6 +11,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Agence;
+import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceAgence;
 
 import java.io.File;
@@ -43,11 +44,10 @@ public class ajouter_agence {
 
     private String imageUrl;
 
-    private static final String API_KEY = "02a8cb89e2a0961ee3fbcf04c7d962880b91e1cd"; // Remplace par ta clé API
-
+    private static final String API_KEY = "02a8cb89e2a0961ee3fbcf04c7d962880b91e1cd";
     ServiceAgence agence = new ServiceAgence();
 
-    UserSession session = UserSession.getInstance();
+    UserSession session=UserSession.getInstance();
 
     @FXML
     void save(ActionEvent event) {
@@ -74,14 +74,13 @@ public class ajouter_agence {
             return;
         }
 
-        System.out.println(session.getUser().getId());
         Agence ag = new Agence();
-        ag.setUser_id(session.getUser().getId());
         ag.setNom(name.getText());
         ag.setAddress(address.getText());
         ag.setPhone(phone.getText());
         ag.setEmail(email.getText());
         ag.setImage(imageUrl);
+        ag.setUser_id(session.getUser().getId());
 
         agence.add(ag);
 

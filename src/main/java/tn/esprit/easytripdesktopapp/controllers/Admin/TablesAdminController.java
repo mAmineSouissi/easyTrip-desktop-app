@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -44,6 +45,14 @@ public class TablesAdminController implements Initializable {
 
     public ImageView profilePic;
     public Button editProfile;
+    public Label manageAgencies;
+    public Label manageReservations;
+    public Label manageReclamations;
+    public Label manageFeedbacks;
+    public Label manageTickets;
+    public Label manageHotels;
+    public Label manageSurvey;
+    public Label managePromotions;
 
     @FXML
     private ListView<User> userListView;
@@ -77,9 +86,15 @@ public class TablesAdminController implements Initializable {
         } else {
             welcomeLabel.setText(bundle.getString("welcome_guest"));
         }
-
+        managePromotions.setText(bundle.getString("manage_promotions"));
+        manageAgencies.setText(bundle.getString("manage_agency"));
+        manageReservations.setText(bundle.getString("manage_reservations"));
+        manageReclamations.setText(bundle.getString("manage_reclamations"));
+        manageFeedbacks.setText(bundle.getString("manage-feedbacks"));
+        manageTickets.setText(bundle.getString("manage_ticket"));
+        manageHotels.setText(bundle.getString("manage_hotel"));
+        manageSurvey.setText(bundle.getString("Survey"));
         manageOfferLabel.setText(bundle.getString("travel_offers"));
-        otherOffersLabel.setText(bundle.getString("other_offers"));
         editProfile.setText(bundle.getString("profile_button"));
         logOutButton.setText(bundle.getString("logout_button"));
     }
@@ -392,10 +407,7 @@ public class TablesAdminController implements Initializable {
                 session.clearSession();
                 System.out.println("User logged out successfully.");
                 try {
-                    ResourceBundle loginBundle = ResourceBundle.getBundle(
-                            "tn.esprit.easytripdesktopapp.i18n.messages",
-                            Locale.getDefault()
-                    );
+                    ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"), loginBundle);
                     Parent root = loader.load();
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -424,5 +436,55 @@ public class TablesAdminController implements Initializable {
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
+    }
+
+    public void navigateToAdminAgence(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/afficher_agence.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    public void navigateToAdminTravel(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/afficher_offer_travel.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToPromotionAdmin(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/afficher_promotion.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

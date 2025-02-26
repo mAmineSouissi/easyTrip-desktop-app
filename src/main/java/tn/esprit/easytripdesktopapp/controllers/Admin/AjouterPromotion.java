@@ -8,15 +8,13 @@ import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 import tn.esprit.easytripdesktopapp.services.ServiceAgence;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
 import java.sql.Date;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Properties;
 
 public class AjouterPromotion {
 
@@ -42,25 +40,37 @@ public class AjouterPromotion {
             return;
         }
 
+        // Vérifier si la date choisie est avant aujourd'hui
         if (validUntil.getValue().isBefore(java.time.LocalDate.now())) {
             afficherAlerte("Erreur", "La date de validité ne peut pas être antérieure à aujourd'hui !", Alert.AlertType.ERROR);
             return;
         }
 
         try {
+            // Convertir discountPercentage en float
             float discount = Float.parseFloat(discountPercentage.getText());
+
+            // Vérifier que le pourcentage de réduction est compris entre 0 et 100
+            if (discount < 0 || discount > 100) {
+                afficherAlerte("Erreur", "Le pourcentage de réduction doit être compris entre 0 et 100 !", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Convertir validUntil en java.sql.Date
             Date sqlDate = Date.valueOf(validUntil.getValue());
 
+            // Créer une nouvelle promotion
             Promotion p = new Promotion();
             p.setTitle(title.getText());
             p.setDescription(description.getText());
             p.setDiscount_percentage(discount);
             p.setValid_until(sqlDate);
 
+            // Ajouter la promotion via le service
             promotionService.add(p);
             afficherAlerte("Succès", "Promotion ajoutée avec succès !", Alert.AlertType.INFORMATION);
 
-            // Envoyer un e-mail à toutes les agences via Infobip
+            // Envoyer un e-mail à toutes les agences
             envoyerEmailAuxAgences(p);
         } catch (NumberFormatException e) {
             afficherAlerte("Erreur", "Le pourcentage de réduction doit être un nombre valide !", Alert.AlertType.ERROR);
@@ -75,48 +85,43 @@ public class AjouterPromotion {
             return;
         }
 
-        String apiKey = "7de7b8a9173b9ca371edbc28d6f8354b-5b2c3c88-c463-4e15-be8a-4b1060a6d31b"; // Remplace par ta clé API Infobip
-        String senderEmail = "Azzouz.MohamedYoussef@esprit.tn"; // Remplace par ton e-mail validé sur Infobip
+        String smtpHost = "smtp.gmail.com";
+        String smtpPort = "587";
+        String username = "youssefcarma@gmail.com";
+        String password = "fvbj ygsn jsin aapn";
 
-        String sujet = "Nouvelle Promotion: " + promotion.getTitle();
-        String contenu = "Description: " + promotion.getDescription() + "\n" +
-                "Pourcentage de réduction: " + promotion.getDiscount_percentage() + "%\n" +
-                "Valide jusqu'au: " + promotion.getValid_until();
+        Properties props = new Properties();
+        props.put("mail.smtp.host", smtpHost);
+        props.put("mail.smtp.port", smtpPort);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
 
-        // Construire JSON correctement formaté
-        String jsonBody = "{"
-                + "\"from\": \"" + senderEmail + "\","
-                + "\"to\": [\"" + String.join("\", \"", agencyEmails) + "\"],"
-                + "\"subject\": \"" + sujet + "\","
-                + "\"text\": \"" + contenu + "\""
-                + "}";
-
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://z366rx.api.infobip.com/email/3/send"))
-                .header("Authorization", "App " + apiKey)
-                .header("Accept", "application/json")  // Ajout de l'en-tête Accept
-                // .header("Content-Type", "application/json") // Retirer cette ligne
-                .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
-                .build();
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
 
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("Réponse de l'API Infobip: " + response.body());
+            for (String recipient : agencyEmails) {
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(username));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipient));
+                message.setSubject("Nouvelle Promotion: " + promotion.getTitle());
+                message.setText("Description: " + promotion.getDescription() + "\n" +
+                        "Pourcentage de réduction: " + promotion.getDiscount_percentage() + "%\n" +
+                        "Valide jusqu'au: " + promotion.getValid_until());
 
-            if (response.statusCode() == 200 || response.statusCode() == 201) {
-                afficherAlerte("Succès", "E-mails envoyés avec succès aux agences !", Alert.AlertType.INFORMATION);
-            } else {
-                afficherAlerte("Erreur", "Échec de l'envoi des e-mails. Code: " + response.statusCode() + " Message: " + response.body(), Alert.AlertType.ERROR);
+                Transport.send(message);
             }
-        } catch (Exception e) {
+
+            afficherAlerte("Succès", "E-mails envoyés avec succès aux agences !", Alert.AlertType.INFORMATION);
+        } catch (MessagingException e) {
             e.printStackTrace();
             afficherAlerte("Erreur", "Erreur lors de l'envoi des e-mails : " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
-
-
-
 
     private void afficherAlerte(String titre, String message, Alert.AlertType typeAlerte) {
         Alert alerte = new Alert(typeAlerte);

@@ -33,7 +33,7 @@ public class update_agence {
     private String imageUrl;
     private Agence currentAgence;
     private final ServiceAgence serviceAgence = new ServiceAgence();
-    private static final String API_KEY = "02a8cb89e2a0961ee3fbcf04c7d962880b91e1cd"; // Remplacez par votre clé API
+    private static final String API_KEY = "02a8cb89e2a0961ee3fbcf04c7d962880b91e1cd";
 
     // Méthode pour charger une agence existante pour mise à jour
     public void setAgence(Agence agence) {

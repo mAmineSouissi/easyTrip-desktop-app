@@ -22,7 +22,7 @@
         <Region HBox.hgrow="ALWAYS" />
 
         <!-- Centered Navigation Items -->
-        <Label fx:id="manageOfferLabel" styleClass="nav-label" text="Travel Offers" />
+        <Label fx:id="travelOfferLabel" onMouseClicked="#navigateToTravelClient" styleClass="nav-label" text="Travel Offers" />
         <Label fx:id="hotelOffersLabel" onMouseClicked="#navigateToHotelAffichage" styleClass="nav-label" text="%offer_hotel" />
         <Button styleClass="nav-label" text="Reservation" onAction="#navigateToReservation" />
         <Label fx:id="ticketsOffersLabel" onMouseClicked="#navigateToTicktsAffichage" styleClass="nav-label" text="%offer_tickets" />

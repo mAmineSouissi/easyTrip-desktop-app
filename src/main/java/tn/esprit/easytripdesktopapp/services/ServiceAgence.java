@@ -21,14 +21,13 @@ public class ServiceAgence implements CRUDService<Agence> {
 
     @Override
     public void add(Agence agence) {
-        String qry = "INSERT INTO `agency`(`name`, `address`, `phone`, `email`, `image`,`user_id`) VALUES (?,?,?,?,?,?)";
+        String qry = "INSERT INTO `agency`(`name`, `address`, `phone`, `email`, `image`) VALUES (?,?,?,?,?)";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setString(1, agence.getNom());
             pstm.setString(2, agence.getAddress());
             pstm.setString(3, agence.getPhone());
             pstm.setString(4, agence.getEmail());
             pstm.setString(5, agence.getImage());
-            pstm.setInt(6, agence.getUser_id());
             pstm.executeUpdate();
             System.out.println("Agence ajoutée avec succès !");
         } catch (SQLException e) {
@@ -107,7 +106,31 @@ public class ServiceAgence implements CRUDService<Agence> {
 
     @Override
     public Agence getById(int id) {
-        return null;
+        String qry = "SELECT * FROM `agency` WHERE `id`=?";
+        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                Agence agence = new Agence();
+                agence.setId(rs.getInt("id"));
+                agence.setNom(rs.getString("name"));
+                agence.setAddress(rs.getString("address"));
+                agence.setPhone(rs.getString("phone"));
+                agence.setEmail(rs.getString("email"));
+                agence.setImage(rs.getString("image"));
+
+                // Fetch offers for the agency
+                ServiceOfferTravel serviceOffer = new ServiceOfferTravel();
+                List<OfferTravel> offres = serviceOffer.getOffresByAgenceId(id);
+                agence.setOfferTravels(offres);
+
+                return agence;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching agency by ID: " + e.getMessage());
+        }
+        return null; // Return null if no agency is found
     }
 
     public Optional<Agence> getByid(int id) {
@@ -183,7 +206,7 @@ public class ServiceAgence implements CRUDService<Agence> {
 
     public List<String> getAllAgencyEmails() {
         List<String> emails = new ArrayList<>();
-        String query = "SELECT email FROM `agency`"; // Assurez-vous que le nom de la table est correct
+        String query = "SELECT email FROM `agency`";
 
         try (PreparedStatement preparedStatement = cnx.prepareStatement(query);
              ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -193,21 +216,21 @@ public class ServiceAgence implements CRUDService<Agence> {
                 emails.add(email);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage()); // Gérer l'exception de manière appropriée
+            System.out.println(e.getMessage());
         }
 
         return emails;
     }
 
     public List<Agence> getByAgentId(int id) {
-        List<Agence> agences = new ArrayList<>();
-        String qry = "SELECT * FROM `agency` WHERE user_id = ?";
+        String qry = "SELECT * FROM `agency` WHERE `user_id`=?";
+        List<Agence> agencies = new ArrayList<>();
 
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setInt(1, id);
             ResultSet rs = pstm.executeQuery();
 
-            while (rs.next()) {
+            while (rs.next()) { // Use while loop to handle multiple rows
                 Agence agence = new Agence();
                 agence.setId(rs.getInt("id"));
                 agence.setNom(rs.getString("name"));
@@ -215,19 +238,18 @@ public class ServiceAgence implements CRUDService<Agence> {
                 agence.setPhone(rs.getString("phone"));
                 agence.setEmail(rs.getString("email"));
                 agence.setImage(rs.getString("image"));
-                agence.setUser_id(rs.getInt("user_id")); // Adapting to your model
 
-                // Fetch associated offers
+                // Fetch offers for the agency
                 ServiceOfferTravel serviceOffer = new ServiceOfferTravel();
                 List<OfferTravel> offres = serviceOffer.getOffresByAgenceId(agence.getId());
                 agence.setOfferTravels(offres);
 
-                agences.add(agence);
+                agencies.add(agence); // Add the agency to the list
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error fetching agencies by user ID: " + e.getMessage());
         }
-        return agences;
-    }
 
+        return agencies; // Return the list of agencies (empty if none found)
+    }
 }

@@ -114,6 +114,7 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
         return offers;
     }
 
+
     @Override
     public void update(OfferTravel offer) {
         String qry = "UPDATE `offer_travel` SET `departure`=?, `destination`=?, `departure_date`=?, `arrival_date`=?, `hotelName`=?, `flightName`=?, `discription`=?, `price`=?, `image`=?, `agency_id`=?, `promotion_id`=?, `category`=? WHERE `id`=?";
@@ -178,9 +179,57 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
     @Override
     public OfferTravel getById(int id) {
-        return null;
-    }
+        String qry = "SELECT * FROM `offer_travel` WHERE `id`=?";
 
+        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                OfferTravel offer = new OfferTravel();
+                offer.setId(rs.getInt("id"));
+                offer.setDeparture(rs.getString("departure"));
+                offer.setDestination(rs.getString("destination"));
+                offer.setDeparture(String.valueOf(rs.getDate("departure_date")));
+                offer.setArrival_date(rs.getDate("arrival_date"));
+                offer.setHotelName(rs.getString("hotel_name"));
+                offer.setFlightName(rs.getString("flight_name"));
+                offer.setDiscription(rs.getString("description"));
+                offer.setPrice(rs.getFloat("price"));
+                offer.setImage(rs.getString("image"));
+                int agencyId = rs.getInt("agency_id");
+                int promotionId = rs.getInt("promotion_id");
+
+                // Fetch agency using ServiceAgence
+                ServiceAgence serviceAgence = new ServiceAgence();
+                Agence agence = serviceAgence.getById(agencyId);
+                offer.setAgence(agence);
+
+                // Fetch promotion using ServicePromotion
+                ServicePromotion servicePromotion = new ServicePromotion();
+                Optional<Promotion> promotionOptional = servicePromotion.getByid(promotionId);
+                Promotion promotion = promotionOptional.orElse(null);
+                offer.setPromotion(promotion);
+
+                // Fetch category
+                String categoryString = rs.getString("category");
+                Category category = null;
+                if (categoryString != null) {
+                    try {
+                        category = Category.valueOf(categoryString.toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid category value: " + categoryString);
+                    }
+                }
+                offer.setCategory(category);
+
+                return offer;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching offer by ID: " + e.getMessage());
+        }
+        return null; // Return null if no offer is found
+    }
 
     public Optional<OfferTravel> getByid(int id) {
         String qry = "SELECT * FROM `offer_travel` WHERE `id`=?";
@@ -207,9 +256,8 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
                 // Récupérer l'Agence en utilisant ServiceAgence
                 ServiceAgence serviceAgence = new ServiceAgence();
-                Optional<Agence> agenceOptional = serviceAgence.getByid(agenceId);
-                Agence agence = agenceOptional.orElse(null);
-                offer.setAgence(agence);
+                Agence agenceOptional = serviceAgence.getById(agenceId);
+                offer.setAgence(agenceOptional);
 
                 // Récupérer la Promotion en utilisant ServicePromotion
                 ServicePromotion servicePromotion = new ServicePromotion();
@@ -266,9 +314,8 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
                 // Récupérer l'Agence en utilisant ServiceAgence
                 ServiceAgence serviceAgence = new ServiceAgence();
-                Optional<Agence> agenceOptional = serviceAgence.getByid(agenceId);
-                Agence agence = agenceOptional.orElse(null);
-                offer.setAgence(agence);
+                Agence agenceOptional = serviceAgence.getById(agenceId);
+                offer.setAgence(agenceOptional);
 
                 // Récupérer la Promotion en utilisant ServicePromotion
                 ServicePromotion servicePromotion = new ServicePromotion();

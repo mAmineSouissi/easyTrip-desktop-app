@@ -31,10 +31,20 @@ public class Addreservation {
     UserSession session = UserSession.getInstance();
 
     @FXML
+    public void initialize() {
+        if (session.getUser() != null) {
+            nomres.setText(session.getUser().getName());
+            prenomres.setText(session.getUser().getSurname());
+            phoneres.setText(session.getUser().getPhone());
+            mailres.setText(session.getUser().getEmail());
+        }
+    }
+
+    @FXML
     void ajouterR(ActionEvent event) {
         System.out.println("Name:" + session.getUser().getName());
         try {
-           /* if (!allFieldsFilled()) {
+           if (!allFieldsFilled()) {
                 afficherErreur("Veuillez remplir tous les champs obligatoires.");
                 return;
             }
@@ -46,13 +56,13 @@ public class Addreservation {
                 afficherErreur("Veuillez saisir un E-mail valide.");
                 return;
             }
-            */
+
             Reservation r = new Reservation();
             r.setUserId(session.getUser().getId());
-            r.setNom(session.getUser().getName());
-            r.setPrenom(session.getUser().getSurname());
-            r.setPhone(Integer.parseInt(session.getUser().getPhone()));
-            r.setEmail(session.getUser().getEmail());
+            r.setNom(nomres.getText());
+            r.setPrenom(prenomres.getText());
+            r.setPhone(Integer.parseInt(phoneres.getText()));
+            r.setEmail(mailres.getText());
             sr.add(r);
             System.out.println("Réservation ajoutée avec succès");
         } catch (NumberFormatException e) {

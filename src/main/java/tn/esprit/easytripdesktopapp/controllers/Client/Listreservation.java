@@ -29,7 +29,9 @@ public class Listreservation {
                 cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
         col2.setCellValueFactory(new PropertyValueFactory<>("places"));
       // col3.setCellValueFactory(new PropertyValueFactory<>("prix"));
-        loadReservations1();
+        List<Reservation> reservations = sr.getAll();
+        ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
+        table.setItems(observableReservations);
         loadReservations("");
     }
 
@@ -78,13 +80,6 @@ public class Listreservation {
                 row++;
             }
         }
-    }
-
-
-    private void loadReservations1() {
-        List<Reservation> reservations = sr.getAll();
-        ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
-        table.setItems(observableReservations);
     }
 
     private void modifierReservation(Reservation reservation) {

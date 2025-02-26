@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.controlsfx.control.Notifications;
+import javafx.util.Duration;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 public class ServiceFeedback implements CRUDService<Feedback> {
 
     private final Connection cnx;
@@ -17,7 +22,6 @@ public class ServiceFeedback implements CRUDService<Feedback> {
         cnx = MyDataBase.getInstance().getCnx();
     }
 
-    @Override
     public void add(Feedback feedback) {
         String qry = "INSERT INTO feedback (userId, offerId, rating, message, date) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
@@ -29,8 +33,11 @@ public class ServiceFeedback implements CRUDService<Feedback> {
 
             pstm.executeUpdate();
             System.out.println("Feedback ajouté avec succès.");
+
+            // Envoi de la notification après l'ajout
+            NotificationService.showFeedbackNotification(feedback);
         } catch (SQLException e) {
-            System.out.println("Erreur" + e.getMessage());
+            System.out.println("Erreur: " + e.getMessage());
         }
     }
 
@@ -181,4 +188,20 @@ public class ServiceFeedback implements CRUDService<Feedback> {
         return 0;
 
     }
+
+
+    public class NotificationService {
+
+        public static void showFeedbackNotification(Feedback feedback) {
+            Notifications.create()
+                    .title("Nouveau Feedback Reçu")
+                    .text("Un nouvel avis a été soumis : " + feedback.getMessage())
+                   // .graphic(new ImageView(new Image("file:icons/feedback.png"))) // Icône facultative
+                    .hideAfter(Duration.seconds(5))
+                    .position(javafx.geometry.Pos.TOP_RIGHT)
+                    .darkStyle()
+                    .show();
+        }
+    }
+
 }

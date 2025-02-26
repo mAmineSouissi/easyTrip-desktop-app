@@ -2,6 +2,7 @@ package tn.esprit.easytripdesktopapp.models;
 
 import java.sql.Date;
 
+
 public class Feedback {
     private int id;
     private int userId;
@@ -9,6 +10,7 @@ public class Feedback {
     private int rating;
     private String message;
     private Date date;
+
 
     public Feedback() {}
 
@@ -38,6 +40,12 @@ public class Feedback {
 
     public Date getDate() { return date; }
     public void setDate(Date date) { this.date = date; }
+
+
+
+
+
+
 
     @Override
     public String toString() {

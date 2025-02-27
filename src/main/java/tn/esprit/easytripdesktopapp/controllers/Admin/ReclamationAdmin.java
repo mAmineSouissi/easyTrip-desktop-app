@@ -15,6 +15,22 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Reclamation;
 import tn.esprit.easytripdesktopapp.services.ServiceReclamation;
+import org.mindrot.jbcrypt.BCrypt;
+import tn.esprit.easytripdesktopapp.utils.MyDataBase;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Random;
+
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
+import java.util.Properties;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -229,32 +245,160 @@ public class ReclamationAdmin {
         alert.show();
     }
 
-    @FXML
-    void sendEmail(ActionEvent event) {
-        if (selectedReclamation == null) {
-            showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation pour envoyer un e-mail.");
-            return;
+//    @FXML
+//    void sendEmail(ActionEvent event) {
+//        if (selectedReclamation == null) {
+//            showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation pour envoyer un e-mail.");
+//            return;
+//        }
+//
+//        // Utiliser l'adresse e-mail de test (omsehli@gmail.com)
+//        String clientEmail = "omsehli@gmail.com"; // Adresse e-mail de test
+//
+//        // Simuler les informations de l'utilisateur (nom, prénom)
+//        String clientName = "Om"; // Nom de l'utilisateur
+//        String clientSurname = "Sehli"; // Prénom de l'utilisateur
+//
+//        // Envoyer l'e-mail
+//        String subject = "Votre réclamation a été traitée";
+//        String body = "Bonjour " + clientName + " " + clientSurname + ",\n\n" +
+//                "Votre réclamation concernant '" + selectedReclamation.getIssue() + "' a été traitée. " +
+//                "Le statut est maintenant '" + selectedReclamation.getStatus() + "'.\n\n" +
+//                "Cordialement,\nL'équipe de support.";
+//
+////        try {
+////            SendGridUtil.sendEmail(clientEmail, "omsehli@gmail.com", subject, body);
+////            showAlert(Alert.AlertType.INFORMATION, "E-mail envoyé avec succès à " + clientEmail);
+////        } catch (Exception e) {
+////            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail : " + e.getMessage());
+////        }
+//    }
+
+@FXML
+void sendEmail(ActionEvent event) {
+    if (selectedReclamation == null) {
+        showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation pour envoyer un e-mail.");
+        return;
+    }
+
+    // Fetch the email of the user associated with the selected reclamation
+    String clientEmail = getEmailByUserId(selectedReclamation.getUserId());
+
+    if (clientEmail == null || clientEmail.trim().isEmpty()) {
+        showAlert(Alert.AlertType.ERROR, "Aucun e-mail trouvé pour cet utilisateur.");
+        return;
+    }
+
+    // Simuler les informations de l'utilisateur (nom, prénom)
+    String clientName = "Om"; // Nom de l'utilisateur
+    String clientSurname = "Sehli"; // Prénom de l'utilisateur
+
+    // Envoyer l'e-mail
+    String subject = "Votre réclamation a été traitée";
+    String body = "Bonjour " + clientName + " " + clientSurname + ",\n\n" +
+            "Votre réclamation concernant '" + selectedReclamation.getIssue() + "' a été traitée. " +
+            "Le statut est maintenant '" + selectedReclamation.getStatus() + "'.\n\n" +
+            "Cordialement,\nL'équipe de support.";
+
+    try {
+        // Use the sendReclamationEmail method to send the email
+        if (sendReclamationEmail(clientEmail, selectedReclamation.getStatus(), selectedReclamation.getIssue())) {
+            showAlert(Alert.AlertType.INFORMATION, "E-mail envoyé avec succès à " + clientEmail);
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail.");
+        }
+    } catch (Exception e) {
+        showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail : " + e.getMessage());
+    }
+}
+
+    public String getEmailByUserId(int userId) {
+        String email = null;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Establish a connection to the database
+            connection = MyDataBase.getInstance().getCnx();
+            System.out.println(userId);
+
+            // Prepare the SQL query to fetch the email by userId
+            String query = "SELECT email FROM User WHERE id = ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+
+            // Execute the query
+            resultSet = preparedStatement.executeQuery();
+
+            // If a result is found, retrieve the email
+            if (resultSet.next()) {
+                email = resultSet.getString("email");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the resources
+            try {
+                if (resultSet != null) resultSet.close();
+                if (preparedStatement != null) preparedStatement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
-        // Utiliser l'adresse e-mail de test (omsehli@gmail.com)
-        String clientEmail = "omsehli@gmail.com"; // Adresse e-mail de test
+        return email;
+    }
 
-        // Simuler les informations de l'utilisateur (nom, prénom)
-        String clientName = "Om"; // Nom de l'utilisateur
-        String clientSurname = "Sehli"; // Prénom de l'utilisateur
 
-        // Envoyer l'e-mail
-        String subject = "Votre réclamation a été traitée";
-        String body = "Bonjour " + clientName + " " + clientSurname + ",\n\n" +
-                "Votre réclamation concernant '" + selectedReclamation.getIssue() + "' a été traitée. " +
-                "Le statut est maintenant '" + selectedReclamation.getStatus() + "'.\n\n" +
-                "Cordialement,\nL'équipe de support.";
+    public boolean sendReclamationEmail(String email, String status, String issue) {
+        // Email configuration
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
 
-//        try {
-//            SendGridUtil.sendEmail(clientEmail, "omsehli@gmail.com", subject, body);
-//            showAlert(Alert.AlertType.INFORMATION, "E-mail envoyé avec succès à " + clientEmail);
-//        } catch (Exception e) {
-//            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail : " + e.getMessage());
-//        }
+        // Email credentials (use your application's email and password/app password)
+        final String senderEmail = "aminesouissi681@gmail.com"; // Replace with your email
+        final String password = "cimh ylri oahd pvlz"; // Replace with your app password
+
+        // Create a session with authentication
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(senderEmail, password);
+            }
+        });
+
+        try {
+            // Create a message
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(senderEmail));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            message.setSubject("Mise à jour du statut de votre réclamation");
+
+            // Create the email body
+            String emailBody = "Bonjour,\n\n"
+                    + "Nous avons une mise à jour concernant votre réclamation.\n\n"
+                    + "Statut de la réclamation : " + status + "\n"
+                    + "Description du problème : " + issue + "\n\n"
+                    + "Si vous avez des questions supplémentaires ou besoin d'assistance, n'hésitez pas à contacter notre équipe de support.\n\n"
+                    + "Cordialement,\n"
+                    + "L'équipe Easy Trip";
+
+            message.setText(emailBody);
+
+            // Send the message
+            Transport.send(message);
+
+            System.out.println("E-mail de réclamation envoyé à : " + email);
+            return true;
+        } catch (MessagingException e) {
+            System.out.println("Erreur lors de l'envoi de l'e-mail de réclamation : " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 }

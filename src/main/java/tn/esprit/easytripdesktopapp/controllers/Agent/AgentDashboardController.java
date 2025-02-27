@@ -15,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -31,6 +32,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AgentDashboardController implements Initializable {
+    public Label manageOfferHotel;
+    public Label consultPromotion;
+    public Label manageOfferTravel;
     @FXML
     private ImageView profilePic;
 
@@ -85,6 +89,9 @@ public class AgentDashboardController implements Initializable {
         } else {
             welcomeLabel.setText(bundle.getString("welcome_guest"));
         }
+
+        manageOfferTravel.setText(bundle.getString("manage_travel"));
+        consultPromotion.setText(bundle.getString("consult_promotions"));
         coming_soon.setText(bundle.getString("coming_soon"));
         manageAgencyLabel.setText(bundle.getString("manage_agency"));
         manageFeedbackLabel.setText(bundle.getString("manage_feedback"));
@@ -229,10 +236,7 @@ public class AgentDashboardController implements Initializable {
                 session.clearSession();
                 System.out.println("User logged out successfully.");
                 try {
-                    ResourceBundle loginBundle = ResourceBundle.getBundle(
-                            "tn.esprit.easytripdesktopapp.i18n.messages",
-                            Locale.getDefault()
-                    );
+                    ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"), loginBundle);
                     Parent root = loader.load();
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -267,5 +271,58 @@ public class AgentDashboardController implements Initializable {
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
+    }
+
+    public void navigateToAgency(MouseEvent mouseEvent) throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/afficher_agence.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("login_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToHotel(MouseEvent mouseEvent) {
+        try {
+            ResourceBundle bundelResources = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"), bundelResources);
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("offers_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigatToPromotionAgent(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/afficher_promotion.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("offers_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToOfferTravel(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/afficher_offer_travel.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("offers_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

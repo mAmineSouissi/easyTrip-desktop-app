@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane stylesheets="@../../styles/style9.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AfficherPromotion">
+    <top>
+        <HBox alignment="CENTER" spacing="10">
+            <TextField fx:id="searchField" promptText="Rechercher par titre..." />
+         <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
+        </HBox>
+    </top>
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="10" style="-fx-padding: 15;">
+            <!-- Titre "Liste des Promotions" -->
+            <Label styleClass="title-label" text="Liste des Promotions" />
+
+            <!-- ScrollPane avec FlowPane pour les cartes -->
+            <ScrollPane fitToHeight="true" fitToWidth="true">
+                <FlowPane fx:id="cardContainer" hgap="10" minWidth="600" vgap="10" />
+            </ScrollPane>
+        </VBox>
+    </center>
+</BorderPane>

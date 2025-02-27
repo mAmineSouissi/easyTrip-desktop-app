@@ -1,0 +1,40 @@
+/* Style général pour les boutons */
+.button {
+    -fx-font-size: 16px;
+    -fx-background-color: #fe4f69;
+    -fx-text-fill: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+}
+
+/* Effet de survol pour les boutons */
+.button:hover {
+    -fx-background-color: #0e1010;
+    -fx-text-fill: #4facfe;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Style pour le texte de bienvenue */
+.welcome-text {
+    -fx-font-size: 36px;
+    -fx-fill: #4facfe;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 2, 2, 0, 0);
+}
+
+/* Style pour le sous-titre */
+.subtitle-text {
+    -fx-font-size: 18px;
+    -fx-fill: #4facfe;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 1, 1, 0, 0);
+}
+
+/* Style pour le fond d'écran */
+.root {
+    -fx-background-image: url('images/background.jpg');
+    -fx-background-size: cover;
+}

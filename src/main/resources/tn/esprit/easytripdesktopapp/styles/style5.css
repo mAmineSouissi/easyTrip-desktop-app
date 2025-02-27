@@ -1,0 +1,57 @@
+/* ---- Style Général ---- */
+.root {
+    -fx-background-color: #f8f9fa;
+    -fx-font-family: "Arial";
+}
+
+/* ---- Titre ---- */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+}
+
+.label:first-of-type {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #34495e;
+}
+
+/* ---- Champs de texte et zones de saisie ---- */
+.text-field, .text-area, .date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #bdc3c7;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-font-size: 14px;
+    -fx-padding: 6px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0, 1, 1);
+}
+
+.text-area {
+    -fx-pref-height: 80px;
+}
+
+.text-field:focused, .text-area:focused, .date-picker:focused {
+    -fx-border-color: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.5), 5, 0, 2, 2);
+}
+
+/* ---- Bouton Mettre à Jour ---- */
+#updateButton {
+    -fx-background-color: #f39c12;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
+}
+
+#updateButton:hover {
+    -fx-background-color: #e67e22;
+}
+
+#updateButton:pressed {
+    -fx-background-color: #d35400;
+}

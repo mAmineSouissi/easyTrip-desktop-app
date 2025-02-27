@@ -1,0 +1,76 @@
+/* Style général pour l'AnchorPane */
+AnchorPane {
+    -fx-background-color: #f4f4f4; /* Couleur de fond légère */
+    -fx-padding: 10; /* Espacement intérieur */
+}
+
+/* Style pour les Labels */
+Label {
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-text-fill: #333333; /* Couleur du texte */
+}
+
+/* Style pour les TextField */
+TextField {
+    -fx-pref-height: 35; /* Hauteur préférée */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Couleur de la bordure */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-padding: 5; /* Espacement intérieur */
+}
+
+/* Style pour les DatePicker */
+DatePicker {
+    -fx-pref-height: 35; /* Hauteur préférée */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Couleur de la bordure */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-padding: 5; /* Espacement intérieur */
+}
+
+/* Style pour les ComboBox */
+ComboBox {
+    -fx-pref-height: 35; /* Hauteur préférée */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Couleur de la bordure */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-padding: 5; /* Espacement intérieur */
+}
+
+/* Style pour les TextArea */
+TextArea {
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Couleur de la bordure */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-padding: 5; /* Espacement intérieur */
+}
+
+/* Style pour les boutons */
+Button {
+    -fx-pref-width: 120; /* Largeur préférée */
+    -fx-pref-height: 35; /* Hauteur préférée */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-background-color: #4CAF50; /* Fond vert */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
+    -fx-cursor: hand; /* Curseur en forme de main au survol */
+}
+
+Button:hover {
+    -fx-background-color: #45a049; /* Changement de couleur au survol */
+}
+
+/* Style pour l'ImageView */
+ImageView {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3); /* Ombre légère */
+}

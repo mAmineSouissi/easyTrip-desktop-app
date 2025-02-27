@@ -20,4 +20,6 @@
     <Label fx:id="numRoomLabel"/>
     <Label fx:id="promotionLabel" style="-fx-text-fill: #FF5722;"/> <!-- Nouveau Label pour la promotion -->
     <Button fx:id="reserveButton" text="Réserver" onAction="#handleReserveButton"/>
+    <Button fx:id="feedbackbutton" text="Soummettre Feedback" onAction="#handleFeedbackButton"/>
+
 </VBox>

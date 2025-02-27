@@ -487,4 +487,32 @@ public class TablesAdminController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void navigateToReclamationAdmin(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/ReclamationAdmin.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToAdminFeedbacks(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/FeedbackAdmin.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

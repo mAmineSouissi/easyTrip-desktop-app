@@ -23,8 +23,8 @@
         <Label fx:id="manageAgencies" onMouseClicked="#navigateToAdminAgence" styleClass="nav-label" text="%manage_agency" />
         <Label fx:id="managePromotions" styleClass="nav-label" onMouseClicked="#navigateToPromotionAdmin" text="%manage_promotions" />
         <Label fx:id="manageReservations" styleClass="nav-label" text="%manage_reservations" />
-        <Label fx:id="manageReclamations" styleClass="nav-label" text="%manage_reclamations" />
-        <Label fx:id="manageFeedbacks" styleClass="nav-label" text="%manage-feedbacks" />
+        <Label fx:id="manageReclamations" onMouseClicked="#navigateToReclamationAdmin" styleClass="nav-label" text="%manage_reclamations" />
+        <Label fx:id="manageFeedbacks" onMouseClicked="#navigateToAdminFeedbacks" styleClass="nav-label" text="%manage-feedbacks" />
         <Label fx:id="manageTickets" styleClass="nav-label" text="%manage_ticket" />
         <Label fx:id="manageHotels" styleClass="nav-label" text="%manage_hotel" />
         <Label fx:id="manageSurvey" styleClass="nav-label" text="%Survey" />

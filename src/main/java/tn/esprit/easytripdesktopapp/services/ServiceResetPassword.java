@@ -90,7 +90,7 @@ public class ServiceResetPassword {
             stmt.setString(2, enteredCode);
 
             ResultSet rs = stmt.executeQuery();
-            storeVerificationCode(email, enteredCode);
+//            storeVerificationCode(email, enteredCode);
 
             if (rs.next()) {
                 // Code is valid, mark it as used
@@ -216,6 +216,8 @@ public class ServiceResetPassword {
             Transport.send(message);
 
             System.out.println("Verification code sent to: " + email);
+            storeVerificationCode(email, verificationCode);
+            System.out.println("Code Stored Successfully: " + verificationCode);
             return true;
         } catch (MessagingException e) {
             System.out.println("Error sending verification code: " + e.getMessage());

@@ -92,7 +92,7 @@ public class FeedbackAdmin {
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Login Screen");
+            stage.setTitle("Admin Screen");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

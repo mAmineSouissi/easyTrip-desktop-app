@@ -12,11 +12,14 @@ import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import tn.esprit.easytripdesktopapp.models.AccountType;
 import tn.esprit.easytripdesktopapp.models.Reclamation;
 import tn.esprit.easytripdesktopapp.services.ServiceReclamation;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.sql.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class ReclamationUser {
 
@@ -50,9 +53,11 @@ public class ReclamationUser {
     private Label dateError; // Message d'erreur pour le champ "Date"
 
     private ServiceReclamation reclamationService = new ServiceReclamation();
+    private ResourceBundle bundle;
 
     @FXML
     void initialize() {
+        bundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
         loadReclamations();
 
         // Gestion de la recherche en temps réel
@@ -121,14 +126,33 @@ public class ReclamationUser {
 
     @FXML
     void backToHome(ActionEvent event) {
+        Stage stage;
+        Scene scene;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Home.fxml"));
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            FXMLLoader loader;
+            switch (AccountType.valueOf(session.getUser().getRole())) {
+                case Admin:
+                    loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/TablesAdmin.fxml"), bundle);
+                    break;
+                case Agent:
+                    loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"), bundle);
+                    break;
+                case Client:
+                    loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), bundle);
+                    break;
+                default:
+                    showAlert(bundle.getString("error"), bundle.getString("unknown_role"), Alert.AlertType.ERROR);
+                    return;
+            }
+
+            stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            scene = new Scene(loader.load());
             stage.setScene(scene);
+            stage.setTitle(bundle.getString(session.getUser().getRole().toLowerCase() + "_dashboard"));
             stage.show();
+
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur lors de la navigation : " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -159,11 +183,11 @@ public class ReclamationUser {
             reclamation.setDate(Date.valueOf(datePicker.getValue()));
 
             reclamationService.add(reclamation);
-            showAlert(Alert.AlertType.CONFIRMATION, "Réclamation soumise avec succès");
+            showAlert2(Alert.AlertType.CONFIRMATION, "Réclamation soumise avec succès");
             loadReclamations();
             clearFields();
         } catch (Exception e) {
-            showAlert(Alert.AlertType.ERROR, "Erreur lors de la soumission de la réclamation : " + e.getMessage());
+            showAlert2(Alert.AlertType.ERROR, "Erreur lors de la soumission de la réclamation : " + e.getMessage());
         }
     }
 
@@ -176,11 +200,18 @@ public class ReclamationUser {
         dateError.setText("");
     }
 
-    private void showAlert(Alert.AlertType alertType, String message) {
+    private void showAlert2(Alert.AlertType alertType, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle("Gestion des réclamations");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.show();
+    }
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

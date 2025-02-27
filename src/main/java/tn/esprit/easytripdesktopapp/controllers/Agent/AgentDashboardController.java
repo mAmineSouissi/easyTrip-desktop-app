@@ -325,4 +325,17 @@ public class AgentDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void navigatToReclamationAgent(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/ReclamationUser.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reclamation Client");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -40,6 +40,7 @@ public class ClientDashboardController implements Initializable {
     public Label manageOfferHotel;
     public Label hotelOffersLabel;
     public Label ticketsOffersLabel;
+    public Label reclamationLabel;
     @FXML
     private Label welcomeLabel;
 
@@ -78,6 +79,7 @@ public class ClientDashboardController implements Initializable {
         } else {
             welcomeLabel.setText(bundle.getString("welcome_guest"));
         }
+        reclamationLabel.setText(bundle.getString("manage_reclamations"));
         coming_soon.setText(bundle.getString("coming_soon"));
         travelOfferLabel.setText(bundle.getString("travel_offers"));
         hotelOffersLabel.setText(bundle.getString("offer_hotel"));
@@ -328,6 +330,19 @@ public class ClientDashboardController implements Initializable {
             Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToReclamationClient(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/ReclamationUser.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reclamation Client");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -133,9 +133,9 @@ public class AffichageTicket {
         }
         Text priceText = new Text("Prix : " + String.format("%.2f", convertedPrice) + " " + selectedCurrency);
 
-        // Ajouter les informations de l'agence et de la promotion
-        Text agencyText = new Text("Agence ID : " + ticket.getAgencyId());
-        Text promotionText = new Text("Promotion ID : " + ticket.getPromotionId());
+        // Ajouter les informations de la promotion
+        Text promotionText = new Text("Promotion : " + (ticket.getPromotion() != null ? ticket.getPromotion().getTitle() : "Aucune promotion"));
+        promotionText.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
 
         // Boutons pour modifier et supprimer
         HBox buttonBox = new HBox(10);
@@ -150,7 +150,7 @@ public class AffichageTicket {
         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
         // Ajouter les éléments à la carte
-        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, agencyText, promotionText, buttonBox);
+        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, promotionText, buttonBox);
 
         return card;
     }
@@ -237,7 +237,7 @@ public class AffichageTicket {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/AjouterTicket.fxml"));
             Parent root = loader.load();
 
-            Scene scene = new Scene(root, 600, 400);
+            Scene scene = new Scene(root, 600, 400);;
             Stage stage = new Stage();
             stage.setTitle("Ajouter un Ticket");
             stage.setScene(scene);

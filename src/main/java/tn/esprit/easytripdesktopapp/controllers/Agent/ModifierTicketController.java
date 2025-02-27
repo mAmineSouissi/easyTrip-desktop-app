@@ -2,14 +2,19 @@ package tn.esprit.easytripdesktopapp.controllers.Agent;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Ticket;
+import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServiceTicket;
+import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 
 import java.io.File;
+import java.util.List;
 
 public class ModifierTicketController {
 
@@ -36,12 +41,19 @@ public class ModifierTicketController {
     @FXML
     private TextField ticketType;
     @FXML
-    private TextField cityImage; // Champ pour afficher le chemin de l'image
+    private TextField cityImage;
     @FXML
-    private Button uploadButton; // Bouton pour télécharger l'image
+    private Button uploadButton;
+    @FXML
+    private CheckBox promotionSwitch; // CheckBox pour activer/désactiver la promotion
+    @FXML
+    private ComboBox<String> promotionComboBox; // ComboBox pour sélectionner la promotion
 
     private Ticket ticketToUpdate;
     private final ServiceTicket ticketService = new ServiceTicket();
+    private final ServicePromotion promotionService = new ServicePromotion();
+
+    private float originalPrice; // Champ pour stocker le prix original
 
     // Méthode pour initialiser les champs avec les informations du ticket à mettre à jour
     public void setTicket(Ticket ticket) {
@@ -57,10 +69,43 @@ public class ModifierTicketController {
         ticketClass.setText(ticket.getTicketClass());
         price.setText(String.valueOf(ticket.getPrice()));
         ticketType.setText(ticket.getTicketType());
-        cityImage.setText(ticket.getCityImage()); // Initialisation de l'image de la ville
+        cityImage.setText(ticket.getCityImage());
+
+        // Stocker le prix original
+        this.originalPrice = ticket.getPrice();
+
+        // Charger les promotions dans le ComboBox
+        loadPromotions();
+
+        // Si une promotion est associée au ticket, l'afficher dans le ComboBox
+        if (ticket.getPromotion() != null) {
+            promotionComboBox.setValue(ticket.getPromotion().getTitle());
+            promotionSwitch.setSelected(true);
+        } else {
+            promotionSwitch.setSelected(false);
+            promotionComboBox.setDisable(true);
+        }
     }
 
-    // Méthode pour télécharger une image
+    private void loadPromotions() {
+        List<Promotion> promotions = promotionService.getAll();
+        for (Promotion promotion : promotions) {
+            promotionComboBox.getItems().add(promotion.getTitle());
+        }
+    }
+
+    @FXML
+    private void togglePromotion() {
+        if (promotionSwitch.isSelected()) {
+            promotionComboBox.setDisable(false); // Activer le ComboBox des promotions
+        } else {
+            promotionComboBox.setDisable(true); // Désactiver le ComboBox des promotions
+            promotionComboBox.setValue(null);   // Effacer la sélection de la promotion
+            // Réinitialiser le prix à la valeur originale lorsque la promotion est désactivée
+            price.setText(String.valueOf(originalPrice));
+        }
+    }
+
     @FXML
     private void uploadImage() {
         FileChooser fileChooser = new FileChooser();
@@ -75,7 +120,6 @@ public class ModifierTicketController {
         }
     }
 
-    // Méthode pour enregistrer les modifications
     @FXML
     private void saveChanges() {
         // Valider les champs avant de procéder à la mise à jour
@@ -90,9 +134,24 @@ public class ModifierTicketController {
             ticketToUpdate.setArrivalDate(arrivalDate.getText());
             ticketToUpdate.setArrivalTime(arrivalTime.getText());
             ticketToUpdate.setTicketClass(ticketClass.getText());
-            ticketToUpdate.setPrice(Float.parseFloat(price.getText()));
             ticketToUpdate.setTicketType(ticketType.getText());
-            ticketToUpdate.setCityImage(cityImage.getText()); // Mise à jour de l'image de la ville
+            ticketToUpdate.setCityImage(cityImage.getText());
+
+            // Gérer la promotion
+            if (promotionSwitch.isSelected()) {
+                String promotionTitle = promotionComboBox.getValue();
+                if (promotionTitle != null) {
+                    Promotion promotion = promotionService.getByTitle(promotionTitle);
+                    ticketToUpdate.setPromotion(promotion);
+                    // Appliquer la promotion au prix
+                    float discountedPrice = calculateDiscountedPrice(originalPrice, promotion);
+                    ticketToUpdate.setPrice(discountedPrice);
+                }
+            } else {
+                // Si la promotion est désactivée, supprimer la promotion et réinitialiser le prix
+                ticketToUpdate.setPromotion(null);
+                ticketToUpdate.setPrice(originalPrice);
+            }
 
             // Appeler le service pour mettre à jour le ticket dans la base de données
             ticketService.update(ticketToUpdate);
@@ -102,7 +161,14 @@ public class ModifierTicketController {
         }
     }
 
-    // Méthode pour valider les champs du formulaire
+    private float calculateDiscountedPrice(float originalPrice, Promotion promotion) {
+        if (promotion != null) {
+            float discountPercentage = promotion.getDiscount_percentage();
+            return originalPrice * (1 - discountPercentage / 100);
+        }
+        return originalPrice; // Si aucune promotion n'est sélectionnée, retourner le prix original
+    }
+
     private boolean validateFields() {
         StringBuilder errors = new StringBuilder();
 
@@ -185,7 +251,6 @@ public class ModifierTicketController {
         return true;
     }
 
-    // Méthode pour afficher un message d'alerte
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

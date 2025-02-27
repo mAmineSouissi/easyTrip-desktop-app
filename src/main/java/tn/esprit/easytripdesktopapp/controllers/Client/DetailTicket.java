@@ -35,6 +35,9 @@ public class DetailTicket {
     private Label ticketTypeLabel;
 
     @FXML
+    private Label promotionLabel; // Nouveau Label pour afficher la promotion
+
+    @FXML
     private Button reserveButton; // Bouton Réserver
 
     private Ticket ticket;
@@ -67,13 +70,27 @@ public class DetailTicket {
                 ticketImage.setImage(new Image("file:src/main/resources/default_image.png"));
             }
 
+            // Calculer le prix réduit en fonction de la promotion
+            float prixReduit = ticket.getPrice();
+            if (ticket.getPromotion() != null) {
+                float discount = ticket.getPromotion().getDiscount_percentage();
+                prixReduit = ticket.getPrice() * (1 - discount / 100); // Appliquer la réduction
+            }
+
             // Afficher les autres détails du ticket
             airlineLabel.setText("Compagnie : " + ticket.getAirline());
             departureLabel.setText("Départ : " + ticket.getDepartureCity() + " - " + ticket.getDepartureDate() + " " + ticket.getDepartureTime());
             arrivalLabel.setText("Arrivée : " + ticket.getArrivalCity() + " - " + ticket.getArrivalDate() + " " + ticket.getArrivalTime());
-            priceLabel.setText("Prix : " + ticket.getPrice() + " €");
+            priceLabel.setText("Prix : " + String.format("%.2f", prixReduit) + " €");
             ticketClassLabel.setText("Classe : " + ticket.getTicketClass());
             ticketTypeLabel.setText("Type : " + ticket.getTicketType());
+
+            // Afficher la promotion si elle existe
+            if (ticket.getPromotion() != null) {
+                promotionLabel.setText("Promotion : " + ticket.getPromotion().getDiscount_percentage() + "% de réduction");
+            } else {
+                promotionLabel.setText("Promotion : Aucune promotion");
+            }
         }
     }
 

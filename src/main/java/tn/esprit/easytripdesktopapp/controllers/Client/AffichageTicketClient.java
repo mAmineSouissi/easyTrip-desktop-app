@@ -115,16 +115,25 @@ public class AffichageTicketClient {
         Text departureText = new Text("Départ : " + ticket.getDepartureCity() + " - " + ticket.getDepartureDate() + " " + ticket.getDepartureTime());
         Text arrivalText = new Text("Arrivée : " + ticket.getArrivalCity() + " - " + ticket.getArrivalDate() + " " + ticket.getArrivalTime());
 
+        // Calculer le prix réduit en fonction de la promotion
+        float prixReduit = ticket.getPrice();
+
         // Convertir le prix dans la devise sélectionnée
         String selectedCurrency = currencyComboBox.getValue();
         double convertedPrice;
         try {
-            convertedPrice = currencyConverter.convert(ticket.getPrice(), "EUR", selectedCurrency); // Par défaut, EUR
+            convertedPrice = currencyConverter.convert(prixReduit, "EUR", selectedCurrency); // Par défaut, EUR
         } catch (Exception e) {
             System.err.println("Erreur lors de la conversion du prix : " + e.getMessage());
-            convertedPrice = ticket.getPrice(); // Utiliser le prix d'origine en cas d'erreur
+            convertedPrice = prixReduit; // Utiliser le prix d'origine en cas d'erreur
         }
+
         Text priceText = new Text("Prix : " + String.format("%.2f", convertedPrice) + " " + selectedCurrency);
+        priceText.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
+
+        // Afficher la promotion si elle existe
+        Text promotionText = new Text("Promotion : " + (ticket.getPromotion() != null ? ticket.getPromotion().getDiscount_percentage() + "% de réduction" : "Aucune promotion"));
+        promotionText.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
 
         // Bouton pour voir les détails
         Button detailsButton = new Button("Voir les détails");
@@ -132,7 +141,7 @@ public class AffichageTicketClient {
         detailsButton.setOnAction(e -> showTicketDetails(ticket));
 
         // Ajouter les éléments à la carte
-        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, detailsButton);
+        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, promotionText, detailsButton);
 
         return card;
     }

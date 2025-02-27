@@ -12,7 +12,7 @@ public class Hotel {
     private String typeRoom; // simple, double, suit
     private int numRoom;
     private String image;
-    private tn.esprit.easytripdesktopapp.models.Promotion promotion; // Référence à la promotion associée
+    private Promotion promotion; // Référence à la promotion associée
     private Agence agence; // Référence à l'agence associée
 
     public Hotel() {}

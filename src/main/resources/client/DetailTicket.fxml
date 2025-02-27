@@ -14,6 +14,6 @@
     <Label fx:id="priceLabel" style="-fx-text-fill: #4CAF50;" />
     <Label fx:id="ticketClassLabel" />
     <Label fx:id="ticketTypeLabel" />
+    <Label fx:id="promotionLabel" style="-fx-text-fill: #FF5722;" /> <!-- Nouveau Label pour la promotion -->
     <Button fx:id="reserveButton" text="Réserver" onAction="#handleReserveButton" />
-
 </VBox>

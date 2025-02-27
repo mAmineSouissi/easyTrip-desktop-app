@@ -40,26 +40,28 @@ public class AjouterTicket {
     @FXML
     private TextField cityImage;
     @FXML
-    private TextField agencyId;
+    private ComboBox<String> promotionComboBox; // ComboBox pour les promotions
     @FXML
-    private ComboBox<String> promotionTitle; // Remplacement de promotionId par une ComboBox
+    private CheckBox promotionSwitch; // CheckBox pour activer/désactiver la promotion
     @FXML
     private Button uploadButton;
 
     private final ServiceTicket ticketService = new ServiceTicket();
-    private final ServicePromotion promotionService = new ServicePromotion(); // Service pour gérer les promotions
+    private final ServicePromotion promotionService = new ServicePromotion();
 
     @FXML
     public void initialize() {
+        // Initialiser les ComboBox
         ticketClass.getItems().addAll("Economy", "Business", "First");
         ticketType.getItems().addAll("One-way", "Round-trip");
 
-        // Charger les titres des promotions dans la ComboBox
-        List<Promotion> promotions = promotionService.getAll();
-        for (Promotion promotion : promotions) {
-            promotionTitle.getItems().add(promotion.getTitle());
-        }
+        // Charger les promotions dans le ComboBox
+        loadPromotions();
 
+        // Activer/désactiver le ComboBox des promotions en fonction du CheckBox
+        promotionSwitch.setOnAction(e -> togglePromotion());
+
+        // Configurer les DatePickers pour empêcher les dates passées
         departureDate.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
@@ -82,11 +84,29 @@ public class AjouterTicket {
             }
         });
 
+        // Mettre à jour la date d'arrivée si la date de départ change
         departureDate.valueProperty().addListener((obs, oldDate, newDate) -> {
             if (arrivalDate.getValue() != null && newDate != null && arrivalDate.getValue().isBefore(newDate)) {
                 arrivalDate.setValue(newDate);
             }
         });
+    }
+
+    private void loadPromotions() {
+        List<Promotion> promotions = promotionService.getAll();
+        for (Promotion promotion : promotions) {
+            promotionComboBox.getItems().add(promotion.getTitle());
+        }
+    }
+
+    @FXML
+    private void togglePromotion() {
+        if (promotionSwitch.isSelected()) {
+            promotionComboBox.setDisable(false); // Activer le ComboBox des promotions
+        } else {
+            promotionComboBox.setDisable(true); // Désactiver le ComboBox des promotions
+            promotionComboBox.setValue(null);   // Effacer la sélection de la promotion
+        }
     }
 
     @FXML
@@ -107,7 +127,18 @@ public class AjouterTicket {
     private void save() {
         if (validateFields()) {
             try {
-                int flightNum = Integer.parseInt(flightNumber.getText());
+                // Parse flightNumber
+                int flightNum = flightNumber.getText() != null && !flightNumber.getText().isEmpty()
+                        ? Integer.parseInt(flightNumber.getText())
+                        : 0; // Default value or throw an error
+
+                // Ensure flightNum is valid
+                if (flightNum <= 0) {
+                    showAlert("Erreur", "Le numéro de vol doit être un nombre valide et positif.");
+                    return;
+                }
+
+                // Other fields
                 String air = airline.getText();
                 String depCity = departureCity.getText();
                 String arrCity = arrivalCity.getText();
@@ -119,16 +150,20 @@ public class AjouterTicket {
                 float pr = Float.parseFloat(price.getText());
                 String tType = ticketType.getValue();
                 String cityImg = cityImage.getText();
-                int agId = Integer.parseInt(agencyId.getText());
-                String promoTitle = promotionTitle.getValue(); // Récupérer le titre de la promotion sélectionnée
 
-                // Récupérer l'ID de la promotion à partir du titre
-                Promotion selectedPromotion = promotionService.getByTitle(promoTitle);
-                if (selectedPromotion == null) {
-                    showAlert("Erreur", "Promotion non trouvée.");
-                    return;
+                // Gérer la promotion
+                Promotion promotion = null;
+                if (promotionSwitch.isSelected()) {
+                    String promotionTitle = promotionComboBox.getValue();
+                    if (promotionTitle != null) {
+                        promotion = promotionService.getByTitle(promotionTitle);
+                    }
                 }
 
+                // Appliquer la promotion au prix
+                float finalPrice = calculateDiscountedPrice(pr, promotion);
+
+                // Create the Ticket object
                 Ticket ticket = new Ticket();
                 ticket.setFlightNumber(flightNum);
                 ticket.setAirline(air);
@@ -139,18 +174,28 @@ public class AjouterTicket {
                 ticket.setArrivalDate(arrDate.toString());
                 ticket.setArrivalTime(arrTime);
                 ticket.setTicketClass(tClass);
-                ticket.setPrice(pr);
+                ticket.setPrice(finalPrice);
                 ticket.setTicketType(tType);
                 ticket.setCityImage(cityImg);
-                ticket.setAgencyId(agId);
-                ticket.setPromotionId(selectedPromotion.getId()); // Utiliser l'ID de la promotion
+                ticket.setPromotion(promotion); // Associer la promotion (peut être null)
 
+                // Save the ticket
                 ticketService.add(ticket);
+
+                // Close the window
                 flightNumber.getScene().getWindow().hide();
             } catch (NumberFormatException e) {
                 showAlert("Erreur", "Numéro de vol et prix doivent être des nombres valides.");
             }
         }
+    }
+
+    private float calculateDiscountedPrice(float originalPrice, Promotion promotion) {
+        if (promotion != null) {
+            float discountPercentage = promotion.getDiscount_percentage();
+            return originalPrice * (1 - discountPercentage / 100);
+        }
+        return originalPrice; // Si aucune promotion n'est sélectionnée, retourner le prix original
     }
 
     private boolean validateFields() {
@@ -167,8 +212,19 @@ public class AjouterTicket {
         if (ticketClass.getValue() == null) errors.append("Classe requise.\n");
         if (ticketType.getValue() == null) errors.append("Type de billet requis.\n");
         if (cityImage.getText().isEmpty()) errors.append("Image de la ville requise.\n");
-        if (agencyId.getText().isEmpty()) errors.append("ID de l'agence requis.\n");
-        if (promotionTitle.getValue() == null) errors.append("Promotion requise.\n"); // Validation de la promotion
+
+        // Validation du format de l'heure pour departureTime et arrivalTime
+        if (!isValidTimeFormat(departureTime.getText())) {
+            errors.append("Format de l'heure de départ invalide. Utilisez HH:MM.\n");
+        }
+        if (!isValidTimeFormat(arrivalTime.getText())) {
+            errors.append("Format de l'heure d'arrivée invalide. Utilisez HH:MM.\n");
+        }
+
+        // Validation de la promotion uniquement si elle est activée
+        if (promotionSwitch.isSelected() && promotionComboBox.getValue() == null) {
+            errors.append("Promotion requise.\n");
+        }
 
         try {
             float pr = Float.parseFloat(price.getText());
@@ -182,6 +238,12 @@ public class AjouterTicket {
             return false;
         }
         return true;
+    }
+
+    private boolean isValidTimeFormat(String time) {
+        // Regex pour valider le format HH:MM
+        String timeRegex = "^([01]?[0-9]|2[0-3]):[0-5][0-9]$";
+        return time.matches(timeRegex);
     }
 
     private void showAlert(String title, String content) {

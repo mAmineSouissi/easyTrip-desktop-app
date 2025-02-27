@@ -15,11 +15,12 @@ public class Ticket {
     private String ticketType;
     private String cityImage;
     private int agencyId; // Référence à l'agence
-    private int promotionId; // Référence à la promotion
+    private Promotion promotion; // Référence à la promotion associée
 
+    // Constructeurs
     public Ticket() {}
 
-    public Ticket(int idTicket, int flightNumber, String airline, String departureCity, String arrivalCity, String departureDate, String departureTime, String arrivalDate, String arrivalTime, String ticketClass, float price, String ticketType, String cityImage, int agencyId, int promotionId) {
+    public Ticket(int idTicket, int flightNumber, String airline, String departureCity, String arrivalCity, String departureDate, String departureTime, String arrivalDate, String arrivalTime, String ticketClass, float price, String ticketType, String cityImage, int agencyId, Promotion promotion) {
         this.idTicket = idTicket;
         this.flightNumber = flightNumber;
         this.airline = airline;
@@ -33,11 +34,11 @@ public class Ticket {
         this.price = price;
         this.ticketType = ticketType;
         this.cityImage = cityImage;
-        this.agencyId = agencyId; // Initialisation de l'ID de l'agence
-        this.promotionId = promotionId; // Initialisation de l'ID de la promotion
+        this.agencyId = agencyId;
+        this.promotion = promotion;
     }
 
-    // Getters and Setters
+    // Getters et Setters
     public int getIdTicket() { return idTicket; }
     public void setIdTicket(int idTicket) { this.idTicket = idTicket; }
 
@@ -77,11 +78,11 @@ public class Ticket {
     public String getCityImage() { return cityImage; }
     public void setCityImage(String cityImage) { this.cityImage = cityImage; }
 
-    public int getAgencyId() { return agencyId; } // Getter pour l'ID de l'agence
-    public void setAgencyId(int agencyId) { this.agencyId = agencyId; } // Setter pour l'ID de l'agence
+    public int getAgencyId() { return agencyId; }
+    public void setAgencyId(int agencyId) { this.agencyId = agencyId; }
 
-    public int getPromotionId() { return promotionId; } // Getter pour l'ID de la promotion
-    public void setPromotionId(int promotionId) { this.promotionId = promotionId; } // Setter pour l'ID de la promotion
+    public Promotion getPromotion() { return promotion; }
+    public void setPromotion(Promotion promotion) { this.promotion = promotion; }
 
     @Override
     public String toString() {
@@ -99,8 +100,8 @@ public class Ticket {
                 ", price=" + price +
                 ", ticketType='" + ticketType + '\'' +
                 ", cityImage='" + cityImage + '\'' +
-                ", agencyId=" + agencyId + // Affichage de l'ID de l'agence
-                ", promotionId=" + promotionId + // Affichage de l'ID de la promotion
+                ", agencyId=" + agencyId +
+                ", promotion=" + (promotion != null ? promotion.getTitle() : "null") +
                 '}';
     }
 }

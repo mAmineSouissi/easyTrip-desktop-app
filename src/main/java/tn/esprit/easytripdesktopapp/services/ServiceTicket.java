@@ -2,12 +2,12 @@ package tn.esprit.easytripdesktopapp.services;
 
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Ticket;
+import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ServiceTicket implements CRUDService<Ticket> {
     private Connection cnx;
@@ -33,8 +33,8 @@ public class ServiceTicket implements CRUDService<Ticket> {
             pstm.setFloat(10, ticket.getPrice());
             pstm.setString(11, ticket.getTicketType());
             pstm.setString(12, ticket.getCityImage());
-            pstm.setInt(13, ticket.getAgencyId()); // Ajout de l'ID de l'agence
-            pstm.setInt(14, ticket.getPromotionId()); // Ajout de l'ID de la promotion
+            pstm.setInt(13, ticket.getAgencyId());
+            pstm.setInt(14, ticket.getPromotion() != null ? ticket.getPromotion().getId() : null); // Utiliser l'ID de la promotion
             pstm.executeUpdate();
             System.out.println("Ticket ajouté avec succès !");
         } catch (SQLException e) {
@@ -64,8 +64,16 @@ public class ServiceTicket implements CRUDService<Ticket> {
                 t.setPrice(rs.getFloat("price"));
                 t.setTicketType(rs.getString("ticket_type"));
                 t.setCityImage(rs.getString("city_image"));
-                t.setAgencyId(rs.getInt("agency_id")); // Récupération de l'ID de l'agence
-                t.setPromotionId(rs.getInt("promotion_id")); // Récupération de l'ID de la promotion
+                t.setAgencyId(rs.getInt("agency_id"));
+
+                // Récupérer la promotion associée
+                int promotionId = rs.getInt("promotion_id");
+                if (promotionId > 0) {
+                    ServicePromotion servicePromotion = new ServicePromotion();
+                    Promotion promotion = servicePromotion.getById(promotionId);
+                    t.setPromotion(promotion);
+                }
+
                 tickets.add(t);
             }
         } catch (SQLException e) {
@@ -91,8 +99,8 @@ public class ServiceTicket implements CRUDService<Ticket> {
             pstm.setFloat(10, ticket.getPrice());
             pstm.setString(11, ticket.getTicketType());
             pstm.setString(12, ticket.getCityImage());
-            pstm.setInt(13, ticket.getAgencyId()); // Mise à jour de l'ID de l'agence
-            pstm.setInt(14, ticket.getPromotionId()); // Mise à jour de l'ID de la promotion
+            pstm.setInt(13, ticket.getAgencyId());
+            pstm.setInt(14, ticket.getPromotion() != null ? ticket.getPromotion().getId() : null); // Utiliser l'ID de la promotion
             pstm.setInt(15, ticket.getIdTicket());
             pstm.executeUpdate();
             System.out.println("Ticket mis à jour avec succès !");
@@ -113,6 +121,4 @@ public class ServiceTicket implements CRUDService<Ticket> {
             System.out.println("Erreur lors de la suppression du ticket : " + e.getMessage());
         }
     }
-
-
 }

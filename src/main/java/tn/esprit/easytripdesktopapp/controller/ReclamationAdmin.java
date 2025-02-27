@@ -1,4 +1,4 @@
-package tn.esprit.easytripdesktopapp.controller;
+package tn.esprit.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,8 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import tn.esprit.easytripdesktopapp.models.Reclamation;
-import tn.esprit.easytripdesktopapp.services.ServiceReclamation;
+import tn.esprit.models.Reclamation;
+import tn.esprit.services.ServiceReclamation;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -222,5 +222,34 @@ public class ReclamationAdmin {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.show();
+    }
+
+    @FXML
+    void sendEmail(ActionEvent event) {
+        if (selectedReclamation == null) {
+            showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation pour envoyer un e-mail.");
+            return;
+        }
+
+        // Utiliser l'adresse e-mail de test (omsehli@gmail.com)
+        String clientEmail = "omsehli@gmail.com"; // Adresse e-mail de test
+
+        // Simuler les informations de l'utilisateur (nom, prénom)
+        String clientName = "Om"; // Nom de l'utilisateur
+        String clientSurname = "Sehli"; // Prénom de l'utilisateur
+
+        // Envoyer l'e-mail
+        String subject = "Votre réclamation a été traitée";
+        String body = "Bonjour " + clientName + " " + clientSurname + ",\n\n" +
+                "Votre réclamation concernant '" + selectedReclamation.getIssue() + "' a été traitée. " +
+                "Le statut est maintenant '" + selectedReclamation.getStatus() + "'.\n\n" +
+                "Cordialement,\nL'équipe de support.";
+
+        try {
+            SendGridUtil.sendEmail(clientEmail, "omsehli@gmail.com", subject, body);
+            showAlert(Alert.AlertType.INFORMATION, "E-mail envoyé avec succès à " + clientEmail);
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail : " + e.getMessage());
+        }
     }
 }

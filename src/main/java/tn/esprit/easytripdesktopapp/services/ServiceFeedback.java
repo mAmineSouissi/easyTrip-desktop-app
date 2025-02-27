@@ -1,27 +1,26 @@
-package tn.esprit.easytripdesktopapp.services;
+package tn.esprit.services;
 
-import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
-import tn.esprit.easytripdesktopapp.models.Feedback;
-import tn.esprit.easytripdesktopapp.utils.MyDataBase;
+import tn.esprit.interfaces.IService;
+import tn.esprit.models.Feedback;
+import tn.esprit.utils.MyDatabase;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.controlsfx.control.Notifications;
-import javafx.util.Duration;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-public class ServiceFeedback implements CRUDService<Feedback> {
+
+
+public class ServiceFeedback implements IService <Feedback>{
 
     private final Connection cnx;
 
     public ServiceFeedback() {
-        cnx = MyDataBase.getInstance().getCnx();
+        cnx = MyDatabase.getInstance().getCnx();
     }
 
+    @Override
     public void add(Feedback feedback) {
         String qry = "INSERT INTO feedback (userId, offerId, rating, message, date) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
@@ -33,11 +32,8 @@ public class ServiceFeedback implements CRUDService<Feedback> {
 
             pstm.executeUpdate();
             System.out.println("Feedback ajouté avec succès.");
-
-            // Envoi de la notification après l'ajout
-            NotificationService.showFeedbackNotification(feedback);
         } catch (SQLException e) {
-            System.out.println("Erreur: " + e.getMessage());
+            System.out.println("Erreur" + e.getMessage());
         }
     }
 
@@ -189,19 +185,28 @@ public class ServiceFeedback implements CRUDService<Feedback> {
 
     }
 
+    public List<Feedback> getFeedbacksByOfferId(int offerId) {
+        List<Feedback> feedbacks = new ArrayList<>();
+        String qry = "SELECT * FROM feedback WHERE offerId = ?";
 
-    public class NotificationService {
+        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+            pstm.setInt(1, offerId);
+            ResultSet rs = pstm.executeQuery();
 
-        public static void showFeedbackNotification(Feedback feedback) {
-            Notifications.create()
-                    .title("Nouveau Feedback Reçu")
-                    .text("Un nouvel avis a été soumis : " + feedback.getMessage())
-                   // .graphic(new ImageView(new Image("file:icons/feedback.png"))) // Icône facultative
-                    .hideAfter(Duration.seconds(5))
-                    .position(javafx.geometry.Pos.TOP_RIGHT)
-                    .darkStyle()
-                    .show();
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(rs.getInt("id"));
+                feedback.setUserId(rs.getInt("userId"));
+                feedback.setOfferId(rs.getInt("offerId"));
+                feedback.setRating(rs.getInt("rating"));
+                feedback.setMessage(rs.getString("message"));
+                feedback.setDate(rs.getDate("date"));
+                feedbacks.add(feedback);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur: " + e.getMessage());
         }
-    }
 
+        return feedbacks;
+    }
 }

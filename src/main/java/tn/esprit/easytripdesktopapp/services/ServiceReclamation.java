@@ -1,25 +1,22 @@
-package tn.esprit.easytripdesktopapp.services;
+package tn.esprit.services;
 
-import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
-import tn.esprit.easytripdesktopapp.utils.MyDataBase;
-import tn.esprit.easytripdesktopapp.models.Reclamation;
-import org.controlsfx.control.Notifications;
-import javafx.util.Duration;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import tn.esprit.interfaces.IService;
+import tn.esprit.utils.MyDatabase;
+import tn.esprit.models.Reclamation;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ServiceReclamation implements CRUDService<Reclamation> {
+public class ServiceReclamation implements IService <Reclamation>{
 
     private final Connection cnx;
 
     public ServiceReclamation() {
-        cnx = MyDataBase.getInstance().getCnx();
+        cnx = MyDatabase.getInstance().getCnx();
     }
+
 
     @Override
     public void add(Reclamation reclamation) {
@@ -32,24 +29,11 @@ public class ServiceReclamation implements CRUDService<Reclamation> {
             pstm.setString(5, reclamation.getCategory());
 
             pstm.executeUpdate();
-            System.out.println("Réclamation ajoutée avec succès.");
-
-            // Envoi de la notification
-            showReclamationNotification(reclamation);
+            System.out.println("Reclamation ajoutée avec succès.");
         } catch (SQLException e) {
-            System.err.println("Erreur : " + e.getMessage());
+            System.out.println("Erreur : " + e.getMessage());
         }
-    }
 
-    private void showReclamationNotification(Reclamation reclamation) {
-        Notifications.create()
-                .title("Nouvelle Réclamation Reçue")
-                .text("Une nouvelle réclamation a été soumise : " + reclamation.getIssue())
-                .graphic(new ImageView(new Image("file:icons/reclamation.png")))
-                .hideAfter(Duration.seconds(5))
-                .position(javafx.geometry.Pos.TOP_RIGHT)
-                .darkStyle()
-                .show();
     }
 
     @Override
@@ -57,7 +41,9 @@ public class ServiceReclamation implements CRUDService<Reclamation> {
         List<Reclamation> reclamations = new ArrayList<>();
         String qry = "SELECT * FROM reclamation";
 
-        try (Statement stm = cnx.createStatement(); ResultSet rs = stm.executeQuery(qry)) {
+        try (Statement stm = cnx.createStatement();
+             ResultSet rs = stm.executeQuery(qry)) {
+
             while (rs.next()) {
                 Reclamation reclamation = new Reclamation();
                 reclamation.setId(rs.getInt("id"));
@@ -69,16 +55,19 @@ public class ServiceReclamation implements CRUDService<Reclamation> {
 
                 reclamations.add(reclamation);
             }
+
         } catch (SQLException e) {
-            System.err.println("Erreur : " + e.getMessage());
+            System.out.println("Erreur : " + e.getMessage());
         }
+
         return reclamations;
     }
 
     @Override
     public void update(Reclamation reclamation) {
-        String qry = "UPDATE reclamation SET userId=?, status=?, date=?, issue=?, category=? WHERE id=?";
-        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+        String qry = "UPDATE `reclamation` SET `userId`=?, `status`=?, `date`=?, `issue`=?, `category`=? WHERE `id`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, reclamation.getUserId());
             pstm.setString(2, reclamation.getStatus());
             pstm.setDate(3, reclamation.getDate());
@@ -88,97 +77,123 @@ public class ServiceReclamation implements CRUDService<Reclamation> {
 
             pstm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
+
     }
 
     @Override
     public void delete(Reclamation reclamation) {
-        String qry = "DELETE FROM reclamation WHERE id=?";
-        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+        String qry = "DELETE FROM `reclamation` WHERE `id`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, reclamation.getId());
+
             pstm.executeUpdate();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
+
     }
 
     @Override
     public Optional<Reclamation> getById(int id) {
-        String qry = "SELECT * FROM reclamation WHERE id = ?";
-        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
-            pstm.setInt(1, id);
-            try (ResultSet rs = pstm.executeQuery()) {
-                if (rs.next()) {
-                    Reclamation reclamation = new Reclamation();
-                    reclamation.setId(rs.getInt("id"));
-                    reclamation.setUserId(rs.getInt("userId"));
-                    reclamation.setStatus(rs.getString("status"));
-                    reclamation.setDate(rs.getDate("date"));
-                    reclamation.setIssue(rs.getString("issue"));
-                    reclamation.setCategory(rs.getString("category"));
+        String qry = "SELECT * FROM `reclamation` WHERE `id` = ?";
 
-                    return Optional.of(reclamation);
-                }
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                Reclamation reclamation = new Reclamation();
+                reclamation.setId(rs.getInt("id"));
+                reclamation.setUserId(rs.getInt("userId"));
+                reclamation.setStatus(rs.getString("status"));
+                reclamation.setDate(rs.getDate("date"));
+                reclamation.setIssue(rs.getString("issue"));
+                reclamation.setCategory(rs.getString("category"));
+
+                return Optional.of(reclamation);
             }
+
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
+
         return Optional.empty();
     }
 
     @Override
     public List<Reclamation> search(String keyword) {
         List<Reclamation> reclamations = new ArrayList<>();
-        String qry = "SELECT * FROM reclamation WHERE issue LIKE ? OR category LIKE ?";
+        String qry = "SELECT * FROM `reclamation` WHERE `issue` LIKE ? OR `category` LIKE ?";
 
-        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
             String searchPattern = "%" + keyword + "%";
             pstm.setString(1, searchPattern);
             pstm.setString(2, searchPattern);
-            try (ResultSet rs = pstm.executeQuery()) {
-                while (rs.next()) {
-                    Reclamation reclamation = new Reclamation();
-                    reclamation.setId(rs.getInt("id"));
-                    reclamation.setUserId(rs.getInt("userId"));
-                    reclamation.setStatus(rs.getString("status"));
-                    reclamation.setDate(rs.getDate("date"));
-                    reclamation.setIssue(rs.getString("issue"));
-                    reclamation.setCategory(rs.getString("category"));
+            ResultSet rs = pstm.executeQuery();
 
-                    reclamations.add(reclamation);
-                }
+            while (rs.next()) {
+                Reclamation reclamation = new Reclamation();
+                reclamation.setId(rs.getInt("id"));
+                reclamation.setUserId(rs.getInt("userId"));
+                reclamation.setStatus(rs.getString("status"));
+                reclamation.setDate(rs.getDate("date"));
+                reclamation.setIssue(rs.getString("issue"));
+                reclamation.setCategory(rs.getString("category"));
+
+                reclamations.add(reclamation);
             }
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
+
         return reclamations;
     }
 
     @Override
     public boolean exists(int id) {
-        String qry = "SELECT 1 FROM reclamation WHERE id = ?";
-        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+        String qry = "SELECT 1 FROM `reclamation` WHERE `id` = ?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, id);
-            try (ResultSet rs = pstm.executeQuery()) {
-                return rs.next();
-            }
+            ResultSet rs = pstm.executeQuery();
+            return rs.next();
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         return false;
     }
 
     @Override
     public long count() {
-        String countQuery = "SELECT COUNT(*) FROM reclamation";
-        try (PreparedStatement pstm = cnx.prepareStatement(countQuery); ResultSet rs = pstm.executeQuery()) {
+        String countQuery = "SELECT COUNT(*) FROM `reclamation`";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(countQuery);
+            ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
                 return rs.getLong(1);
             }
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.out.println(e.getMessage());
         }
         return 0;
+    }
+    public String getClientEmail(int userId) {
+        String qry = "SELECT email FROM user WHERE id = ?";
+        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+            pstm.setInt(1, userId);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                return rs.getString("email");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'e-mail du client : " + e.getMessage());
+        }
+        return null;
     }
 }

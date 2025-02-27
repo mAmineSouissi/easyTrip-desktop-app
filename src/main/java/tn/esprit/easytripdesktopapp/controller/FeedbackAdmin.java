@@ -1,4 +1,4 @@
-package tn.esprit.easytripdesktopapp.controller;
+package tn.esprit.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,8 +13,19 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import tn.esprit.easytripdesktopapp.models.Feedback;
-import tn.esprit.easytripdesktopapp.services.ServiceFeedback;
+import tn.esprit.models.Feedback;
+import tn.esprit.services.ServiceFeedback;
+
+
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
 
 import java.sql.Date;
 
@@ -270,5 +281,67 @@ public class FeedbackAdmin {
         }
 
         return isValid;
+    }
+
+
+
+
+    public void exportStatisticsToPDF(int offerId, String filePath) {
+        ServiceFeedback feedbackService = new ServiceFeedback();
+        List<Feedback> feedbacks = feedbackService.getFeedbacksByOfferId(offerId);
+
+        if (feedbacks.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Aucun feedback trouvé pour cette offre.");
+            return;
+        }
+
+        Document document = new Document();
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+
+            // Titre du document
+            document.add(new Paragraph("Statistiques des feedbacks pour l'offre ID: " + offerId));
+
+            // Calcul des statistiques
+            double averageRating = feedbacks.stream().mapToInt(Feedback::getRating).average().orElse(0.0);
+            long totalFeedbacks = feedbacks.size();
+
+            // Ajout des statistiques au PDF
+            document.add(new Paragraph("Nombre total de feedbacks: " + totalFeedbacks));
+            document.add(new Paragraph("Note moyenne: " + String.format("%.2f", averageRating)));
+
+            // Ajout des détails des feedbacks
+            document.add(new Paragraph("\nDétails des feedbacks:"));
+            for (Feedback feedback : feedbacks) {
+                document.add(new Paragraph("ID Utilisateur: " + feedback.getUserId()));
+                document.add(new Paragraph("Note: " + feedback.getRating()));
+                document.add(new Paragraph("Message: " + feedback.getMessage()));
+                document.add(new Paragraph("Date: " + feedback.getDate()));
+                document.add(new Paragraph("-----------------------------"));
+            }
+
+            document.close();
+            showAlert(Alert.AlertType.INFORMATION, "PDF généré avec succès: " + filePath);
+        } catch (DocumentException | IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de la génération du PDF: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    void exportStatisticsToPDF(ActionEvent event) {
+        try {
+            int offerId = Integer.parseInt(offerIdField.getText().trim());
+            if (offerId <= 0) {
+                showAlert(Alert.AlertType.WARNING, "Veuillez entrer un ID d'offre valide.");
+                return;
+            }
+
+            // Chemin du fichier PDF à générer
+            String filePath = "statistics_offer_" + offerId + ".pdf";
+            exportStatisticsToPDF(offerId, filePath);
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.ERROR, "L'ID de l'offre doit être un nombre valide.");
+        }
     }
 }

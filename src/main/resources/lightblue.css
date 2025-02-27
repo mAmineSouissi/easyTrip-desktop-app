@@ -1,7 +1,9 @@
+/* Styles de base */
 .root {
     -fx-background-color: linear-gradient(to bottom, #E0F7FA, #B3E5FC);
 }
 
+/* Styles pour les boutons */
 .button {
     -fx-background-color: #039BE5;
     -fx-text-fill: white;
@@ -17,27 +19,55 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 3);
 }
 
-.table-view {
-    -fx-background-color: white;
-    -fx-background-radius: 5;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2);
+/* Styles pour les cartes */
+.card {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #e0e0e0; /* Bordure grise claire */
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px; /* Coins arrondis */
+    -fx-background-radius: 8px; /* Coins arrondis */
+    -fx-padding: 15px; /* Espace intérieur */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 5); /* Ombre légère */
+    -fx-spacing: 10px; /* Espace entre les éléments */
 }
 
-.table-view .column-header {
-    -fx-background-color: #03A9F4;
-    -fx-text-fill: white;
+.card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 15, 0, 0, 5); /* Ombre plus prononcée au survol */
+    -fx-cursor: hand; /* Curseur en forme de main */
+}
+
+/* Titre de la carte */
+.card-title {
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
+    -fx-fill: #333333; /* Couleur de texte sombre */
 }
 
-.table-view .column-header .label {
-    -fx-text-fill: white;
+/* Description de la carte */
+.card-description {
+    -fx-font-size: 14px;
+    -fx-fill: #666666; /* Couleur de texte gris */
 }
 
-.label {
-    -fx-text-fill: #01579B;
-    -fx-font-weight: bold;
+/* Date de la carte */
+.card-date {
+    -fx-font-size: 12px;
+    -fx-fill: #888888; /* Couleur de texte gris clair */
 }
 
+/* Statut de la carte */
+.card-status {
+    -fx-font-size: 12px;
+    -fx-fill: #2196F3; /* Couleur bleue pour le statut */
+}
+
+/* Styles pour les messages d'erreur */
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-size: 12px;
+}
+
+/* Styles pour les champs de formulaire */
 .text-field, .date-picker, .combo-box {
     -fx-background-color: white;
     -fx-background-radius: 5;
@@ -51,184 +81,9 @@
     -fx-effect: dropshadow(three-pass-box, rgba(3,155,229,0.2), 3, 0, 0, 0);
 }
 
-.spinner {
-    -fx-background-color: white;
-    -fx-background-radius: 5;
-    -fx-border-color: #B3E5FC;
-    -fx-border-radius: 5;
-}
-
-Text {
-    -fx-fill: #01579B;
-}
-
-Text.title {
+/* Styles pour les titres */
+.title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
-}
-
-/* Home screen specific styling */
-.navigation-button {
-    -fx-min-width: 200px;
-    -fx-min-height: 40px;
-    -fx-background-color: #039BE5;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-background-radius: 20;
-}
-
-.navigation-button:hover {
-    -fx-background-color: #0288D1;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 5);
-    -fx-translate-y: -2;
-}
-
-/* Section headers */
-.section-header {
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-    -fx-padding: 10 0 5 0;
-}
-
-/* Form containers */
-.form-container {
-    -fx-background-color: rgba(255, 255, 255, 0.8);
-    -fx-background-radius: 10;
-    -fx-padding: 15;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
-}
-
-/* ScrollPane customization */
-.scroll-pane {
-    -fx-background-color: transparent;
-}
-
-.scroll-pane > .viewport {
-    -fx-background-color: transparent;
-}
-
-/* TableView row customization */
-.table-row-cell:selected {
-    -fx-background-color: #B3E5FC;
-}
-
-.table-row-cell:selected .text {
-    -fx-fill: #01579B;
-}
-
-.header-container {
-    -fx-background-color: white;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
-}
-
-.page-title {
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-fill: #01579B;
-}
-
-.action-button {
-    -fx-min-width: 100px;
-}
-
-.action-button-danger {
-    -fx-background-color: #f44336;
-    -fx-min-width: 100px;
-}
-
-.action-button-danger:hover {
-    -fx-background-color: #d32f2f;
-}
-/* Style pour les cartes de réclamations */
-.card {
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Bordure grise */
-    -fx-border-width: 1px;
-    -fx-border-radius: 5px;
-    -fx-padding: 10px;
-    -fx-spacing: 5px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 5); /* Ombre légère */
-}
-
-/* Style pour les labels dans les cartes */
-.card-label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #333333; /* Couleur de texte sombre */
-}
-
-/* Style pour les boutons */
-.action-button {
-    -fx-background-color: #4CAF50; /* Vert */
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-}
-
-.action-button-danger {
-    -fx-background-color: #f44336; /* Rouge */
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-}
-
-/* Style pour les messages d'erreur */
-.error-label {
-    -fx-text-fill: red;
-    -fx-font-size: 12px;
-}
-
-/* Style pour les cartes de réclamations */
-.card {
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Bordure grise */
-    -fx-border-width: 1px;
-    -fx-border-radius: 5px;
-    -fx-padding: 10px;
-    -fx-spacing: 5px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 5); /* Ombre légère */
-}
-
-/* Style pour les labels dans les cartes */
-.card-label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #333333; /* Couleur de texte sombre */
-}
-
-/* Style de base pour les boutons */
-.action-button {
-    -fx-background-color: #2196F3; /* Bleu clair */
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-cursor: hand; /* Curseur en forme de main */
-}
-
-/* Effet de survol (hover) pour les boutons */
-.action-button:hover {
-    -fx-background-color: #1976D2; /* Bleu plus foncé */
-}
-
-/* Style de base pour les boutons de danger */
-.action-button-danger {
-    -fx-background-color: #f44336; /* Rouge */
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-cursor: hand; /* Curseur en forme de main */
-}
-
-/* Effet de survol (hover) pour les boutons de danger */
-.action-button-danger:hover {
-    -fx-background-color: #d32f2f; /* Rouge plus foncé */
-}
-
-/* Style pour les messages d'erreur */
-.error-label {
-    -fx-text-fill: red;
-    -fx-font-size: 12px;
 }

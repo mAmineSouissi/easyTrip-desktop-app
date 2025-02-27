@@ -17,7 +17,7 @@
     <!-- Image de fond -->
     <children>
         <ImageView fitWidth="800" fitHeight="600">
-            <Image url="@../images/hotel-background.jpg" />
+            <Image url="@../../assets/hotel-background.jpg" />
         </ImageView>
     </children>
 

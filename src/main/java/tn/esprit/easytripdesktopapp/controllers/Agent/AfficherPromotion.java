@@ -1,12 +1,18 @@
 package tn.esprit.easytripdesktopapp.controllers.Agent;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServicePromotion;
+import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.net.URL;
 import java.util.*;
@@ -21,8 +27,13 @@ public class AfficherPromotion implements Initializable {
 
     private final CRUDService<Promotion> promotionService = new ServicePromotion();
 
+    UserSession session = UserSession.getInstance();
+
+    ResourceBundle bundle;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        bundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
         removeExpiredPromotions();
         loadPromotions();
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
@@ -99,5 +110,23 @@ public class AfficherPromotion implements Initializable {
                 "\nRéduction : " + promotion.getDiscount_percentage() + "%" +
                 "\nValide jusqu'au : " + promotion.getValid_until());
         detailAlert.showAndWait();
+    }
+
+    public void goBack(ActionEvent actionEvent) {
+        Stage stage;
+        Scene scene;
+        FXMLLoader loader;
+        try {
+            loader = new FXMLLoader(getClass().getResource(
+                    "/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"),
+                    bundle);
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle(bundle.getString(session.getUser().getRole().toLowerCase() + "_dashboard"));
+            stage.show();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

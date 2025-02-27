@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -23,6 +24,7 @@ import tn.esprit.easytripdesktopapp.utils.UserSession;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class afficher_agence implements Initializable{
@@ -37,9 +39,12 @@ public class afficher_agence implements Initializable{
     private ServiceAgence agenceService = new ServiceAgence();
     private List<Agence> allAgences;
     UserSession session = UserSession.getInstance();
+    private ResourceBundle bundle;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        bundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+
         loadData();
 
         // Écouteur pour la recherche dynamique
@@ -115,7 +120,7 @@ public class afficher_agence implements Initializable{
 
     private void openUpdateAgence(Agence agence) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Agence/update_agence.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/update_agence.fxml"));
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
 
@@ -186,5 +191,24 @@ public class afficher_agence implements Initializable{
                 .filter(a -> a.getNom().toLowerCase().contains(keyword))
                 .toList();
         loadAgences(filteredAgences);
+    }
+
+    public void goBack(ActionEvent actionEvent) {
+        Stage stage;
+        Scene scene;
+        FXMLLoader loader;
+        try {
+            loader = new FXMLLoader(getClass().getResource(
+                    "/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"),
+                    bundle);
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle(bundle.getString(session.getUser().getRole().toLowerCase() + "_dashboard"));
+            stage.show();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 }

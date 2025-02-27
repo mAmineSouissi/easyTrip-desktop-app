@@ -11,7 +11,8 @@
 
 <AnchorPane prefHeight="645.0" prefWidth="578.0" xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.UpdateOfferTravelController">
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.UpdateOfferTravelController"
+            stylesheets="@../../styles/style8.css">
     <children>
         <Label layoutX="152.0" layoutY="14.0" style="-fx-font-size: 20px; -fx-font-weight: bold;"
                text="Update Offer Travel"/>

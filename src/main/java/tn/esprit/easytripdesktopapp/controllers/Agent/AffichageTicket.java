@@ -1,6 +1,8 @@
 package tn.esprit.easytripdesktopapp.controllers.Agent;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -24,7 +26,9 @@ import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AffichageTicket {
@@ -43,9 +47,13 @@ public class AffichageTicket {
     @FXML
     private Button backButton; // Bouton pour retourner à l'accueil
     private List<Ticket> tickets;
+    ResourceBundle bundel;
+
 
     @FXML
     public void initialize() {
+        bundel = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+
         // Initialiser le filtre de prix avec des valeurs
         priceFilter.getItems().addAll(50f, 100f, 150f, 200f, 250f, 300f);
 
@@ -171,19 +179,21 @@ public class AffichageTicket {
     }
 
     @FXML
-    private void goToAccueil() {
+    private void goToAccueil(ActionEvent actionEvent) {
+        Stage stage;
+        Scene scene;
+        FXMLLoader loader;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"));
-            Parent root = loader.load();
-
-            // Fermer la fenêtre actuelle
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.setTitle("Accueil");
+            loader = new FXMLLoader(getClass().getResource(
+                    "/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"),
+                    bundel);
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle(bundel.getString(session.getUser().getRole().toLowerCase() + "_dashboard"));
             stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

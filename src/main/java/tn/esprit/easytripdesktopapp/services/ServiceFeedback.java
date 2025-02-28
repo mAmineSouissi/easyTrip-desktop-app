@@ -1,8 +1,9 @@
-package tn.esprit.services;
+package tn.esprit.easytripdesktopapp.services;
 
-import tn.esprit.interfaces.IService;
-import tn.esprit.models.Feedback;
-import tn.esprit.utils.MyDatabase;
+import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
+
+import tn.esprit.easytripdesktopapp.models.Feedback;
+import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,12 +13,12 @@ import java.util.Optional;
 
 
 
-public class ServiceFeedback implements IService <Feedback>{
+public class ServiceFeedback implements CRUDService<Feedback> {
 
     private final Connection cnx;
 
     public ServiceFeedback() {
-        cnx = MyDatabase.getInstance().getCnx();
+        cnx = MyDataBase.getInstance().getCnx();
     }
 
     @Override

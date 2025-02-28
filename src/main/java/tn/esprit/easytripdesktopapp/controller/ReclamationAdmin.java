@@ -1,4 +1,4 @@
-package tn.esprit.controller;
+package tn.esprit.easytripdesktopapp.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,8 +13,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import tn.esprit.models.Reclamation;
-import tn.esprit.services.ServiceReclamation;
+import tn.esprit.easytripdesktopapp.models.Reclamation;
+
+import tn.esprit.easytripdesktopapp.services.ServiceReclamation;
+
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -246,7 +248,7 @@ public class ReclamationAdmin {
                 "Cordialement,\nL'équipe de support.";
 
         try {
-            SendGridUtil.sendEmail(clientEmail, "omsehli@gmail.com", subject, body);
+            SendGridUtil.sendEmail(clientEmail, "aminesouissi681@gmail.com", subject, body);
             showAlert(Alert.AlertType.INFORMATION, "E-mail envoyé avec succès à " + clientEmail);
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail : " + e.getMessage());

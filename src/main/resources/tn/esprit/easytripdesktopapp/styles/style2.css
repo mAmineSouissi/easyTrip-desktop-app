@@ -1,55 +1,53 @@
-/* Styles généraux */
-.root {
-    -fx-background-color: #f4f4f4;
-    -fx-padding: 20px;
+/* styles/style2.css */
+
+/* Style de base pour l'AnchorPane */
+AnchorPane {
+    -fx-background-color: #f4f4f4; /* Fond clair */
+    -fx-padding: 20;
 }
 
-/* Style du titre */
-.title-label {
-    -fx-font-size: 20px;
+/* Style pour les labels */
+Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50; /* Couleur sombre */
     -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
-    -fx-alignment: center;
 }
 
-/* Style des champs de texte */
-.text-field {
-    -fx-pref-height: 40px;
-    -fx-font-size: 14px;
-    -fx-background-color: #ffffff;
-    -fx-border-color: #bdc3c7;
-    -fx-border-radius: 5px;
-    -fx-padding: 5px;
+/* Style pour le titre */
+.title-label {
+    -fx-font-size: 24px;
+    -fx-text-fill: #3498db; /* Bleu moderne */
+    -fx-font-weight: bold;
 }
 
-.text-field:focused {
-    -fx-border-color: #3498db;
-    -fx-border-width: 2px;
-}
-
-/* Style des boutons */
-.button {
-    -fx-background-color: #3498db;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
-}
-
-.button:hover {
-    -fx-background-color: #2980b9;
-}
-
-.button:pressed {
-    -fx-background-color: #1f618d;
-}
-
-/* Style de l'image */
-.image-view {
+/* Style pour les champs de texte */
+TextField {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
     -fx-border-color: #bdc3c7;
     -fx-border-width: 1px;
-    -fx-border-radius: 5px;
+    -fx-padding: 5 10;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+}
+
+TextField:focused {
+    -fx-border-color: #3498db; /* Bleu moderne */
+}
+
+/* Style pour les boutons */
+Button {
+    -fx-background-color: #3498db; /* Bleu moderne */
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
+}
+
+Button:hover {
+    -fx-background-color: #2980b9; /* Bleu plus foncé au survol */
 }

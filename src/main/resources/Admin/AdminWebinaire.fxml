@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -12,21 +11,19 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.image.ImageView?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AffichageHotel" stylesheets="@../styles3.css" prefWidth="800" prefHeight="600">
+<?import javafx.scene.control.Label?>
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.AdminWebinaireController" stylesheets="@../styles3.css" prefWidth="800" prefHeight="600">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
     <top>
         <VBox spacing="10" alignment="CENTER">
-            <Label text="Gestion des Hôtels" styleClass="title" />
+            <Label text="Gestion des Webinaires" styleClass="title" />
             <HBox spacing="10" alignment="CENTER">
-                <TextField fx:id="searchField" promptText="Rechercher par nom ou ville" />
-                <ComboBox fx:id="ratingFilter" promptText="Note minimale" />
-                <ComboBox fx:id="priceFilter" promptText="Prix maximum" />
-                <ComboBox fx:id="currencyComboBox" promptText="Devise" />
-                <Button text="Filtrer" onAction="#applyFilters" styleClass="action-button" />
-                <Button text="Réinitialiser" onAction="#resetFilters" styleClass="action-button" />
+                <TextField fx:id="searchField" promptText="Rechercher par titre" />
+                <ComboBox fx:id="hotelFilter" promptText="Filtrer par hôtel" />
+
             </HBox>
         </VBox>
     </top>
@@ -34,7 +31,7 @@
     <center>
         <VBox spacing="20" alignment="CENTER">
             <HBox spacing="20" alignment="CENTER">
-                <Button fx:id="addButton" text="Ajouter Hôtel" onAction="#goToAddHotel" styleClass="action-button" />
+                <Button fx:id="addButton" text="Ajouter Webinaire" onAction="#goToAddWebinaire" styleClass="action-button" />
                 <Button fx:id="refreshButton" text="Rafraîchir" onAction="#refreshPage" styleClass="action-button" />
                 <Button fx:id="backButton" text="Retour à l'accueil" onAction="#goToAccueil" styleClass="action-button" />
             </HBox>

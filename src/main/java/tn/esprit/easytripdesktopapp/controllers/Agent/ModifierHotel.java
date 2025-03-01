@@ -1,9 +1,7 @@
 package tn.esprit.easytripdesktopapp.controllers.Agent;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -46,7 +44,7 @@ public class ModifierHotel {
     private final ServiceHotel hotelService = new ServiceHotel();
     private final ServicePromotion promotionService = new ServicePromotion();
 
-    private float originalPrice; // Champ pour stocker le prix original
+    private float originalPrice; // Stockage du prix original
 
     public void setHotel(Hotel hotel) {
         this.hotelToUpdate = hotel;
@@ -59,8 +57,8 @@ public class ModifierHotel {
         typeroom.setValue(hotel.getTypeRoom());
         numroom.setText(String.valueOf(hotel.getNumRoom()));
 
-        // Stocker le prix original
-        this.originalPrice = hotel.getPrice();
+        // Stocker le prix original avant toute promotion
+        this.originalPrice = getInitialPrice(hotel.getPrice(), hotel.getPromotion());
 
         if (hotel.getImage() != null && !hotel.getImage().isEmpty()) {
             Image img = new Image(hotel.getImage());
@@ -80,6 +78,7 @@ public class ModifierHotel {
     }
 
     private void loadPromotions() {
+        promotionComboBox.getItems().clear(); // Évite les doublons
         List<Promotion> promotions = promotionService.getAll();
         for (Promotion promotion : promotions) {
             promotionComboBox.getItems().add(promotion.getTitle());
@@ -93,58 +92,56 @@ public class ModifierHotel {
         } else {
             promotionComboBox.setDisable(true);
             promotionComboBox.setValue(null);
-            // Réinitialiser le prix à la valeur originale lorsque la promotion est désactivée
-            price.setText(String.valueOf(originalPrice));
+            price.setText(String.valueOf(originalPrice)); // Restaurer le prix initial
         }
     }
 
     @FXML
     private void saveChanges() {
-        // Mettre à jour les informations de l'hôtel
-        hotelToUpdate.setName(name.getText());
-        hotelToUpdate.setAdresse(adresse.getText());
-        hotelToUpdate.setCity(city.getText());
-        hotelToUpdate.setRating(Integer.parseInt(rating.getText()));
-        hotelToUpdate.setDescription(description.getText());
-        hotelToUpdate.setTypeRoom(typeroom.getValue());
-        hotelToUpdate.setNumRoom(Integer.parseInt(numroom.getText()));
-        hotelToUpdate.setImage(imageUrl);
+        try {
+            // Mettre à jour les informations de l'hôtel
+            hotelToUpdate.setName(name.getText());
+            hotelToUpdate.setAdresse(adresse.getText());
+            hotelToUpdate.setCity(city.getText());
+            hotelToUpdate.setRating(Integer.parseInt(rating.getText()));
+            hotelToUpdate.setDescription(description.getText());
+            hotelToUpdate.setTypeRoom(typeroom.getValue());
+            hotelToUpdate.setNumRoom(Integer.parseInt(numroom.getText()));
+            hotelToUpdate.setImage(imageUrl);
 
-        // Gérer la promotion
-        if (promotionSwitch.isSelected()) {
-            String promotionTitle = promotionComboBox.getValue();
-            if (promotionTitle != null) {
-                Promotion promotion = promotionService.getByTitle(promotionTitle);
-                hotelToUpdate.setPromotion(promotion);
-                // Appliquer la promotion au prix
-                float discountedPrice = calculateDiscountedPrice(originalPrice, promotion);
-                hotelToUpdate.setPrice(discountedPrice);
+            // Récupérer le prix initial avant promotion
+            originalPrice = getInitialPrice(Float.parseFloat(price.getText()), hotelToUpdate.getPromotion());
+
+            // Gestion de la promotion
+            if (promotionSwitch.isSelected()) {
+                String promotionTitle = promotionComboBox.getValue();
+                if (promotionTitle != null) {
+                    Promotion promotion = promotionService.getByTitle(promotionTitle);
+                    hotelToUpdate.setPromotion(promotion);
+                    // Appliquer la promotion
+                    float finalPrice = getFinalPrice(originalPrice, promotion);
+                    hotelToUpdate.setPrice(finalPrice);
+                }
+            } else {
+                hotelToUpdate.setPromotion(null);
+                hotelToUpdate.setPrice(originalPrice);
             }
-        } else {
-            // Si la promotion est désactivée, supprimer la promotion et réinitialiser le prix
-            hotelToUpdate.setPromotion(null);
-            hotelToUpdate.setPrice(originalPrice);
+
+            // Mettre à jour l'hôtel dans la base de données
+            hotelService.update(hotelToUpdate);
+
+            showAlert("Succès", "L'hôtel a été mis à jour avec succès !", Alert.AlertType.INFORMATION);
+            closeWindow();
+
+        } catch (NumberFormatException e) {
+            showAlert("Erreur", "Le prix doit être un nombre valide !", Alert.AlertType.ERROR);
         }
-
-        // Mettre à jour l'hôtel dans la base de données
-        hotelService.update(hotelToUpdate);
-
-        // Fermer la fenêtre de mise à jour
-        name.getScene().getWindow().hide();
-    }
-
-    private float calculateDiscountedPrice(float originalPrice, Promotion promotion) {
-        if (promotion != null) {
-            float discountPercentage = promotion.getDiscount_percentage();
-            return originalPrice * (1 - discountPercentage / 100);
-        }
-        return originalPrice;
     }
 
     @FXML
     private void uploadImage() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif", "*.bmp"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", "*.jpg", "*.png", "*.gif", "*.bmp"));
 
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
@@ -153,5 +150,38 @@ public class ModifierHotel {
             Image img = new Image(imageUrl);
             imageView.setImage(img);
         }
+    }
+
+    // Méthode pour calculer le prix final après application de la promotion
+    private float getFinalPrice(float initialPrice, Promotion promotion) {
+        if (promotion != null) {
+            return initialPrice - (initialPrice * promotion.getDiscount_percentage() / 100);
+        } else {
+            return initialPrice;
+        }
+    }
+
+    // Méthode pour récupérer le prix initial avant application de la promotion
+    private float getInitialPrice(float currentPrice, Promotion promotion) {
+        if (promotion != null) {
+            return currentPrice / (1 - (promotion.getDiscount_percentage() / 100));
+        } else {
+            return currentPrice;
+        }
+    }
+
+    // Affichage d'une alerte
+    private void showAlert(String title, String content, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    // Fermer la fenêtre
+    private void closeWindow() {
+        Stage stage = (Stage) name.getScene().getWindow();
+        stage.close();
     }
 }

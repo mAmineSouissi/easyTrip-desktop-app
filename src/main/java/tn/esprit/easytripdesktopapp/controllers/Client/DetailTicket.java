@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import tn.esprit.easytripdesktopapp.models.Ticket;
+import tn.esprit.easytripdesktopapp.services.WeatherService;
 
 public class DetailTicket {
 
@@ -38,9 +39,13 @@ public class DetailTicket {
     private Label promotionLabel; // Nouveau Label pour afficher la promotion
 
     @FXML
+    private Label weatherLabel; // Nouveau Label pour afficher la météo
+
+    @FXML
     private Button reserveButton; // Bouton Réserver
 
     private Ticket ticket;
+    private WeatherService weatherService = new WeatherService(); // Service météo
 
     public void setTicket(Ticket ticket) {
         this.ticket = ticket;
@@ -91,6 +96,10 @@ public class DetailTicket {
             } else {
                 promotionLabel.setText("Promotion : Aucune promotion");
             }
+
+            // Afficher la météo
+            String weatherInfo = weatherService.getWeatherByCity(ticket.getArrivalCity());
+            weatherLabel.setText("Météo : " + weatherInfo);
         }
     }
 

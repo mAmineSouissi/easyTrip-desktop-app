@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class CurrencyConverter {
 
-    private static final String API_KEY = "24be741558ce63380ff59b9914d09d8a"; // Votre clé API
+    private static final String API_KEY = "5e02a89bff543aef53d77ca6bdedf7f5"; // Votre clé API
     private static final String BASE_URL = "http://api.exchangeratesapi.io/v1/latest?access_key=" + API_KEY + "&base=EUR&symbols=USD,GBP,JPY,CAD";
 
     // Méthode pour obtenir les taux de change

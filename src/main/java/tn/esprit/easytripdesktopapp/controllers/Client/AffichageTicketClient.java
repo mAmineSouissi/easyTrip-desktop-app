@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Ticket;
 import tn.esprit.easytripdesktopapp.services.ServiceTicket;
+import tn.esprit.easytripdesktopapp.services.WeatherService;
 import tn.esprit.easytripdesktopapp.utils.CurrencyConverter;
 
 import java.io.IOException;
@@ -44,6 +45,7 @@ public class AffichageTicketClient {
     private final CRUDService<Ticket> ticketService = new ServiceTicket();
     private List<Ticket> tickets;
     private CurrencyConverter currencyConverter = new CurrencyConverter();
+    private WeatherService weatherService = new WeatherService(); // Service météo
 
     @FXML
     public void initialize() {
@@ -51,11 +53,16 @@ public class AffichageTicketClient {
         priceFilter.getItems().addAll(50f, 100f, 150f, 200f, 250f, 300f);
 
         // Initialiser la sélection de la devise
-        currencyComboBox.getItems().addAll("EUR", "USD", "GBP", "JPY", "CAD"); // Ajoutez d'autres devises si nécessaire
-        currencyComboBox.setValue("EUR"); // Par défaut, EUR
+        currencyComboBox.getItems().addAll("TND", "EUR", "USD", "GBP", "JPY", "CAD"); // TND est maintenant la première option
+        currencyComboBox.setValue("TND"); // Par défaut, TND
 
         // Recharger les tickets lorsque la devise change
         currencyComboBox.setOnAction(e -> loadTickets());
+
+        // Ajouter un Listener pour la recherche dynamique
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            applyFilters(); // Appliquer les filtres à chaque changement de texte
+        });
 
         loadTickets(); // Charger les tickets au démarrage
     }
@@ -122,7 +129,8 @@ public class AffichageTicketClient {
         String selectedCurrency = currencyComboBox.getValue();
         double convertedPrice;
         try {
-            convertedPrice = currencyConverter.convert(prixReduit, "EUR", selectedCurrency); // Par défaut, EUR
+            // Convertir depuis TND vers la devise sélectionnée
+            convertedPrice = currencyConverter.convert(prixReduit, "TND", selectedCurrency); // TND est maintenant la devise de base
         } catch (Exception e) {
             System.err.println("Erreur lors de la conversion du prix : " + e.getMessage());
             convertedPrice = prixReduit; // Utiliser le prix d'origine en cas d'erreur
@@ -135,13 +143,18 @@ public class AffichageTicketClient {
         Text promotionText = new Text("Promotion : " + (ticket.getPromotion() != null ? ticket.getPromotion().getDiscount_percentage() + "% de réduction" : "Aucune promotion"));
         promotionText.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
 
+        // Ajouter la météo
+        String weatherInfo = weatherService.getWeatherByCity(ticket.getArrivalCity());
+        Text weatherText = new Text("Météo : " + weatherInfo);
+        weatherText.setStyle("-fx-font-size: 14px; -fx-text-fill: #2196F3;");
+
         // Bouton pour voir les détails
         Button detailsButton = new Button("Voir les détails");
         detailsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
         detailsButton.setOnAction(e -> showTicketDetails(ticket));
 
         // Ajouter les éléments à la carte
-        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, promotionText, detailsButton);
+        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, promotionText, weatherText, detailsButton);
 
         return card;
     }

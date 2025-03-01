@@ -15,5 +15,6 @@
     <Label fx:id="ticketClassLabel" />
     <Label fx:id="ticketTypeLabel" />
     <Label fx:id="promotionLabel" style="-fx-text-fill: #FF5722;" /> <!-- Nouveau Label pour la promotion -->
+    <Label fx:id="weatherLabel" style="-fx-text-fill: #2196F3;" /> <!-- Nouveau Label pour la météo -->
     <Button fx:id="reserveButton" text="Réserver" onAction="#handleReserveButton" />
 </VBox>

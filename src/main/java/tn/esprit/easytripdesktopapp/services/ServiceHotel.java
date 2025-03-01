@@ -1,6 +1,7 @@
 package tn.esprit.easytripdesktopapp.services;
 
 import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
+import tn.esprit.easytripdesktopapp.models.Agence;
 import tn.esprit.easytripdesktopapp.models.Hotel;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
@@ -15,7 +16,42 @@ public class ServiceHotel implements CRUDService<Hotel> {
     public ServiceHotel() {
         cnx = MyDataBase.getInstance().getCnx();
     }
+    public Hotel getById(int id) {
+        String qry = "SELECT * FROM `hotels` WHERE `id_hotel` = ?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id); // Définir l'ID de l'hôtel à rechercher
+            ResultSet rs = pstm.executeQuery();
 
+            if (rs.next()) {
+                Hotel hotel = new Hotel();
+                hotel.setId(rs.getInt("id_hotel"));
+                hotel.setName(rs.getString("name"));
+                hotel.setAdresse(rs.getString("adresse"));
+                hotel.setCity(rs.getString("city"));
+                hotel.setRating(rs.getInt("rating"));
+                hotel.setDescription(rs.getString("description"));
+                hotel.setPrice(rs.getFloat("price"));
+                hotel.setTypeRoom(rs.getString("type_room"));
+                hotel.setNumRoom(rs.getInt("num_room"));
+                hotel.setImage(rs.getString("image"));
+
+                // Récupérer la promotion associée (si elle existe)
+                int promotionId = rs.getInt("promotion_id");
+                if (!rs.wasNull()) { // Vérifier si promotion_id n'est pas NULL
+                    Promotion promotion = new ServicePromotion().getById(promotionId);
+                    hotel.setPromotion(promotion);
+                }
+
+
+
+                return hotel; // Retourner l'hôtel trouvé
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'hôtel par ID : " + e.getMessage());
+        }
+        return null; // Retourner null si aucun hôtel n'est trouvé
+    }
     @Override
     public void add(Hotel hotel) {
         String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";

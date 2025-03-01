@@ -1,5 +1,7 @@
 package tn.esprit.easytripdesktopapp.interfaces;
 
+import tn.esprit.easytripdesktopapp.models.Hotel;
+
 import java.util.List;
 
 public interface CRUDService<T> {
@@ -11,5 +13,6 @@ public interface CRUDService<T> {
     void update(T t);
 
     void delete(T t);
+
 
 }

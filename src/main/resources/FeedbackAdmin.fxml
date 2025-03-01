@@ -159,6 +159,15 @@
                            <HBox.margin>
                               <Insets left="5.0" top="5.0" />
                            </HBox.margin>
+
+                            <Button mnemonicParsing="false" onAction="#exportToExcel" styleClass="action-button" text="Exporter en Excel">
+                                    <HBox.margin>
+                                        <Insets left="5.0" top="5.0"/>
+                                    </HBox.margin>
+                                </Button>
+
+                              
+                        <Button text="Synchroniser" onAction="#synchronizeWithDatabase" />
                         </Button>
                      </children>
                      <VBox.margin>

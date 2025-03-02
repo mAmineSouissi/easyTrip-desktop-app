@@ -1,5 +1,6 @@
 package tn.esprit.easytripdesktopapp.controllers;
 
+import com.sun.javafx.menu.MenuItemBase;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.AccountType;
+import tn.esprit.easytripdesktopapp.services.AuthenticationService;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
@@ -22,6 +24,8 @@ public class LoginController {
 
     private final ServiceUser serviceUser = new ServiceUser();
     public Label greetingLabel;
+    public Button googleLoginButton;
+    public Label statusLabel;
     @FXML
     private TextField emailField;
     @FXML
@@ -35,8 +39,30 @@ public class LoginController {
     @FXML
     private Button langFrenchButton;
     private ResourceBundle bundle;
+    private AuthenticationService authService;
+    @FXML
+    private ProgressIndicator progressIndicator;
 
     public void initialize() {
+        progressIndicator.setVisible(false);
+        authService = new AuthenticationService();
+
+
+        authService.setOnSucceeded(event -> {
+            progressIndicator.setVisible(false);
+            googleLoginButton.setDisable(false);
+
+            User user = authService.getValue();
+            if (user != null) {
+                navigateToMainView(user);
+            }
+        });
+
+        authService.setOnFailed(event -> {
+            progressIndicator.setVisible(false);
+            googleLoginButton.setDisable(false);
+            statusLabel.setText("Login failed: " + event.getSource().getException().getMessage());
+        });
         bundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
         updateTexts();
     }
@@ -63,35 +89,36 @@ public class LoginController {
 
         User user = serviceUser.authenticate(email, password);
         if (user != null) {
-            showAlert(bundle.getString("success"), bundle.getString("login_success"), Alert.AlertType.INFORMATION);
-            UserSession.createSession(user);
-
-            try {
-                FXMLLoader loader;
-                switch (AccountType.valueOf(user.getRole())) {
-                    case Admin:
-                        loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/TablesAdmin.fxml"), bundle);
-                        break;
-                    case Agent:
-                        loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"), bundle);
-                        break;
-                    case Client:
-                        loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), bundle);
-                        break;
-                    default:
-                        showAlert(bundle.getString("error"), bundle.getString("unknown_role"), Alert.AlertType.ERROR);
-                        return;
-                }
-
-                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                scene = new Scene(loader.load());
-                stage.setScene(scene);
-                stage.setTitle(bundle.getString(user.getRole().toLowerCase() + "_dashboard"));
-                stage.show();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            navigateToMainView(user);
+//            showAlert(bundle.getString("success"), bundle.getString("login_success"), Alert.AlertType.INFORMATION);
+//            UserSession.createSession(user);
+//
+//            try {
+//                FXMLLoader loader;
+//                switch (AccountType.valueOf(user.getRole())) {
+//                    case Admin:
+//                        loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/TablesAdmin.fxml"), bundle);
+//                        break;
+//                    case Agent:
+//                        loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"), bundle);
+//                        break;
+//                    case Client:
+//                        loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), bundle);
+//                        break;
+//                    default:
+//                        showAlert(bundle.getString("error"), bundle.getString("unknown_role"), Alert.AlertType.ERROR);
+//                        return;
+//                }
+//
+//                stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//                scene = new Scene(loader.load());
+//                stage.setScene(scene);
+//                stage.setTitle(bundle.getString(user.getRole().toLowerCase() + "_dashboard"));
+//                stage.show();
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
         } else {
             showAlert(bundle.getString("error"), bundle.getString("invalid_credentials"), Alert.AlertType.ERROR);
@@ -145,6 +172,7 @@ public class LoginController {
         alert.showAndWait();
     }
 
+
     public void navigateToResetPassword(MouseEvent mouseEvent) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/ResetPassword.fxml"));
@@ -158,5 +186,41 @@ public class LoginController {
             e.printStackTrace();
             System.out.println("Error loading ResetPassword.fxml");
         }
+    }
+    private void navigateToMainView(User user) {
+        try {
+            FXMLLoader loader;
+            switch (AccountType.valueOf(user.getRole())) {
+                case Admin:
+                    loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/TablesAdmin.fxml"), bundle);
+                    break;
+                case Agent:
+                    loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"), bundle);
+                    break;
+                case Client:
+                    loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), bundle);
+                    break;
+                default:
+                    showAlert(bundle.getString("error"), bundle.getString("unknown_role"), Alert.AlertType.ERROR);
+                    return;
+            }
+
+            UserSession.createSession(user);
+            Stage stage = (Stage) googleLoginButton.getScene().getWindow();
+            Scene scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle(bundle.getString(user.getRole().toLowerCase() + "_dashboard"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(bundle.getString("error"), bundle.getString("navigation_error"), Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    public void handleGoogleLogin(ActionEvent actionEvent) {
+        progressIndicator.setVisible(true);
+        googleLoginButton.setDisable(true);
+        authService.restart();
     }
 }

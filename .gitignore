@@ -39,3 +39,7 @@ build/
 .DS_Store
 .idea/misc.xml
 
+src/main/resources/tn/esprit/easytripdesktopapp/Config/credentials.json
+src/main/resources/tn/esprit/easytripdesktopapp/Config/client_secret_93925146747-0ujl03p2m43ttie5n4b0rpakhrg45sjj.apps.googleusercontent.com.json
+/tokens
+/src/main/resources/tn/esprit/easytripdesktopapp/Config

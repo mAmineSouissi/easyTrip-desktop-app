@@ -1,0 +1,56 @@
+/* Style général */
+.root {
+    -fx-background-color: #ecf0f1;
+    -fx-font-family: 'Arial';
+}
+
+/* Style de la ListView */
+.list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+.list-cell:filled {
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);
+    -fx-margin: 10;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+/* Style des boutons */
+.button {
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-padding: 10 20;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+/* Style des champs de texte */
+.text-field, .combo-box {
+    -fx-padding: 10;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-border-color: #bdc3c7;
+    -fx-background-color: white;
+}
+
+/* Style des labels */
+.label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #34495e;
+}

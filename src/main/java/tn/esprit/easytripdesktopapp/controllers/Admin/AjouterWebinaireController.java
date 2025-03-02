@@ -3,6 +3,8 @@ package tn.esprit.easytripdesktopapp.controllers.Admin;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import tn.esprit.easytripdesktopapp.models.Hotel;
 import tn.esprit.easytripdesktopapp.models.Webinaire;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
@@ -10,9 +12,11 @@ import tn.esprit.easytripdesktopapp.services.ServiceWebinaire;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class AjouterWebinaireController {
 
@@ -37,14 +41,17 @@ public class AjouterWebinaireController {
     private final ServiceHotel hotelService = new ServiceHotel();
     private final ServiceWebinaire webinaireService = new ServiceWebinaire();
 
-    // Map pour associer le nom de l'hôtel à son ID
     private Map<String, Integer> hotelMap = new HashMap<>();
+    private Consumer<Void> refreshCallback;
 
     @FXML
     public void initialize() {
         loadHotels();
     }
 
+    /**
+     * Charge la liste des hôtels dans la ComboBox.
+     */
     private void loadHotels() {
         List<Hotel> hotels = hotelService.getAll();
         for (Hotel hotel : hotels) {
@@ -53,19 +60,49 @@ public class AjouterWebinaireController {
         }
     }
 
+    /**
+     * Sauvegarde un nouveau webinaire après avoir validé les saisies.
+     */
     @FXML
     private void save() {
+        // Vérifier que tous les champs obligatoires sont remplis
+        if (title.getText().isEmpty() || description.getText().isEmpty() || debutDateTime.getText().isEmpty()
+                || finitDateTime.getText().isEmpty() || link.getText().isEmpty() || hotelComboBox.getValue() == null) {
+            showAlert("Erreur de saisie", "Tous les champs doivent être remplis.");
+            return;
+        }
+
+        // Valider le format des dates
+        LocalDateTime debut;
+        LocalDateTime fin;
+        try {
+            debut = LocalDateTime.parse(debutDateTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            fin = LocalDateTime.parse(finitDateTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        } catch (DateTimeParseException e) {
+            showAlert("Erreur de format", "Le format de date et heure doit être 'yyyy-MM-dd HH:mm:ss'.");
+            return;
+        }
+
+        // Vérifier que la date de début est avant la date de fin
+        if (debut.isAfter(fin)) {
+            showAlert("Erreur de date", "La date de début doit être avant la date de fin.");
+            return;
+        }
+
+        // Vérifier que le lien est valide (optionnel)
+        if (!link.getText().startsWith("http://") && !link.getText().startsWith("https://")) {
+            showAlert("Erreur de lien", "Le lien doit commencer par 'http://' ou 'https://'.");
+            return;
+        }
+
+        // Récupérer les valeurs des champs
         String titre = title.getText();
         String desc = description.getText();
-        LocalDateTime debut = LocalDateTime.parse(debutDateTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        LocalDateTime fin = LocalDateTime.parse(finitDateTime.getText(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String lien = link.getText();
-
-        // Récupérer l'ID de l'hôtel sélectionné
         String selectedHotelName = hotelComboBox.getValue();
         int hotelId = hotelMap.get(selectedHotelName);
 
-        // Créer un nouvel objet Webinaire
+        // Créer et sauvegarder le webinaire
         Webinaire webinaire = new Webinaire();
         webinaire.setTitle(titre);
         webinaire.setDescription(desc);
@@ -73,14 +110,40 @@ public class AjouterWebinaireController {
         webinaire.setFinitDateTime(fin);
         webinaire.setLink(lien);
 
-        // Récupérer l'hôtel associé
         Hotel hotel = hotelService.getById(hotelId);
         webinaire.setHotel(hotel);
 
-        // Ajouter le webinaire à la base de données
         webinaireService.add(webinaire);
 
-        // Afficher un message de succès ou rediriger l'utilisateur
-        System.out.println("Webinaire ajouté avec succès !");
+        // Rafraîchir la liste des webinaires si un callback est défini
+        if (refreshCallback != null) {
+            refreshCallback.accept(null);
+        }
+
+        // Afficher un message de succès
+        showAlert("Succès", "Webinaire ajouté avec succès !");
+    }
+
+    /**
+     * Affiche une alerte avec un message d'erreur ou de succès.
+     *
+     * @param title   Le titre de l'alerte.
+     * @param message Le message à afficher.
+     */
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    /**
+     * Définit le callback pour rafraîchir la liste des webinaires après l'ajout.
+     *
+     * @param refreshCallback Le callback à exécuter.
+     */
+    public void setRefreshCallback(Consumer<Void> refreshCallback) {
+        this.refreshCallback = refreshCallback;
     }
 }

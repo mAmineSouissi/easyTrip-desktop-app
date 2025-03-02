@@ -90,6 +90,9 @@ public class ServiceWebinaire implements CRUDService<Webinaire> {
         }
     }
 
+    /**
+     * Supprime les webinaires dont la date de fin est passée.
+     */
     public void deleteExpiredWebinaires() {
         String qry = "DELETE FROM `webinaire` WHERE `finitDateTime` < NOW()";
         try {

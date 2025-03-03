@@ -1,0 +1,67 @@
+/* Set general background and font for the entire layout */
+#chatbotLayout {
+    -fx-padding: 20;
+    -fx-background-color: #FFFFFF;  /* Light background */
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+}
+
+/* Style for the title label */
+#titleLabel {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;  /* Dark grey color for text */
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-padding: 10 0 15 0;
+}
+
+/* Style for chat area (TextArea) */
+#chatArea {
+    -fx-background-color: #F9F9F9; /* Light grey background */
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 10;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 14px;
+    -fx-padding: 10;
+    -fx-text-fill: #555555;  /* Dark grey for text */
+    -fx-scroll-bar-width: 8;
+    -fx-scroll-bar-color: #90CAF9; /* Light blue scroll bar */
+}
+
+/* Style for user input section */
+#inputArea {
+    -fx-padding: 10;
+}
+
+/* Style for TextField (input) */
+#userInput {
+    -fx-background-color: #F1F1F1;
+    -fx-border-radius: 10;
+    -fx-border-color: #D0D0D0;
+    -fx-font-size: 14px;
+    -fx-padding: 10 15;
+    -fx-focus-color: #90CAF9;  /* Blue focus effect */
+}
+
+/* Style for Send Button */
+#sendButton {
+    -fx-background-color: #4CAF50;  /* Green background */
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-border-radius: 10;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0.5, 0, 3);  /* Add subtle shadow effect */
+}
+
+#sendButton:hover {
+    -fx-background-color: #45A049;  /* Darker green on hover */
+}
+
+/* Optional: Styling for buttons inside input area */
+#inputArea Button {
+    -fx-padding: 8 16;
+    -fx-font-size: 14px;
+}

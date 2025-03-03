@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="tn.esprit.easytripdesktopapp.controllers.ChatbotController"
+      spacing="15" alignment="CENTER" fx:id="chatbotLayout">
+
+    <!-- Chatbot Title -->
+    <Label fx:id="titleLabel" text="Chatbot"/>
+
+    <!-- Chat Area (Display messages) -->
+    <TextArea fx:id="chatArea" editable="false" wrapText="true" prefHeight="300"/>
+
+    <!-- User Input and Send Button -->
+    <HBox fx:id="inputArea" spacing="15" alignment="CENTER">
+        <TextField fx:id="userInput" promptText="Type your message..."/>
+        <Button fx:id="sendButton" text="Send" onAction="#handleSend"/>
+    </HBox>
+</VBox>

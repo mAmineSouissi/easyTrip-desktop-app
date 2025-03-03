@@ -22,7 +22,7 @@ public class MainFX extends Application {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Gestion des Hôtels"); // Titre de la fenêtre
+            primaryStage.setTitle("Gestion des Hôtels");
             primaryStage.show();
         } catch (IOException e) {
             System.out.println("Erreur lors du chargement de l'interface utilisateur : " + e.getMessage());

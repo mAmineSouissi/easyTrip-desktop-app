@@ -9,6 +9,11 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.media.MediaPlayer?>
 <?import javafx.scene.media.Media?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.WebinaireViewController" stylesheets="@../styles3.css" prefWidth="800" prefHeight="600">
     <padding>
@@ -16,13 +21,27 @@
     </padding>
 
     <center>
-        <VBox spacing="20" alignment="CENTER">
-            <Label fx:id="titleLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
-            <MediaView fx:id="mediaView" fitWidth="600" fitHeight="400" />
-            <HBox spacing="10" alignment="CENTER">
-                <Button fx:id="microButton" text="Activer/Désactiver Micro" onAction="#toggleMicro" styleClass="action-button" />
-                <Button fx:id="quitButton" text="Quitter" onAction="#quitWebinaire" styleClass="action-button" />
-            </HBox>
-        </VBox>
+        <StackPane>
+            <VBox spacing="20" alignment="CENTER">
+                <Label fx:id="titleLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
+                <MediaView fx:id="mediaView" fitWidth="600" fitHeight="400" />
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="microButton" text="Désactiver Micro" onAction="#toggleMicro" styleClass="action-button">
+                        <graphic>
+                            <ImageView>
+                                    <Image url="@../icons/microphone.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button fx:id="quitButton" text="Quitter" onAction="#quitWebinaire" styleClass="action-button">
+                        <graphic>
+                            <ImageView>
+                                <Image url="@../icons/exit.png" />
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                </HBox>
+            </VBox>
+        </StackPane>
     </center>
 </BorderPane>

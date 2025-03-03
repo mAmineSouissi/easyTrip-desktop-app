@@ -6,9 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.media.MediaException;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import tn.esprit.easytripdesktopapp.models.Webinaire;
-
-import java.io.File;
 
 public class WebinaireViewController {
 
@@ -36,14 +37,46 @@ public class WebinaireViewController {
         String roomId = webinaire.getRoomId();
         System.out.println("Rejoindre la salle : " + roomId);
 
-
+        // Charger la vidéo du webinaire depuis les ressources
+        String videoFile = getClass().getResource("/hotel.mp4").toString(); // Chemin relatif depuis le dossier resources
+        if (videoFile != null) {
+            try {
+                Media media = new Media(videoFile);
+                mediaPlayer = new MediaPlayer(media);
+                mediaView.setMediaPlayer(mediaPlayer);
+                mediaPlayer.play();
+            } catch (MediaException e) {
+                showErrorDialog("Erreur de média", "Le fichier vidéo est corrompu ou incompatible.");
+                e.printStackTrace();
+            }
+        } else {
+            showErrorDialog("Fichier introuvable", "Le fichier vidéo spécifié est introuvable dans les ressources.");
+        }
     }
 
     @FXML
     private void toggleMicro() {
         isMicroEnabled = !isMicroEnabled;
         microButton.setText(isMicroEnabled ? "Désactiver Micro" : "Activer Micro");
-        // Ajoutez ici la logique pour activer/désactiver le micro
+
+        // Logique pour activer/désactiver le micro
+        if (isMicroEnabled) {
+            enableMicrophone();
+        } else {
+            disableMicrophone();
+        }
+    }
+
+    private void enableMicrophone() {
+        // Logique pour activer le micro
+        System.out.println("Microphone activé");
+        // Ici, vous pouvez ajouter le code pour démarrer la capture audio
+    }
+
+    private void disableMicrophone() {
+        // Logique pour désactiver le micro
+        System.out.println("Microphone désactivé");
+        // Ici, vous pouvez ajouter le code pour arrêter la capture audio
     }
 
     @FXML
@@ -52,5 +85,13 @@ public class WebinaireViewController {
             mediaPlayer.stop();
         }
         quitButton.getScene().getWindow().hide();
+    }
+
+    private void showErrorDialog(String title, String message) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

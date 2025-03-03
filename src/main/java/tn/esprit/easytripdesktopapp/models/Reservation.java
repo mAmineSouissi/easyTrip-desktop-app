@@ -12,6 +12,7 @@ public class Reservation {
     private String email;
     private int places;
     private int userId;
+    private int offerId;
 
 
     public Reservation() {}
@@ -90,6 +91,14 @@ public class Reservation {
 
     public void setPlaces(int places) {
         this.places = places;
+    }
+
+    public int getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(int offerId) {
+        this.offerId = offerId;
     }
 
     @Override

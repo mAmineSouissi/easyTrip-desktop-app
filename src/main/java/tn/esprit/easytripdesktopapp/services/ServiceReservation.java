@@ -10,15 +10,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class ServiceReservation implements IService<Reservation> {
     private Connection cnx ;
 
     public ServiceReservation(){
         cnx = MyDataBase.getInstance().getCnx();
     }
-
 
     @Override
     public void add(Reservation reservation) {
@@ -57,6 +54,7 @@ public class ServiceReservation implements IService<Reservation> {
                 r.setPhone(rs.getInt(("phone")));
                 r.setEmail(rs.getString(("email")));
                 r.setPlaces(rs.getInt(("places")));
+                r.setOfferId(rs.getInt("id_offer"));
                 reservations.add(r);
             }
         } catch (SQLException e) {
@@ -65,6 +63,19 @@ public class ServiceReservation implements IService<Reservation> {
         return reservations;
     }
 
+    public float getOfferPrice(int offerId) {
+        String qry = "SELECT price FROM offer WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(qry)) {
+            ps.setInt(1, offerId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat("price");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
 
     @Override
     public void delete(int id) {

@@ -63,6 +63,7 @@ public class Addreservation {
             r.setPrenom(prenomres.getText());
             r.setPhone(Integer.parseInt(phoneres.getText()));
             r.setEmail(mailres.getText());
+            r.setOfferId(1);
             sr.add(r);
             System.out.println("Réservation ajoutée avec succès");
         } catch (NumberFormatException e) {
@@ -110,5 +111,14 @@ public class Addreservation {
         prenomres.clear();
     }
 
+    @FXML
+    void retour() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"));
+            phoneres.getScene().setRoot(root);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }

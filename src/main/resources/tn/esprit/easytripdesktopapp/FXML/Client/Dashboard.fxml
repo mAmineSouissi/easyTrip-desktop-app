@@ -6,14 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.geometry.Insets?>
 <AnchorPane prefHeight="553.0" prefWidth="911.0" stylesheets="@../../styles/dashboardClient.css"
-    xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.ClientDashboardController">
+            xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.ClientDashboardController">
 
     <!-- Navigation Bar -->
     <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
-        AnchorPane.topAnchor="0">
+          AnchorPane.topAnchor="0">
 
         <!-- Welcome Text on the Left -->
         <Label fx:id="welcomeLabel" styleClass="nav-label" text="Welcome, User" />
@@ -33,19 +39,30 @@
 
         <!-- Profile Button -->
         <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button"
-            text="Profile" />
+                text="Profile" />
 
         <!-- LogOut Button -->
         <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button"
-            text="LogOut" />
+                text="LogOut" />
 
         <!-- Profile Image -->
         <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true"
-            preserveRatio="true" styleClass="profile-image" />
+                   preserveRatio="true" styleClass="profile-image" />
+
+        <!-- Chatbot Icon -->
+        <ImageView fx:id="chatbotIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true"
+                   styleClass="chatbot-icon" onMouseClicked="#startChatWithBot">
+            <image>
+                <Image url="@../../images/chatbot.png" />
+            </image>
+        </ImageView>
+
     </HBox>
 
     <!-- Centered "Coming Soon..." Text -->
     <Label fx:id="coming_soon" layoutX="353.0" layoutY="262.0" styleClass="coming-soon" text="Coming Soon..."
-        AnchorPane.leftAnchor="353.0" AnchorPane.topAnchor="262.0" />
+           AnchorPane.leftAnchor="353.0" AnchorPane.topAnchor="262.0" />
+
+
 
 </AnchorPane>

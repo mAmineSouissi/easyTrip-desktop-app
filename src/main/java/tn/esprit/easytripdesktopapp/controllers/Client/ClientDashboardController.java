@@ -1,31 +1,34 @@
 package tn.esprit.easytripdesktopapp.controllers.Client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.User;
+import tn.esprit.easytripdesktopapp.service.ChatbotService;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -41,8 +44,15 @@ public class ClientDashboardController implements Initializable {
     public Label hotelOffersLabel;
     public Label ticketsOffersLabel;
     public Label reclamationLabel;
+    public VBox chatContainer;
     @FXML
     private Label welcomeLabel;
+    @FXML
+    private VBox chatWindow;       // Fenêtre de chat
+    @FXML
+    private TextArea chatArea;     // Zone de texte pour afficher la conversation
+    @FXML
+    private TextField inputField;  // Champ de texte pour l'entrée de l'utilisateur
 
     @FXML
     private Button editProfile;
@@ -54,6 +64,13 @@ public class ClientDashboardController implements Initializable {
     private TextField profilePhotoField;
 
     private ResourceBundle bundle;
+
+    @FXML
+    private VBox chatBox; // Correctly declare chatBox as a FXML injected VBox
+
+    @FXML
+    private ScrollPane scrollPane;
+
 
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
@@ -346,6 +363,29 @@ public class ClientDashboardController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+
+    @FXML
+    protected void startChatWithBot(MouseEvent event) {
+        try {
+            // Load the ChatbotFXML.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Chatbot.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage for the chatbot
+            Stage chatbotStage = new Stage();
+            chatbotStage.setTitle("Chatbot");
+            chatbotStage.setScene(new Scene(root));
+
+            // Show the chatbot stage
+            chatbotStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
         }
     }
 }

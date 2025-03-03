@@ -106,3 +106,106 @@
     -fx-border-color: #FF5C5C; /* Highlight border on focus */
     -fx-border-width: 2px; /* Border thickness */
 }
+
+/* Style général du conteneur du chatbot */
+.chat-container {
+    width: 100%;
+    max-width: 400px; /* Ajuste la largeur selon tes besoins */
+    height: 600px; /* Ajuste selon l'écran */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #f9f9f9;
+}
+
+/* Zone d'affichage des messages */
+.chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Espacement entre les messages */
+}
+
+/* Style des messages envoyés par l'utilisateur */
+.user-message {
+    align-self: flex-end;
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 15px 15px 0px 15px;
+    max-width: 80%;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+/* Style des messages du chatbot */
+.bot-message {
+    align-self: flex-start;
+    background: #e5e5e5;
+    color: #333;
+    padding: 10px 15px;
+    border-radius: 15px 15px 15px 0px;
+    max-width: 80%;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+/* Zone de saisie des messages */
+.chat-input-container {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    background: white;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 14px;
+}
+
+.chat-send-button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin-left: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chat-send-button:hover {
+    background: #0056b3;
+}
+
+/* Assurer que les messages longs ne sont pas coupés */
+.chat-message p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+/* Scrollbar pour le conteneur des messages */
+.chat-messages {
+    overflow-y: auto;
+    scrollbar-width: thin; /* Rend la scrollbar fine */
+    scrollbar-color: #ccc transparent; /* Couleur du thumb et du track */
+}
+
+
+
+
+.chat-messages {
+    overflow-y: auto;
+    scrollbar-width: thin; /* Mince scrollbar */
+    scrollbar-color: #ccc #f9f9f9; /* Couleur de la scrollbar et du fond */
+}
+

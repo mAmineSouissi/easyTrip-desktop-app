@@ -1,6 +1,7 @@
 package tn.esprit.easytripdesktopapp.models;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Webinaire {
     private int id;
@@ -10,9 +11,11 @@ public class Webinaire {
     private LocalDateTime finitDateTime;
     private String link;
     private Hotel hotel;
+    private String roomId; // Identifiant unique de la salle
 
-    // Constructors
-    public Webinaire() {}
+    public Webinaire() {
+        this.roomId = UUID.randomUUID().toString(); // Générer un UUID unique
+    }
 
     public Webinaire(String title, String description, LocalDateTime debutDateTime, LocalDateTime finitDateTime, String link, Hotel hotel) {
         this.title = title;
@@ -21,9 +24,10 @@ public class Webinaire {
         this.finitDateTime = finitDateTime;
         this.link = link;
         this.hotel = hotel;
+        this.roomId = UUID.randomUUID().toString(); // Générer un UUID unique
     }
 
-    // Getters and Setters
+    // Getters et setters
     public int getId() {
         return id;
     }
@@ -78,5 +82,13 @@ public class Webinaire {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 }

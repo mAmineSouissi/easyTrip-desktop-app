@@ -80,9 +80,6 @@ public class ClientWebinaireController {
         Label dateLabel = new Label("Date: " + webinaire.getDebutDateTime() + " - " + webinaire.getFinitDateTime());
         dateLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #34495e;");
 
-        Label linkLabel = new Label("Lien: " + webinaire.getLink());
-        linkLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #34495e;");
-
         Label hotelLabel = new Label("Hôtel: " + webinaire.getHotel().getName());
         hotelLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #34495e;");
 
@@ -101,7 +98,7 @@ public class ClientWebinaireController {
 
         buttonBox.getChildren().add(joinButton);
 
-        listItem.getChildren().addAll(titleLabel, descriptionLabel, dateLabel, linkLabel, hotelLabel, buttonBox);
+        listItem.getChildren().addAll(titleLabel, descriptionLabel, dateLabel, hotelLabel, buttonBox);
 
         return listItem;
     }
@@ -109,10 +106,20 @@ public class ClientWebinaireController {
     @FXML
     private void joinWebinaire(Webinaire webinaire) {
         try {
-            // Ouvrir le lien du webinar dans le navigateur par défaut
-            java.awt.Desktop.getDesktop().browse(new java.net.URI(webinaire.getLink()));
-        } catch (Exception e) {
-            showAlert("Erreur", "Impossible d'ouvrir le lien du webinaire.");
+            // Ouvrir une nouvelle fenêtre pour le webinaire personnalisé
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/WebinaireView.fxml"));
+            Parent root = loader.load();
+
+            WebinaireViewController controller = loader.getController();
+            controller.setWebinaire(webinaire);
+
+            Stage stage = new Stage();
+            stage.setTitle("Webinaire: " + webinaire.getTitle());
+            stage.setScene(new Scene(root, 800, 600));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Impossible d'ouvrir le webinaire.");
         }
     }
 

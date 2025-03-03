@@ -18,7 +18,7 @@ public class ServiceWebinaire implements CRUDService<Webinaire> {
 
     @Override
     public void add(Webinaire webinaire) {
-        String qry = "INSERT INTO `webinaire`(`title`, `description`, `debutDateTime`, `finitDateTime`, `link`, `hotel_id`) VALUES (?,?,?,?,?,?)";
+        String qry = "INSERT INTO `webinaire`(`title`, `description`, `debutDateTime`, `finitDateTime`, `link`, `hotel_id`, `room_id`) VALUES (?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, webinaire.getTitle());
@@ -27,6 +27,7 @@ public class ServiceWebinaire implements CRUDService<Webinaire> {
             pstm.setTimestamp(4, Timestamp.valueOf(webinaire.getFinitDateTime()));
             pstm.setString(5, webinaire.getLink());
             pstm.setInt(6, webinaire.getHotel().getId());
+            pstm.setString(7, webinaire.getRoomId()); // Sauvegarder le roomId
             pstm.executeUpdate();
             System.out.println("Webinaire ajouté avec succès !");
         } catch (SQLException e) {
@@ -50,6 +51,7 @@ public class ServiceWebinaire implements CRUDService<Webinaire> {
                 w.setFinitDateTime(rs.getTimestamp("finitDateTime").toLocalDateTime());
                 w.setLink(rs.getString("link"));
                 w.setHotel(new ServiceHotel().getById(rs.getInt("hotel_id")));
+                w.setRoomId(rs.getString("room_id")); // Charger le roomId
                 webinaires.add(w);
             }
         } catch (SQLException e) {
@@ -60,7 +62,7 @@ public class ServiceWebinaire implements CRUDService<Webinaire> {
 
     @Override
     public void update(Webinaire webinaire) {
-        String qry = "UPDATE `webinaire` SET `title`=?, `description`=?, `debutDateTime`=?, `finitDateTime`=?, `link`=?, `hotel_id`=? WHERE `id`=?";
+        String qry = "UPDATE `webinaire` SET `title`=?, `description`=?, `debutDateTime`=?, `finitDateTime`=?, `link`=?, `hotel_id`=?, `room_id`=? WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, webinaire.getTitle());
@@ -69,7 +71,8 @@ public class ServiceWebinaire implements CRUDService<Webinaire> {
             pstm.setTimestamp(4, Timestamp.valueOf(webinaire.getFinitDateTime()));
             pstm.setString(5, webinaire.getLink());
             pstm.setInt(6, webinaire.getHotel().getId());
-            pstm.setInt(7, webinaire.getId());
+            pstm.setString(7, webinaire.getRoomId()); // Mettre à jour le roomId
+            pstm.setInt(8, webinaire.getId());
             pstm.executeUpdate();
             System.out.println("Webinaire mis à jour avec succès !");
         } catch (SQLException e) {

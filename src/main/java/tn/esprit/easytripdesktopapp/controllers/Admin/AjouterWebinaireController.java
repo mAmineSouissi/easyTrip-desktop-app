@@ -115,12 +115,10 @@ public class AjouterWebinaireController {
 
         webinaireService.add(webinaire);
 
-        // Rafraîchir la liste des webinaires si un callback est défini
         if (refreshCallback != null) {
             refreshCallback.accept(null);
         }
 
-        // Afficher un message de succès
         showAlert("Succès", "Webinaire ajouté avec succès !");
     }
 

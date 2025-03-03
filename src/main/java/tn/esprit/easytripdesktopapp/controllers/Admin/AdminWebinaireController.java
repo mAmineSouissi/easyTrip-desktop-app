@@ -19,7 +19,7 @@ import java.util.Optional;
 public class AdminWebinaireController {
 
     @FXML
-    private ListView<VBox> webinaireList; // Utilisation d'une ListView pour afficher les webinaires
+    private ListView<VBox> webinaireList;
 
     @FXML
     private TextField searchField;
@@ -38,24 +38,24 @@ public class AdminWebinaireController {
 
     @FXML
     public void initialize() {
-        loadWebinaires(); // Charger les webinaires au démarrage
-        setupSearch(); // Configurer la recherche dynamique
+        loadWebinaires();
+        setupSearch();
 
     }
 
     // Méthode pour charger les webinaires
     @FXML
     private void loadWebinaires() {
-        webinaireList.getItems().clear(); // Vider la liste actuelle
-        webinaires = webinaireService.getAll(); // Récupérer tous les webinaires
+        webinaireList.getItems().clear();
+        webinaires = webinaireService.getAll();
 
         for (Webinaire webinaire : webinaires) {
-            VBox listItem = createWebinaireListItem(webinaire); // Créer un élément de liste pour chaque webinaire
-            webinaireList.getItems().add(listItem); // Ajouter l'élément à la ListView
+            VBox listItem = createWebinaireListItem(webinaire);
+            webinaireList.getItems().add(listItem);
         }
     }
 
-    // Méthode pour créer un élément de liste de webinaire
+
     private VBox createWebinaireListItem(Webinaire webinaire) {
         VBox listItem = new VBox(10);
         listItem.setStyle("-fx-background-color: #ffffff; -fx-padding: 15; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);");
@@ -90,7 +90,7 @@ public class AdminWebinaireController {
         return listItem;
     }
 
-    // Méthode pour supprimer un webinaire
+
     @FXML
     private void deleteWebinaire(Webinaire webinaire) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -104,7 +104,7 @@ public class AdminWebinaireController {
         }
     }
 
-    // Méthode pour ouvrir l'interface de modification
+
     @FXML
     private void updateWebinaire(Webinaire webinaire) {
         try {
@@ -127,7 +127,7 @@ public class AdminWebinaireController {
     private void loadWebinaires(Void unused) {
     }
 
-    // Méthode pour ouvrir l'interface d'ajout
+
     @FXML
     private void goToAddWebinaire() {
         try {
@@ -135,7 +135,7 @@ public class AdminWebinaireController {
             Parent root = loader.load();
 
             AjouterWebinaireController controller = loader.getController();
-            controller.setRefreshCallback(this::loadWebinaires); // Passer la méthode de rafraîchissement
+            controller.setRefreshCallback(this::loadWebinaires);
 
             Stage stage = new Stage();
             stage.setTitle("Ajouter un Webinaire");
@@ -147,13 +147,13 @@ public class AdminWebinaireController {
         }
     }
 
-    // Méthode pour rafraîchir la page
+
     @FXML
     private void refreshPage() {
         loadWebinaires(); // Recharger les webinaires
     }
 
-    // Méthode pour retourner à l'accueil
+
     @FXML
     private void goToAccueil() {
         try {
@@ -170,7 +170,7 @@ public class AdminWebinaireController {
         }
     }
 
-    // Méthode pour configurer la recherche dynamique
+
     private void setupSearch() {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
             webinaireList.getItems().clear();
@@ -182,7 +182,7 @@ public class AdminWebinaireController {
 
 
 
-    // Méthode pour afficher une alerte
+
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

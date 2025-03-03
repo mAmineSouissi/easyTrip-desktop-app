@@ -31,15 +31,39 @@ public class Addreservation {
     UserSession session = UserSession.getInstance();
 
     @FXML
+    public void initialize() {
+        if (session.getUser() != null) {
+            nomres.setText(session.getUser().getName());
+            prenomres.setText(session.getUser().getSurname());
+            phoneres.setText(session.getUser().getPhone());
+            mailres.setText(session.getUser().getEmail());
+        }
+    }
+
+    @FXML
     void ajouterR(ActionEvent event) {
         System.out.println("Name:" + session.getUser().getName());
         try {
+           if (!allFieldsFilled()) {
+                afficherErreur("Veuillez remplir tous les champs obligatoires.");
+                return;
+            }
+            if (!isValidPhoneNumber(phoneres.getText())) {
+                afficherErreur("Veuillez saisir un numéro de téléphone valide.");
+                return;
+            }
+            if (!isValidEmail(mailres.getText())) {
+                afficherErreur("Veuillez saisir un E-mail valide.");
+                return;
+            }
+
             Reservation r = new Reservation();
-            r.setUser_id(session.getUser().getId());
-            r.setNom(session.getUser().getName());
-            r.setPrenom(session.getUser().getSurname());
-            r.setPhone(Integer.parseInt(session.getUser().getPhone()));
-            r.setEmail(session.getUser().getEmail());
+            r.setUserId(session.getUser().getId());
+            r.setNom(nomres.getText());
+            r.setPrenom(prenomres.getText());
+            r.setPhone(Integer.parseInt(phoneres.getText()));
+            r.setEmail(mailres.getText());
+            r.setOfferId(1);
             sr.add(r);
             System.out.println("Réservation ajoutée avec succès");
         } catch (NumberFormatException e) {
@@ -87,5 +111,14 @@ public class Addreservation {
         prenomres.clear();
     }
 
+    @FXML
+    void retour() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"));
+            phoneres.getScene().setRoot(root);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
 }

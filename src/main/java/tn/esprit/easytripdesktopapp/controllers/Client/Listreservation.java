@@ -1,19 +1,28 @@
 package tn.esprit.easytripdesktopapp.controllers.Client;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import tn.esprit.easytripdesktopapp.models.Reservation;
 import tn.esprit.easytripdesktopapp.services.ServiceReservation;
+import tn.esprit.easytripdesktopapp.services.StripeService;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 public class Listreservation {
@@ -22,16 +31,47 @@ public class Listreservation {
 
     @FXML
     private GridPane listres;
+    @FXML
+    private TableView<Reservation> table;
+    @FXML
+    private TableColumn<Reservation, String> col1;
+    @FXML
+    private TableColumn<Reservation, Integer> col2;
+    @FXML
+    private TableColumn<Reservation, Double> col3;
+
+    @FXML
+    private Label totalp;
+
+    @FXML
+    private TextField searchField;
 
     @FXML
     void initialize() {
         col1.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
                 cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
         col2.setCellValueFactory(new PropertyValueFactory<>("places"));
-      // col3.setCellValueFactory(new PropertyValueFactory<>("prix"));
-        loadReservations1();
+        col3.setCellValueFactory(cellData -> {
+            double price = (double) sr.getOfferPrice(cellData.getValue().getOfferId());
+            return new SimpleObjectProperty<>(price);
+        });
+        List<Reservation> reservations = sr.getAll();
+        ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
+        table.setItems(observableReservations);
         loadReservations("");
+        calculateTotalPrice();
+        table.getItems().addListener((ListChangeListener<Reservation>) change -> calculateTotalPrice());
     }
+
+    private void calculateTotalPrice() {
+        double totalPrice = 0.0;
+        for (Reservation reservation : table.getItems()) {
+            double price = (double) sr.getOfferPrice(reservation.getOfferId());
+            totalPrice += reservation.getPlaces() * price;
+        }
+        totalp.setText(totalPrice + " ");
+    }
+
 
     private void loadReservations(String searchText) {
         List<Reservation> reservations = sr.getAll();
@@ -43,10 +83,8 @@ public class Listreservation {
                 filteredReservations.add(reservation);
             }
         }
-
         listres.getChildren().clear();
-
-        int columns = 3;
+        int columns = 2;
         int row = 0;
         int col = 0;
         for (Reservation reservation : filteredReservations) {
@@ -80,13 +118,6 @@ public class Listreservation {
         }
     }
 
-
-    private void loadReservations1() {
-        List<Reservation> reservations = sr.getAll();
-        ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
-        table.setItems(observableReservations);
-    }
-
     private void modifierReservation(Reservation reservation) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/updatereservation.fxml"));
@@ -114,21 +145,6 @@ public class Listreservation {
             System.out.println(e.getMessage());
         }
     }
-
-    @FXML
-    private TableView<Reservation> table;
-    @FXML
-    private TableColumn<Reservation, String> col1;
-    @FXML
-    private TableColumn<Reservation, Integer> col2;
-    @FXML
-    private TableColumn<Reservation, Double> col3;
-
-    @FXML
-    private Label totalp;
-
-    @FXML
-    private TextField searchField;
     @FXML
     void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
@@ -136,6 +152,50 @@ public class Listreservation {
             loadReservations("");
         } else {
             loadReservations(searchText);
+        }
+    }
+
+
+    @FXML
+    private Button btnPay;
+
+    @FXML
+    public void handlePayment(ActionEvent event) {
+        StripeService stripeService = new StripeService();
+        double totalAmount = extractTotalAmount();
+        String paymentUrl = stripeService.createCheckoutSession(totalAmount, "eur");
+
+        if (paymentUrl != null) {
+            openWebPage(paymentUrl);
+        } else {
+            showError("Erreur lors de la création de la session de paiement.");
+        }
+    }
+
+    private void openWebPage(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Impossible d'ouvrir la page de paiement.");
+        }
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private double extractTotalAmount() {
+        try {
+            String text = totalp.getText().replace(" DT", "").trim();
+            return Double.parseDouble(text);
+        } catch (NumberFormatException e) {
+            showError("Erreur : Impossible de récupérer le montant total.");
+            return 0.0;
         }
     }
 

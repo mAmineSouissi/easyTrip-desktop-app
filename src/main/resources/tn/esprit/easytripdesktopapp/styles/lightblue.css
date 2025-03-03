@@ -1,0 +1,89 @@
+/* Styles de base */
+.root {
+    -fx-background-color: linear-gradient(to bottom, #E0F7FA, #B3E5FC);
+}
+
+/* Styles pour les boutons */
+.button {
+    -fx-background-color: #039BE5;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 15 8 15;
+    -fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #0288D1;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 3);
+}
+
+/* Styles pour les cartes */
+.card {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #e0e0e0; /* Bordure grise claire */
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px; /* Coins arrondis */
+    -fx-background-radius: 8px; /* Coins arrondis */
+    -fx-padding: 15px; /* Espace intérieur */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 5); /* Ombre légère */
+    -fx-spacing: 10px; /* Espace entre les éléments */
+}
+
+.card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 15, 0, 0, 5); /* Ombre plus prononcée au survol */
+    -fx-cursor: hand; /* Curseur en forme de main */
+}
+
+/* Titre de la carte */
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-fill: #333333; /* Couleur de texte sombre */
+}
+
+/* Description de la carte */
+.card-description {
+    -fx-font-size: 14px;
+    -fx-fill: #666666; /* Couleur de texte gris */
+}
+
+/* Date de la carte */
+.card-date {
+    -fx-font-size: 12px;
+    -fx-fill: #888888; /* Couleur de texte gris clair */
+}
+
+/* Statut de la carte */
+.card-status {
+    -fx-font-size: 12px;
+    -fx-fill: #2196F3; /* Couleur bleue pour le statut */
+}
+
+/* Styles pour les messages d'erreur */
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-size: 12px;
+}
+
+/* Styles pour les champs de formulaire */
+.text-field, .date-picker, .combo-box {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-color: #B3E5FC;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+}
+
+.text-field:focused, .date-picker:focused, .combo-box:focused {
+    -fx-border-color: #039BE5;
+    -fx-effect: dropshadow(three-pass-box, rgba(3,155,229,0.2), 3, 0, 0, 0);
+}
+
+/* Styles pour les titres */
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}

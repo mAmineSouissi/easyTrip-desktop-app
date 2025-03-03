@@ -19,4 +19,6 @@ public interface CRUDService<T> {
     boolean exists(int id);
 
     long count();
+
+
 }

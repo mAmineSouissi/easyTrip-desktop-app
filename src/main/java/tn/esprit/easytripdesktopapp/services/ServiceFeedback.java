@@ -9,7 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ServiceFeedback implements CRUDService<Feedback> {
+
+
+
+public class ServiceFeedback implements CRUDService <Feedback>{
 
     private final Connection cnx;
 
@@ -19,25 +22,26 @@ public class ServiceFeedback implements CRUDService<Feedback> {
 
     @Override
     public void add(Feedback feedback) {
-        String qry = "INSERT INTO Feedback (user_id, Offer_id, rating, message, date) VALUES (?, ?, ?, ?, ?)";
+        String qry = "INSERT INTO feedback (userId, offerId, rating, message, date) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
-            pstm.setInt(1, feedback.getUser_id());  // Ensure 'user_id' is correct
-            pstm.setInt(2, feedback.getOfferId());  // Ensure 'offer_id' is correct
+            pstm.setInt(1, feedback.getUserId());
+            pstm.setInt(2, feedback.getOfferId());
             pstm.setInt(3, feedback.getRating());
             pstm.setString(4, feedback.getMessage());
             pstm.setDate(5, feedback.getDate());
+            System.out.println(feedback.getOfferId());
 
             pstm.executeUpdate();
             System.out.println("Feedback ajouté avec succès.");
         } catch (SQLException e) {
-            System.out.println("Erreur: " + e.getMessage());
+            System.out.println("Erreur" + e.getMessage());
         }
     }
 
     @Override
     public List<Feedback> getAll() {
         List<Feedback> feedbackList = new ArrayList<>();
-        String qry = "SELECT * FROM Feedback";
+        String qry = "SELECT * FROM feedback";
 
         try (Statement stm = cnx.createStatement();
              ResultSet rs = stm.executeQuery(qry)) {
@@ -45,8 +49,8 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             while (rs.next()) {
                 Feedback feedback = new Feedback();
                 feedback.setId(rs.getInt("id"));
-                feedback.setUser_id(rs.getInt("user_id"));  // Ensure 'user_id' is correct
-                feedback.setOfferId(rs.getInt("Offer_id"));  // Ensure 'offer_id' is correct
+                feedback.setUserId(rs.getInt("userId"));
+                feedback.setOfferId(rs.getInt("offerId"));
                 feedback.setRating(rs.getInt("rating"));
                 feedback.setMessage(rs.getString("message"));
                 feedback.setDate(rs.getDate("date"));
@@ -55,7 +59,7 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             }
 
         } catch (SQLException e) {
-            System.out.println("Erreur: " + e.getMessage());
+            System.out.println("Erreur :" + e.getMessage());
         }
 
         return feedbackList;
@@ -63,11 +67,10 @@ public class ServiceFeedback implements CRUDService<Feedback> {
 
     @Override
     public void update(Feedback feedback) {
-        String qry = "UPDATE Feedback SET user_id=?, Offer_id=?, rating=?, message=?, date=? WHERE id=?";
-        try {
-            PreparedStatement pstm = cnx.prepareStatement(qry);
-            pstm.setInt(1, feedback.getUser_id());  // Ensure 'user_id' is correct
-            pstm.setInt(2, feedback.getOfferId());  // Ensure 'offer_id' is correct
+        String qry = "UPDATE `feedback` SET `userId`=?, `offerId`=?, `rating`=?, `message`=?, `date`=? WHERE `id`=?";
+        try {PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, feedback.getUserId());
+            pstm.setInt(2, feedback.getOfferId());
             pstm.setInt(3, feedback.getRating());
             pstm.setString(4, feedback.getMessage());
             pstm.setDate(5, feedback.getDate());
@@ -75,25 +78,33 @@ public class ServiceFeedback implements CRUDService<Feedback> {
 
             pstm.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Erreur: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
+
+
     }
 
     @Override
     public void delete(Feedback feedback) {
-        String qry = "DELETE FROM Feedback WHERE id=?";
+        String qry = "DELETE FROM `feedback` WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setInt(1, feedback.getId());
 
             pstm.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Erreur: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
+
     }
 
     @Override
     public Feedback getById(int id) {
+        return null;
+    }
+
+
+    public Optional<Feedback> getByid(int id) {
         String qry = "SELECT * FROM Feedback WHERE id = ?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
@@ -103,20 +114,20 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             if (rs.next()) {
                 Feedback feedback = new Feedback();
                 feedback.setId(rs.getInt("id"));
-                feedback.setUser_id(rs.getInt("user_id"));  // Ensure 'user_id' is correct
-                feedback.setOfferId(rs.getInt("Offer_id"));  // Ensure 'offer_id' is correct
+                feedback.setUserId(rs.getInt("userId"));
+                feedback.setOfferId(rs.getInt("offerId"));
                 feedback.setRating(rs.getInt("rating"));
                 feedback.setMessage(rs.getString("message"));
                 feedback.setDate(rs.getDate("date"));
 
-                return feedback;
+                return Optional.of(feedback);
             }
 
         } catch (SQLException e) {
             System.out.println("Erreur: " + e.getMessage());
         }
 
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -133,8 +144,8 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             while (rs.next()) {
                 Feedback feedback = new Feedback();
                 feedback.setId(rs.getInt("id"));
-                feedback.setUser_id(rs.getInt("user_id"));  // Ensure 'user_id' is correct
-                feedback.setOfferId(rs.getInt("Offer_id"));  // Ensure 'offer_id' is correct
+                feedback.setUserId(rs.getInt("userId"));
+                feedback.setOfferId(rs.getInt("offerId"));
                 feedback.setRating(rs.getInt("rating"));
                 feedback.setMessage(rs.getString("message"));
                 feedback.setDate(rs.getDate("date"));
@@ -157,7 +168,7 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             pstm.setInt(1, id);
             ResultSet rs = pstm.executeQuery();
 
-            return rs.next();  // If result exists, return true
+            return rs.next();
         } catch (SQLException e) {
             System.out.println("Erreur: " + e.getMessage());
         }
@@ -171,11 +182,37 @@ public class ServiceFeedback implements CRUDService<Feedback> {
             PreparedStatement pstm = cnx.prepareStatement(countQuery);
             ResultSet rs = pstm.executeQuery();
             if (rs.next()) {
-                return rs.getLong(1);  // Return the count result
+                return rs.getLong(1);
             }
         } catch (SQLException e) {
             System.out.println("Erreur: " + e.getMessage());
         }
         return 0;
+
+    }
+
+    public List<Feedback> getFeedbacksByOfferId(int offerId) {
+        List<Feedback> feedbacks = new ArrayList<>();
+        String qry = "SELECT * FROM feedback WHERE offerId = ?";
+
+        try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
+            pstm.setInt(1, offerId);
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setId(rs.getInt("id"));
+                feedback.setUserId(rs.getInt("userId"));
+                feedback.setOfferId(rs.getInt("offerId"));
+                feedback.setRating(rs.getInt("rating"));
+                feedback.setMessage(rs.getString("message"));
+                feedback.setDate(rs.getDate("date"));
+                feedbacks.add(feedback);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur: " + e.getMessage());
+        }
+
+        return feedbacks;
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.UpdatePromotion"
+            stylesheets="@../../styles/style5.css">
+    <children>
+        <Label text="Modifier Promotion" layoutX="130" layoutY="20"
+               style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <Label text="Titre :" layoutX="50" layoutY="70"/>
+        <TextField fx:id="title" layoutX="150" layoutY="70" prefWidth="200"/>
+
+        <Label text="Description :" layoutX="50" layoutY="110"/>
+        <TextArea fx:id="description" layoutX="150" layoutY="110" prefWidth="200" prefHeight="80"/>
+
+        <Label text="Pourcentage de réduction :" layoutX="50" layoutY="200"/>
+        <TextField fx:id="discountPercentage" layoutX="250" layoutY="200" prefWidth="100"/>
+
+        <Label text="Valide jusqu'à :" layoutX="50" layoutY="240"/>
+        <DatePicker fx:id="validUntil" layoutX="250" layoutY="240"/>
+
+        <Button fx:id="updateButton" text="Mettre à jour" layoutX="150" layoutY="290" onAction="#updatePromotion"/>
+    </children>
+</AnchorPane>

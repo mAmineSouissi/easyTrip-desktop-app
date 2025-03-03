@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+
+<?import java.lang.String?>
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AjouterHotel">
+    <children>
+
+        <VBox spacing="15" layoutX="50" layoutY="20">
+
+            <Label text="Ajouter un Hôtel" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <TextField fx:id="name" promptText="Nom de l'hôtel"/>
+            <TextField fx:id="adresse" promptText="Adresse de l'hôtel"/>
+            <TextField fx:id="city" promptText="Ville de l'hôtel"/>
+            <TextField fx:id="rating" promptText="Note (0-5)"/>
+            <TextField fx:id="description" promptText="Description de l'hôtel"/>
+            <TextField fx:id="price" promptText="Prix par nuit"/>
+
+            <!-- Remplacer le TextField par un ComboBox pour le type de chambre -->
+            <ComboBox fx:id="typeroom" promptText="Type de chambre">
+                <items>
+                    <javafx.collections.FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Simple"/>
+                        <String fx:value="Double"/>
+                        <String fx:value="Suit"/>
+                    </javafx.collections.FXCollections>
+                </items>
+            </ComboBox>
+
+            <TextField fx:id="numroom" promptText="Nombre de chambres"/>
+
+            <!-- Ajouter un ComboBox pour les promotions -->
+            <ComboBox fx:id="promotionComboBox" promptText="Sélectionner une promotion"/>
+
+            <HBox spacing="20">
+                <ImageView fx:id="image" fitHeight="120" fitWidth="120" style="-fx-border-color: black;"/>
+                <Button text="Choisir Image" onAction="#chooseImage"/>
+            </HBox>
+
+            <Button text="Ajouter" onAction="#save"
+                    style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold;"/>
+
+        </VBox>
+    </children>
+</AnchorPane>

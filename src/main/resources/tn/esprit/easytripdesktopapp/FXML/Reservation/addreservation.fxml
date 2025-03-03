@@ -12,9 +12,10 @@
 
 <AnchorPane prefHeight="665.0" prefWidth="934.0" stylesheets="@../../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.Addreservation">
     <children>
-        <TextField fx:id="nomres" layoutX="229.0" layoutY="136.0" prefHeight="40.0" prefWidth="380.0" promptText="Veuillez saisir votre nom" />
-        <TextField fx:id="prenomres" layoutX="229.0" layoutY="239.0" prefHeight="40.0" prefWidth="380.0" promptText="Veuillez saisir votre prénom" />
-        <TextField fx:id="phoneres" layoutX="229.0" layoutY="349.0" prefHeight="40.0" prefWidth="380.0" promptText="Veuillez saisir votre Téléphone" />
+
+        <TextField fx:id="noms" layoutX="229.0" layoutY="136.0" prefHeight="40.0" prefWidth="380.0" promptText="Veuillez saisir votre nom" />
+        <TextField fx:id="prenoms" layoutX="229.0" layoutY="239.0" prefHeight="40.0" prefWidth="380.0" promptText="Veuillez saisir votre prénom" />
+        <TextField fx:id="phones" layoutX="229.0" layoutY="349.0" prefHeight="40.0" prefWidth="380.0" promptText="Veuillez saisir votre Téléphone" />
         <TextField fx:id="mailres" layoutX="229.0" layoutY="452.0" prefHeight="40.0" prefWidth="380.0" promptText="Veuillez saisir votre E-mail" />
         <Button layoutX="381.0" layoutY="553.0" mnemonicParsing="false" onAction="#ajouterR" text="Ajouter réservation" textFill="#1338b0" />
         <Button layoutX="609.0" layoutY="553.0" mnemonicParsing="false" onAction="#reset" text="Réinitialiser" textFill="#2f23cf" />
@@ -47,5 +48,6 @@
               </graphic>
           </Button>
       <Button layoutX="227.0" layoutY="553.0" mnemonicParsing="false" onAction="#retour" text="Retour" />
+
     </children>
 </AnchorPane>

@@ -7,28 +7,37 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
 
+import javax.swing.text.LabelView;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AgentDashboardController {
-    public ImageView profilePic;
+public class AgentDashboardController implements Initializable {
+    public Label manageOfferHotel;
+    public Label consultPromotion;
+    public Label manageOfferTravel;
+    @FXML
+    private ImageView profilePic;
+
     @FXML
     private Label welcomeLabel;
 
@@ -36,19 +45,36 @@ public class AgentDashboardController {
     private Button editProfile;
 
     @FXML
-    private ImageView profilePicture;
+    private Button logOutButton;
+
+    @FXML
+    private Label manageAgencyLabel;
+
+    @FXML
+    private Label manageFeedbackLabel;
+
+    @FXML
+    private Label manageReclamationsLabel;
+
+    @FXML
+    private Label coming_soon;
 
     @FXML
     private TextField profilePhotoField;
 
-    @FXML
-    public void initialize() {
+    private ResourceBundle bundle;
+
+
+    @Override
+    public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
+        bundle = resources;
+
         UserSession session = UserSession.getInstance();
         String imageUrl = getUserProfileImageUrl();
 
         if (session != null) {
             User user = session.getUser();
-            welcomeLabel.setText("Welcome, " + user.getName());
+            welcomeLabel.setText(bundle.getString("welcome_label") + " " + user.getName() + " " + user.getSurname());
 
             if (imageUrl != null && !imageUrl.isEmpty()) {
                 try {
@@ -61,8 +87,17 @@ public class AgentDashboardController {
                 System.out.println("No image URL found.");
             }
         } else {
-            welcomeLabel.setText("Welcome, Guest");
+            welcomeLabel.setText(bundle.getString("welcome_guest"));
         }
+
+        manageOfferTravel.setText(bundle.getString("manage_travel"));
+        consultPromotion.setText(bundle.getString("consult_promotions"));
+        coming_soon.setText(bundle.getString("coming_soon"));
+        manageAgencyLabel.setText(bundle.getString("manage_agency"));
+        manageFeedbackLabel.setText(bundle.getString("manage_feedback"));
+        manageReclamationsLabel.setText(bundle.getString("manage_reclamations"));
+        editProfile.setText(bundle.getString("profile_button"));
+        logOutButton.setText(bundle.getString("logout_button"));
     }
 
     private String getUserProfileImageUrl() {
@@ -71,7 +106,7 @@ public class AgentDashboardController {
             User user = session.getUser();
             return user.getProfilePhoto();
         } else {
-            return "file:///home/cardinal/Documents/GitHub/easyTrip-desktop-app/src/main/resources/tn/esprit/easytripdesktopapp/assets/defaultPic.jpg";
+            return "http://localhost/img/profile/defaultPic.jpg";
         }
     }
 
@@ -109,49 +144,53 @@ public class AgentDashboardController {
         }
 
         GridPane grid = new GridPane();
-        grid.addRow(0, new Label("Name:"), nameField);
-        grid.addRow(1, new Label("Surname:"), surnameField);
-        grid.addRow(2, new Label("Email:"), emailField);
-        grid.addRow(3, new Label("Phone:"), phoneField);
-        grid.addRow(4, new Label("Address:"), addressField);
+        grid.addRow(0, new Label(bundle.getString("name_label")), nameField);
+        grid.addRow(1, new Label(bundle.getString("surname_label")), surnameField);
+        grid.addRow(2, new Label(bundle.getString("email_label")), emailField);
+        grid.addRow(3, new Label(bundle.getString("phone_label")), phoneField);
+        grid.addRow(4, new Label(bundle.getString("address_label")), addressField);
 
-        Button chooseImageButton = new Button("Choose Profile Picture");
+        Button chooseImageButton = new Button(bundle.getString("choose_profile_picture"));
         chooseImageButton.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
             File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
             if (selectedFile != null) {
-                String imagePath = "file://" + selectedFile.getAbsolutePath();
-                profilePhotoField.setText(imagePath);
-                profilePreview.setImage(new Image(imagePath));
+                String fileName = selectedFile.getName();
+                String baseUrl = "http://localhost/img/profile/";
+                String newImageUrl = baseUrl + fileName;
+
+                profilePhotoField.setText(newImageUrl);
+                profilePreview.setImage(new Image(newImageUrl, true));
             }
         });
 
-        grid.addRow(5, new Label("Profile Photo:"), chooseImageButton);
-        grid.addRow(6, profilePreview); // Add the preview image below the button
+        grid.addRow(5, new Label(bundle.getString("profile_photo_label")), chooseImageButton);
+        grid.addRow(6, profilePreview);
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Edit Profile");
-        alert.setHeaderText("Update your profile details");
+        alert.setTitle(bundle.getString("edit_profile_title"));
+        alert.setHeaderText(bundle.getString("update_profile_header"));
         alert.getDialogPane().setContent(grid);
 
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 if (nameField.getText().isEmpty() || surnameField.getText().isEmpty() || emailField.getText().isEmpty() || phoneField.getText().isEmpty() || addressField.getText().isEmpty()) {
-                    showError("Validation Error", "All fields must be filled.");
+                    showError(bundle.getString("validation_error_title"), bundle.getString("validation_error_empty_fields"));
                     return;
                 }
 
                 if (!isValidEmail(emailField.getText())) {
-                    showError("Validation Error", "Invalid email format.");
+                    showError(bundle.getString("validation_error_title"), bundle.getString("validation_error_invalid_email"));
                     return;
                 }
 
                 if (!isValidPhone(phoneField.getText())) {
-                    showError("Validation Error", "Invalid phone number format.");
+                    showError(bundle.getString("validation_error_title"), bundle.getString("validation_error_invalid_phone"));
                     return;
                 }
+
                 User updatedUser = new User();
                 updatedUser.setId(session.getUser().getId());
                 updatedUser.setName(nameField.getText());
@@ -173,54 +212,36 @@ public class AgentDashboardController {
                 session.setUser(updatedUser);
 
                 // Update UI after saving changes
-                welcomeLabel.setText("Welcome, " + updatedUser.getName());
+                welcomeLabel.setText(bundle.getString("welcome_label") + " " + updatedUser.getName());
                 profilePic.setImage(new Image(updatedUser.getProfilePhoto(), true));
 
                 Alert successAlert = new Alert(AlertType.INFORMATION);
-                successAlert.setTitle("Profile Updated");
-                successAlert.setHeaderText("Your profile has been updated successfully.");
+                successAlert.setTitle(bundle.getString("profile_updated_title"));
+                successAlert.setHeaderText(bundle.getString("profile_updated_header"));
                 successAlert.showAndWait();
             }
         });
     }
 
     @FXML
-    private void chooseImage(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-
-        File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
-
-        if (selectedFile != null) {
-            // Update the text field with the file path
-            profilePhotoField.setText(selectedFile.getAbsolutePath());
-
-            // Update the image preview
-            String imagePath = "file://" + selectedFile.getAbsolutePath();
-            Image image = new Image(imagePath);
-            profilePicture.setImage(image);
-        }
-    }
-
-    @FXML
     public void handelLogout(ActionEvent actionEvent) {
         Alert logoutAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        logoutAlert.setTitle("Logout Confirmation");
-        logoutAlert.setHeaderText("Are you sure you want to log out?");
-        logoutAlert.setContentText("You will be redirected to the login screen.");
+        logoutAlert.setTitle(bundle.getString("logout_confirmation_title"));
+        logoutAlert.setHeaderText(bundle.getString("logout_confirmation_header"));
+        logoutAlert.setContentText(bundle.getString("logout_confirmation_content"));
 
         logoutAlert.showAndWait().ifPresent(response -> {
-            // If the user confirms , navigate to login screen
             if (response == ButtonType.OK) {
                 UserSession session = UserSession.getInstance();
                 session.clearSession();
                 System.out.println("User logged out successfully.");
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"));
+                    ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"), loginBundle);
                     Parent root = loader.load();
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                     stage.setScene(new Scene(root));
-                    stage.setTitle("Login Screen");
+                    stage.setTitle(bundle.getString("login_screen_title"));
                     stage.show();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -245,7 +266,6 @@ public class AgentDashboardController {
         return matcher.matches();
     }
 
-
     private boolean isValidPhone(String phone) {
         String phoneRegex = "^\\d{8}$";
         Pattern pattern = Pattern.compile(phoneRegex);
@@ -253,4 +273,69 @@ public class AgentDashboardController {
         return matcher.matches();
     }
 
+    public void navigateToAgency(MouseEvent mouseEvent) throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/afficher_agence.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("login_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToHotel(MouseEvent mouseEvent) {
+        try {
+            ResourceBundle bundelResources = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"), bundelResources);
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("offers_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigatToPromotionAgent(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/afficher_promotion.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("offers_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToOfferTravel(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/afficher_offer_travel.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("offers_screen_title"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigatToReclamationAgent(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/ReclamationUser.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reclamation Client");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

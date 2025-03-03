@@ -234,4 +234,63 @@ public class ServiceUser implements CRUDService<User> {
         }
         return 0;
     }
+
+    public boolean userExistsByEmail(String email) {
+        String qry = "SELECT * FROM `User` WHERE `email`=?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, email);
+            ResultSet rs = pstm.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            System.out.println("Error checking user existence: " + e.getMessage());
+        }
+        return false;
+    }
+
+//    public String generateResetCode() {
+//        return String.format("%06d", new java.util.Random().nextInt(999999));
+//    }
+
+    public boolean updatePassword(String email, String hashedPassword) {
+        String qry = "UPDATE `User` SET `password` = ? WHERE `email` = ?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, hashedPassword);
+            pstm.setString(2, email);
+
+            int rowsAffected = pstm.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("Error updating password: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public User getByEmail(String email) {
+        String qry = "SELECT * FROM `User` WHERE email = ?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setString(1, email);
+            ResultSet rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setName(rs.getString("name"));
+                user.setSurname(rs.getString("surname"));
+                user.setPassword(rs.getString("password"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("addresse"));
+                user.setProfilePhoto(rs.getString("profilePhoto"));
+                user.setRole(rs.getString("role"));
+                return user;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
 }

@@ -5,34 +5,221 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TablesAdminController {
+public class TablesAdminController implements Initializable {
     private final ServiceUser serviceUser = new ServiceUser();
     private final ObservableList<User> userList = FXCollections.observableArrayList();
 
-    @FXML private ListView<User> userListView;
+    public Label welcomeLabel;
+
+    public Label manageOfferLabel;
+
+    public Label otherOffersLabel;
+
+    public Button logOutButton;
+
+    public ImageView profilePic;
+    public Button editProfile;
+    public Label manageAgencies;
+    public Label manageReservations;
+    public Label manageReclamations;
+    public Label manageFeedbacks;
+    public Label manageTickets;
+    public Label manageHotels;
+    public Label manageSurvey;
+    public Label managePromotions;
 
     @FXML
-    public void initialize() {
+    private ListView<User> userListView;
+
+    private ResourceBundle bundle;
+
+    @FXML
+    public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         setupListView();
         loadUsers();
+
+        bundle = resources;
+
+        UserSession session = UserSession.getInstance();
+        String imageUrl = getUserProfileImageUrl();
+
+        if (session != null) {
+            User user = session.getUser();
+            welcomeLabel.setText(bundle.getString("welcome_label") + " " + user.getName() + " " + user.getSurname());
+
+            if (imageUrl != null && !imageUrl.isEmpty()) {
+                try {
+                    Image profileImage = new Image(imageUrl, true);
+                    profilePic.setImage(profileImage);
+                } catch (Exception e) {
+                    System.out.println("Error loading image: " + e.getMessage());
+                }
+            } else {
+                System.out.println("No image URL found.");
+            }
+        } else {
+            welcomeLabel.setText(bundle.getString("welcome_guest"));
+        }
+        managePromotions.setText(bundle.getString("manage_promotions"));
+        manageAgencies.setText(bundle.getString("manage_agency"));
+        manageReservations.setText(bundle.getString("manage_reservations"));
+        manageReclamations.setText(bundle.getString("manage_reclamations"));
+        manageFeedbacks.setText(bundle.getString("manage-feedbacks"));
+        manageTickets.setText(bundle.getString("manage_ticket"));
+        manageHotels.setText(bundle.getString("manage_hotel"));
+        manageSurvey.setText(bundle.getString("Survey"));
+        manageOfferLabel.setText(bundle.getString("travel_offers"));
+        editProfile.setText(bundle.getString("profile_button"));
+        logOutButton.setText(bundle.getString("logout_button"));
+    }
+
+    private String getUserProfileImageUrl() {
+        UserSession session = UserSession.getInstance();
+        if (session != null) {
+            User user = session.getUser();
+            return user.getProfilePhoto();
+        } else {
+            return "http://localhost/img/profile/defaultPic.jpg";
+        }
+    }
+
+    @FXML
+    public void handelEditProfile(ActionEvent actionEvent) {
+        // Initialize text fields
+        TextField nameField = new TextField();
+        TextField surnameField = new TextField();
+        TextField emailField = new TextField();
+        TextField phoneField = new TextField();
+        TextField addressField = new TextField();
+        TextField profilePhotoField = new TextField();
+
+        // Create an ImageView for previewing the selected image
+        ImageView profilePreview = new ImageView();
+        profilePreview.setFitWidth(100);
+        profilePreview.setFitHeight(100);
+        profilePreview.setPreserveRatio(true);
+
+        UserSession session = UserSession.getInstance();
+        if (session != null) {
+            User currentUser = session.getUser();
+            nameField.setText(currentUser.getName());
+            surnameField.setText(currentUser.getSurname());
+            emailField.setText(currentUser.getEmail());
+            phoneField.setText(currentUser.getPhone());
+            addressField.setText(currentUser.getAddress());
+            profilePhotoField.setText(currentUser.getProfilePhoto());
+            System.out.println("Before setUser: " + currentUser.getPassword());
+
+            // Load the existing profile image
+            if (currentUser.getProfilePhoto() != null && !currentUser.getProfilePhoto().isEmpty()) {
+                profilePreview.setImage(new Image(currentUser.getProfilePhoto(), true));
+            }
+        }
+
+        GridPane grid = new GridPane();
+        grid.addRow(0, new Label(bundle.getString("name_label")), nameField);
+        grid.addRow(1, new Label(bundle.getString("surname_label")), surnameField);
+        grid.addRow(2, new Label(bundle.getString("email_label")), emailField);
+        grid.addRow(3, new Label(bundle.getString("phone_label")), phoneField);
+        grid.addRow(4, new Label(bundle.getString("address_label")), addressField);
+
+        Button chooseImageButton = new Button(bundle.getString("choose_profile_picture"));
+        chooseImageButton.setOnAction(event -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+            File selectedFile = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
+
+            if (selectedFile != null) {
+                String fileName = selectedFile.getName();
+                String baseUrl = "http://localhost/img/profile/";
+                String newImageUrl = baseUrl + fileName;
+
+                profilePhotoField.setText(newImageUrl);
+                profilePreview.setImage(new Image(newImageUrl, true));
+            }
+        });
+
+        grid.addRow(5, new Label(bundle.getString("profile_photo_label")), chooseImageButton);
+        grid.addRow(6, profilePreview);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(bundle.getString("edit_profile_title"));
+        alert.setHeaderText(bundle.getString("update_profile_header"));
+        alert.getDialogPane().setContent(grid);
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                if (nameField.getText().isEmpty() || surnameField.getText().isEmpty() || emailField.getText().isEmpty() || phoneField.getText().isEmpty() || addressField.getText().isEmpty()) {
+                    showError(bundle.getString("validation_error_title"), bundle.getString("validation_error_empty_fields"));
+                    return;
+                }
+
+                if (!isValidEmail(emailField.getText())) {
+                    showError(bundle.getString("validation_error_title"), bundle.getString("validation_error_invalid_email"));
+                    return;
+                }
+
+                if (!isValidPhone(phoneField.getText())) {
+                    showError(bundle.getString("validation_error_title"), bundle.getString("validation_error_invalid_phone"));
+                    return;
+                }
+
+                User updatedUser = new User();
+                updatedUser.setId(session.getUser().getId());
+                updatedUser.setName(nameField.getText());
+                updatedUser.setSurname(surnameField.getText());
+                updatedUser.setEmail(emailField.getText());
+                updatedUser.setPhone(phoneField.getText());
+                updatedUser.setAddress(addressField.getText());
+                updatedUser.setProfilePhoto(profilePhotoField.getText());
+                updatedUser.setPassword(session.getUser().getPassword());
+                updatedUser.setRole(session.getUser().getRole());
+
+                System.out.println("Updating user password: " + updatedUser.getPassword());
+
+                // Save updated user to the database
+                ServiceUser serviceUser = new ServiceUser();
+                serviceUser.update(updatedUser);
+
+                // Update session user
+                session.setUser(updatedUser);
+
+                // Update UI after saving changes
+                welcomeLabel.setText(bundle.getString("welcome_label") + " " + updatedUser.getName());
+                profilePic.setImage(new Image(updatedUser.getProfilePhoto(), true));
+
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle(bundle.getString("profile_updated_title"));
+                successAlert.setHeaderText(bundle.getString("profile_updated_header"));
+                successAlert.showAndWait();
+            }
+        });
     }
 
     private void setupListView() {
@@ -45,13 +232,13 @@ public class TablesAdminController {
                     setGraphic(null);
                 } else {
                     // Create Labels with field names
-                    Label idLabel = new Label("ID:");
-                    Label nameLabel = new Label("Name:");
-                    Label surnameLabel = new Label("Surname:");
-                    Label emailLabel = new Label("Email:");
-                    Label phoneLabel = new Label("Phone:");
-                    Label addressLabel = new Label("Address:");
-                    Label roleLabel = new Label("Role:");
+                    Label idLabel = new Label(bundle.getString("label.id"));
+                    Label nameLabel = new Label(bundle.getString("label.name"));
+                    Label surnameLabel = new Label(bundle.getString("label.surname"));
+                    Label emailLabel = new Label(bundle.getString("label.email"));
+                    Label phoneLabel = new Label(bundle.getString("label.phone"));
+                    Label addressLabel = new Label(bundle.getString("label.address"));
+                    Label roleLabel = new Label(bundle.getString("label.role"));
 
                     // Create Labels for values
                     Label idValue = new Label(String.valueOf(user.getId()));
@@ -63,8 +250,8 @@ public class TablesAdminController {
                     Label roleValue = new Label(user.getRole());
 
                     // Buttons for Edit and Delete
-                    Button editBtn = new Button("Edit");
-                    Button deleteBtn = new Button("Delete");
+                    Button editBtn = new Button(bundle.getString("button.edit"));
+                    Button deleteBtn = new Button(bundle.getString("button.delete"));
 
                     editBtn.getStyleClass().add("edit-button");
                     deleteBtn.getStyleClass().add("delete-button");
@@ -124,12 +311,12 @@ public class TablesAdminController {
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
-        grid.addRow(0, new Label("Name:"), nameField);
-        grid.addRow(1, new Label("Surname:"), surnameField);
-        grid.addRow(2, new Label("Email:"), emailField);
-        grid.addRow(3, new Label("Phone:"), phoneField);
-        grid.addRow(4, new Label("Address:"), addressField);
-        grid.addRow(5, new Label("Role:"), roleField);
+        grid.addRow(0, new Label(bundle.getString("label.name")), nameField);
+        grid.addRow(1, new Label(bundle.getString("label.surname")), surnameField);
+        grid.addRow(2, new Label(bundle.getString("label.email")), emailField);
+        grid.addRow(3, new Label(bundle.getString("label.phone")), phoneField);
+        grid.addRow(4, new Label(bundle.getString("label.address")), addressField);
+        grid.addRow(5, new Label(bundle.getString("label.role")), roleField);
 
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -193,7 +380,6 @@ public class TablesAdminController {
     }
 
 
-
     private void showError(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -209,24 +395,24 @@ public class TablesAdminController {
     }
 
     @FXML
-    public void handleLogOut(ActionEvent actionEvent) {
+    public void handelLogout(ActionEvent actionEvent) {
         Alert logoutAlert = new Alert(Alert.AlertType.CONFIRMATION);
-        logoutAlert.setTitle("Logout Confirmation");
-        logoutAlert.setHeaderText("Are you sure you want to log out?");
-        logoutAlert.setContentText("You will be redirected to the login screen.");
+        logoutAlert.setTitle(bundle.getString("logout_confirmation_title"));
+        logoutAlert.setHeaderText(bundle.getString("logout_confirmation_header"));
+        logoutAlert.setContentText(bundle.getString("logout_confirmation_content"));
 
         logoutAlert.showAndWait().ifPresent(response -> {
-            // If the user confirms , navigate to login screen
             if (response == ButtonType.OK) {
                 UserSession session = UserSession.getInstance();
                 session.clearSession();
                 System.out.println("User logged out successfully.");
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"));
+                    ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"), loginBundle);
                     Parent root = loader.load();
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                     stage.setScene(new Scene(root));
-                    stage.setTitle("Login Screen");
+                    stage.setTitle(bundle.getString("login_screen_title"));
                     stage.show();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -250,5 +436,83 @@ public class TablesAdminController {
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
+    }
+
+    public void navigateToAdminAgence(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/afficher_agence.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    public void navigateToAdminTravel(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/afficher_offer_travel.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToPromotionAdmin(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/afficher_promotion.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToReclamationAdmin(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/ReclamationAdmin.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToAdminFeedbacks(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/FeedbackAdmin.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,107 +1,138 @@
-/* Style général pour le BorderPane */
+/* styles/style7.css */
+
+/* Style de base pour le BorderPane */
 BorderPane {
-    -fx-background-color: #f4f4f4; /* Couleur de fond légère */
+    -fx-background-color: #f4f4f4; /* Fond clair */
 }
 
-/* Style pour le HBox en haut (barre de recherche et filtres) */
-HBox {
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-padding: 10; /* Espacement intérieur */
-    -fx-border-radius: 8; /* Bordures arrondies */
-    -fx-background-radius: 8; /* Bordures arrondies pour le fond */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); /* Ombre légère */
+/* Style pour la barre latérale (VBox) */
+VBox {
+    -fx-background-color: #2c3e50; /* Bleu foncé */
+    -fx-padding: 20;
+    -fx-spacing: 15;
 }
 
-/* Style pour les Labels */
-Label {
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-text-fill: #333333; /* Couleur du texte */
-}
-
-/* Style pour le TextField (barre de recherche) */
-TextField {
-    -fx-pref-width: 200; /* Largeur préférée */
-    -fx-pref-height: 35; /* Hauteur préférée */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Couleur de la bordure */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-padding: 5; /* Espacement intérieur */
-}
-
-/* Style pour les boutons */
-Button {
-    -fx-pref-width: 120; /* Largeur préférée */
-    -fx-pref-height: 35; /* Hauteur préférée */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-background-color: #4CAF50; /* Fond vert */
+/* Style pour le titre de la barre latérale */
+.sidebar-title {
+    -fx-font-size: 24px;
     -fx-text-fill: white; /* Texte blanc */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
-    -fx-cursor: hand; /* Curseur en forme de main au survol */
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 3); /* Ombre portée */
 }
 
-Button:hover {
-    -fx-background-color: #45a049; /* Changement de couleur au survol */
+/* Style pour les labels dans la barre latérale */
+.sidebar-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-weight: bold;
+}
+
+/* Style pour les champs de texte */
+.sidebar-textfield {
+    -fx-background-color: white;
+    -fx-background-radius: 20; /* Bordures arrondies */
+    -fx-border-radius: 20;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-padding: 5 15;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 3); /* Ombre légère */
+}
+
+.sidebar-textfield:focused {
+    -fx-border-color: #3498db; /* Bordure bleue en focus */
 }
 
 /* Style pour les ComboBox */
-ComboBox {
-    -fx-pref-width: 200; /* Largeur préférée */
-    -fx-pref-height: 35; /* Hauteur préférée */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Couleur de la bordure */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+.sidebar-combobox {
+    -fx-background-color: white;
+    -fx-background-radius: 20; /* Bordures arrondies */
+    -fx-border-radius: 20;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-padding: 5 15;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 3); /* Ombre légère */
+}
+
+.sidebar-combobox:focused {
+    -fx-border-color: #3498db; /* Bordure bleue en focus */
+}
+
+/* Style pour le DatePicker */
+.sidebar-datepicker {
+    -fx-background-color: white;
+    -fx-background-radius: 20; /* Bordures arrondies */
+    -fx-border-radius: 20;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-padding: 5 15;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 3); /* Ombre légère */
+}
+
+.sidebar-datepicker:focused {
+    -fx-border-color: #3498db; /* Bordure bleue en focus */
+}
+
+/* Style pour le bouton de retour (flèche) */
+.back-button {
+    -fx-background-color: transparent; /* Fond transparent */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-size: 24px; /* Taille de la flèche */
+    -fx-font-weight: bold;
+    -fx-padding: 0; /* Pas de padding */
+    -fx-border-width: 0; /* Pas de bordure */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 3); /* Ombre légère */
+}
+
+.back-button:hover {
+    -fx-text-fill: #bdc3c7; /* Couleur grise au survol */
 }
 
 /* Style pour le ScrollPane */
 ScrollPane {
-    -fx-background-color: transparent; /* Fond transparent */
-    -fx-fit-to-width: true; /* Adapter la largeur au contenu */
-    -fx-fit-to-height: true; /* Adapter la hauteur au contenu */
-    -fx-padding: 10; /* Espacement intérieur */
+    -fx-background-color: transparent;
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+    -fx-padding: 20;
 }
 
 /* Style pour le FlowPane (conteneur des cartes) */
 FlowPane {
-    -fx-alignment: top-left; /* Aligner les éléments en haut à gauche */
-    -fx-hgap: 10; /* Espacement horizontal entre les éléments */
-    -fx-vgap: 10; /* Espacement vertical entre les éléments */
-    -fx-padding: 10; /* Espacement intérieur */
+    -fx-padding: 15;
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+    -fx-alignment: TOP_LEFT;
 }
-/* Style pour le bouton Modifier */
-.button-modifier {
-    -fx-background-color: #2196F3; /* Fond bleu */
+
+/* Style pour les cartes (à personnaliser selon vos besoins) */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 10; /* Bordures arrondies */
+    -fx-border-radius: 10;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 0, 5); /* Ombre portée */
+}
+
+.card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 7); /* Ombre plus prononcée au survol */
+}
+/* styles/style7.css */
+
+/* Style pour le bouton de retour (flèche) */
+.back-button {
+    -fx-background-color: transparent; /* Fond transparent */
     -fx-text-fill: white; /* Texte blanc */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-pref-width: 80; /* Largeur préférée */
-    -fx-pref-height: 30; /* Hauteur préférée */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
-    -fx-cursor: hand; /* Curseur en forme de main au survol */
+    -fx-font-size: 24px; /* Taille de la flèche */
+    -fx-font-weight: bold;
+    -fx-padding: 10; /* Espacement autour de la flèche */
+    -fx-border-width: 0; /* Pas de bordure */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 0, 3); /* Ombre légère */
 }
 
-.button-modifier:hover {
-    -fx-background-color: #1976D2; /* Changement de couleur au survol */
-}
-
-/* Style pour le bouton Supprimer */
-.button-supprimer {
-    -fx-background-color: #f44336; /* Fond rouge */
-    -fx-text-fill: white; /* Texte blanc */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-pref-width: 80; /* Largeur préférée */
-    -fx-pref-height: 30; /* Hauteur préférée */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
-    -fx-cursor: hand; /* Curseur en forme de main au survol */
-}
-
-.button-supprimer:hover {
-    -fx-background-color: #d32f2f; /* Changement de couleur au survol */
+.back-button:hover {
+    -fx-text-fill: #bdc3c7; /* Couleur grise au survol */
 }

@@ -16,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.controllers.Admin.update_agence;
-import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Agence;
 import tn.esprit.easytripdesktopapp.services.ServiceAgence;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
@@ -27,65 +26,45 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class afficher_agence implements Initializable{
+public class afficher_agence implements Initializable {
 
     @FXML
-    public FlowPane cardContainer;
-    @FXML
-    public TextField searchField;
-    @FXML
-    public ComboBox agenceComboBox;
+    public FlowPane cardContainer; // Conteneur pour les cartes d'agences
 
-    private ServiceAgence agenceService = new ServiceAgence();
-    private List<Agence> allAgences;
-    UserSession session = UserSession.getInstance();
-    private ResourceBundle bundle;
+    private ServiceAgence agenceService = new ServiceAgence(); // Service pour gérer les agences
+    private List<Agence> allAgences; // Liste de toutes les agences
+    private UserSession session = UserSession.getInstance(); // Session utilisateur
+    private ResourceBundle bundle; // Pour l'internationalisation
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         bundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
-
-        loadData();
-
-        // Écouteur pour la recherche dynamique
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
-
-        // Écouteur pour filtrer les agences selon la sélection
-        agenceComboBox.setOnAction(event -> filterAgences());
+        loadData(); // Charger les données des agences
     }
 
     private void loadData() {
-        allAgences = agenceService.getByAgentId(session.getUser().getId());
-        loadComboBox();
-        loadAgences(allAgences);
-    }
-
-    private void loadComboBox() {
-        agenceComboBox.getItems().clear();
-        agenceComboBox.getItems().add("Toutes les agences");
-        for (Agence agence : allAgences) {
-            agenceComboBox.getItems().add(agence.getNom());
-        }
-        agenceComboBox.getSelectionModel().selectFirst();
+        allAgences = agenceService.getByAgentId(session.getUser().getId()); // Récupérer les agences de l'agent
+        loadAgences(allAgences); // Charger les cartes d'agences
     }
 
     private void loadAgences(List<Agence> agences) {
-        cardContainer.getChildren().clear();
+        cardContainer.getChildren().clear(); // Vider le conteneur
         for (Agence agence : agences) {
-            VBox card = createAgenceCard(agence);
-            cardContainer.getChildren().add(card);
+            VBox card = createAgenceCard(agence); // Créer une carte pour chaque agence
+            cardContainer.getChildren().add(card); // Ajouter la carte au conteneur
         }
     }
 
     private VBox createAgenceCard(Agence agence) {
         VBox card = new VBox();
         card.getStyleClass().add("card");
-        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 1);");
 
+        // Image de l'agence
         ImageView imageView = new ImageView();
         imageView.setFitWidth(120);
         imageView.setFitHeight(120);
         imageView.setPreserveRatio(true);
+        imageView.getStyleClass().add("card-image");
 
         if (agence.getImage() != null && !agence.getImage().isEmpty()) {
             try {
@@ -98,16 +77,17 @@ public class afficher_agence implements Initializable{
             imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
         }
 
+        // Nom de l'agence
         Text nomAgence = new Text(agence.getNom());
         nomAgence.getStyleClass().add("card-title");
-        nomAgence.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
+        // Boutons Modifier et Supprimer
         Button btnModifier = new Button("Modifier");
-        btnModifier.getStyleClass().add("button-modifier"); // Appliquer le style Modifier
+        btnModifier.getStyleClass().add("button-modifier");
         btnModifier.setOnAction(event -> openUpdateAgence(agence));
 
         Button btnSupprimer = new Button("Supprimer");
-        btnSupprimer.getStyleClass().add("button-supprimer"); // Appliquer le style Supprimer
+        btnSupprimer.getStyleClass().add("button-supprimer");
         btnSupprimer.setOnAction(event -> confirmDelete(agence));
 
         HBox buttonBox = new HBox(10, btnModifier, btnSupprimer);
@@ -115,7 +95,6 @@ public class afficher_agence implements Initializable{
 
         card.getChildren().addAll(imageView, nomAgence, buttonBox);
         return card;
-
     }
 
     private void openUpdateAgence(Agence agence) {
@@ -127,7 +106,7 @@ public class afficher_agence implements Initializable{
             update_agence controller = loader.getController();
             controller.setAgence(agence);
 
-            // Mise à jour dynamique après modification
+            // Recharger les données après la modification
             stage.setOnHiding(event -> loadData());
 
             stage.show();
@@ -149,7 +128,7 @@ public class afficher_agence implements Initializable{
 
     private void deleteAgence(Agence agence) {
         agenceService.delete(agence);
-        loadData(); // Mettre à jour les agences et la liste déroulante
+        loadData(); // Recharger les données après suppression
     }
 
     @FXML
@@ -159,7 +138,7 @@ public class afficher_agence implements Initializable{
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
 
-            // Mise à jour dynamique après ajout
+            // Recharger les données après ajout
             stage.setOnHiding(event -> loadData());
 
             stage.show();
@@ -169,46 +148,18 @@ public class afficher_agence implements Initializable{
     }
 
     @FXML
-    private void filterAgences() {
-        String selectedAgence = (String) agenceComboBox.getValue();
-
-        if (selectedAgence == null || selectedAgence.equals("Toutes les agences")) {
-            loadAgences(allAgences);
-            return;
-        }
-
-        List<Agence> filteredAgences = allAgences.stream()
-                .filter(a -> a.getNom().equals(selectedAgence))
-                .toList();
-
-        loadAgences(filteredAgences);
-    }
-
-    @FXML
-    private void handleSearch() {
-        String keyword = searchField.getText().toLowerCase().trim();
-        List<Agence> filteredAgences = allAgences.stream()
-                .filter(a -> a.getNom().toLowerCase().contains(keyword))
-                .toList();
-        loadAgences(filteredAgences);
-    }
-
     public void goBack(ActionEvent actionEvent) {
-        Stage stage;
-        Scene scene;
-        FXMLLoader loader;
         try {
-            loader = new FXMLLoader(getClass().getResource(
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(
                     "/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"),
                     bundle);
-            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            scene = new Scene(loader.load());
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(loader.load());
             stage.setScene(scene);
             stage.setTitle(bundle.getString(session.getUser().getRole().toLowerCase() + "_dashboard"));
             stage.show();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 }

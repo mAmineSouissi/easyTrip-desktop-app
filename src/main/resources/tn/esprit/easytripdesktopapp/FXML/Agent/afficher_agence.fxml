@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 
-<BorderPane stylesheets="@../../styles/style1.css" xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/22"
+<BorderPane stylesheets="@../../styles/style11.css" xmlns:fx="http://javafx.com/fxml/1"
+            xmlns="http://javafx.com/javafx/23.0.1"
             fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.afficher_agence">
 
     <top>
-        <HBox alignment="CENTER" spacing="10">
-            <Label text="Rechercher par nom d'agence:"/>
-            <TextField fx:id="searchField" promptText="Nom d'agence..."/>
-            <Button onAction="#handleSearch" text="Rechercher"/>
+        <!-- Barre bleu foncé en haut -->
+        <HBox styleClass="top-hbox" alignment="CENTER" spacing="10">
+            <!-- Flèche de retour (←) -->
+            <Button onAction="#goBack" styleClass="arrow-back-button" text="←" />
 
-            <Label text="Filtrer par agences:"/>
-            <ComboBox fx:id="agenceComboBox" onAction="#filterAgences" prefWidth="200"/>
+            <!-- Espace flexible à gauche -->
+            <Region HBox.hgrow="ALWAYS" />
 
-            <Button onAction="#openAddAgence" text="Ajouter Agence"/>
-            <Button mnemonicParsing="false" onAction="#goBack" text="Back"/>
+            <!-- Bouton "Ajouter Agence" -->
+            <Button onAction="#openAddAgence" text="Ajouter Agence" styleClass="add-button" />
+
+            <!-- Espace flexible à droite -->
+            <Region HBox.hgrow="ALWAYS" />
         </HBox>
     </top>
 
     <center>
-        <ScrollPane>
-            <FlowPane fx:id="cardContainer" alignment="TOP_LEFT" hgap="10" vgap="10"/>
+        <!-- Conteneur des cartes d'agences -->
+        <ScrollPane styleClass="scroll-pane">
+            <FlowPane fx:id="cardContainer" alignment="TOP_LEFT" hgap="10" vgap="10" styleClass="flow-pane" />
         </ScrollPane>
     </center>
 </BorderPane>

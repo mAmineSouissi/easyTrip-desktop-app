@@ -1,53 +1,65 @@
-/* styles/style2.css */
+/* style2.css */
 
-/* Style de base pour l'AnchorPane */
-AnchorPane {
+/* Style général pour l'AnchorPane */
+.anchor-pane {
     -fx-background-color: #f4f4f4; /* Fond clair */
-    -fx-padding: 20;
-}
-
-/* Style pour les labels */
-Label {
-    -fx-font-size: 14px;
-    -fx-text-fill: #2c3e50; /* Couleur sombre */
-    -fx-font-weight: bold;
+    -fx-padding: 20px;
 }
 
 /* Style pour le titre */
 .title-label {
     -fx-font-size: 24px;
-    -fx-text-fill: #3498db; /* Bleu moderne */
     -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50; /* Couleur de texte foncée */
+    -fx-alignment: center;
 }
 
 /* Style pour les champs de texte */
-TextField {
-    -fx-background-color: white;
-    -fx-background-radius: 5;
-    -fx-border-radius: 5;
-    -fx-border-color: #bdc3c7;
-    -fx-border-width: 1px;
-    -fx-padding: 5 10;
+.text-field {
     -fx-font-size: 14px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #bdc3c7; /* Bordure grise */
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-prompt-text-fill: #95a5a6; /* Couleur du texte d'invite */
 }
 
-TextField:focused {
-    -fx-border-color: #3498db; /* Bleu moderne */
+.text-field:focused {
+    -fx-border-color: #3498db; /* Bordure bleue lorsqu'en focus */
 }
 
 /* Style pour les boutons */
-Button {
-    -fx-background-color: #3498db; /* Bleu moderne */
-    -fx-text-fill: white;
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
-    -fx-padding: 10 20;
+.button {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
+    -fx-background-color: #3498db; /* Fond bleu */
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
 }
 
-Button:hover {
-    -fx-background-color: #2980b9; /* Bleu plus foncé au survol */
+.button:hover {
+    -fx-background-color: #2980b9; /* Fond bleu plus foncé au survol */
+}
+
+/* Style pour le bouton "Sauvegarder" */
+#save {
+    -fx-background-color: #27ae60; /* Fond vert */
+}
+
+#save:hover {
+    -fx-background-color: #219653; /* Fond vert plus foncé au survol */
+}
+
+/* Style pour l'image */
+.image-view {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0); /* Ombre portée */
+    -fx-border-color: #bdc3c7; /* Bordure grise */
+    -fx-border-radius: 5px;
+}
+
+/* Style pour le HBox contenant le titre */
+.hbox {
+    -fx-alignment: center;
+    -fx-padding: 10px;
 }

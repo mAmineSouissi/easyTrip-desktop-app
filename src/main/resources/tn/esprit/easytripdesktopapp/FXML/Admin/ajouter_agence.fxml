@@ -5,27 +5,34 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="470.0" prefWidth="461.0" xmlns:fx="http://javafx.com/fxml/1"
-            xmlns="http://javafx.com/javafx/23.0.1"
-            fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.ajouter_agence"
-            stylesheets="@../../styles/style2.css">
+<AnchorPane prefHeight="470.0" prefWidth="461.0" stylesheets="@../../styles/style2.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.ajouter_agence">
     <children>
-        <Label styleClass="title-label" text=" Ajouter une Agence" textAlignment="CENTER" AnchorPane.leftAnchor="10"
-               AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10"/>
-        <TextField fx:id="name" promptText="Nom" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
-                   AnchorPane.topAnchor="50"/>
-        <TextField fx:id="address" promptText="Adresse" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
-                   AnchorPane.topAnchor="100"/>
-        <TextField fx:id="phone" promptText="Téléphone" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
-                   AnchorPane.topAnchor="150"/>
-        <TextField fx:id="email" promptText="Email" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
-                   AnchorPane.topAnchor="200"/>
-        <ImageView fx:id="image" fitHeight="54.0" fitWidth="65.0" layoutX="156.0" layoutY="249.0"
-                   AnchorPane.leftAnchor="156.0" AnchorPane.topAnchor="249.0"/>
-        <Button layoutX="14.0" layoutY="250.0" onAction="#chooseImage" text="Choisir Image"
-                AnchorPane.rightAnchor="358.2" AnchorPane.topAnchor="250.0"/>
-        <Button layoutX="189.0" layoutY="386.0" onAction="#save" text="Sauvegarder" AnchorPane.leftAnchor="189.0"
-                AnchorPane.topAnchor="386.0"/>
+        <!-- Titre centré en haut -->
+        <HBox alignment="CENTER" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="10">
+            <Label styleClass="title-label" text="Ajouter une Agence" />
+        </HBox>
+
+        <!-- Champ Nom -->
+        <TextField fx:id="name" promptText="Nom" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="50" />
+
+        <!-- Champ Adresse -->
+        <TextField fx:id="address" promptText="Adresse" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="100" />
+
+        <!-- Champ Téléphone -->
+        <TextField fx:id="phone" promptText="Téléphone" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="150" />
+
+        <!-- Champ Email -->
+        <TextField fx:id="email" promptText="Email" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="200" />
+
+        <!-- Image -->
+        <ImageView fx:id="image" fitHeight="54.0" fitWidth="65.0" layoutX="58.0" layoutY="356.0" AnchorPane.leftAnchor="58.0" AnchorPane.topAnchor="356.0" />
+
+        <!-- Bouton "Choisir Image" -->
+        <Button layoutX="50.0" layoutY="274.0" onAction="#chooseImage" prefHeight="42.0" prefWidth="212.0" text="Choisir Image" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="239.59999999999997" AnchorPane.topAnchor="274.0" />
+
+        <!-- Bouton "Sauvegarder" -->
+        <Button layoutX="219.0" layoutY="403.0" onAction="#save" prefHeight="42.0" prefWidth="203.0" text="Sauvegarder" AnchorPane.bottomAnchor="24.600000000000023" AnchorPane.leftAnchor="219.0" AnchorPane.rightAnchor="79.39999999999998" />
     </children>
 </AnchorPane>

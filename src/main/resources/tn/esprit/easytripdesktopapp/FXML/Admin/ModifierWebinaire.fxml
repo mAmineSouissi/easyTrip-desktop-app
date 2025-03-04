@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.ModifierWebinaireController" stylesheets="@../../styles/styles8.css">
+    <children>
+        <VBox spacing="20" layoutX="50" layoutY="20" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);">
+            <Label text="Modifier un Webinaire" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;">
+                <font>
+                    <Font name="Arial" size="20"/>
+                </font>
+            </Label>
+            <TextField fx:id="title" promptText="Titre du webinaire" style="-fx-pref-width: 400px;"/>
+            <TextField fx:id="description" promptText="Description du webinaire" style="-fx-pref-width: 400px;"/>
+            <TextField fx:id="debutDateTime" promptText="Date et heure de début (yyyy-MM-dd HH:mm:ss)" style="-fx-pref-width: 400px;"/>
+            <TextField fx:id="finitDateTime" promptText="Date et heure de fin (yyyy-MM-dd HH:mm:ss)" style="-fx-pref-width: 400px;"/>
+            <TextField fx:id="link" promptText="Lien du webinaire" style="-fx-pref-width: 400px;"/>
+            <ComboBox fx:id="hotelComboBox" promptText="Sélectionner un hôtel" style="-fx-pref-width: 400px;"/>
+            <Button text="Modifier" onAction="#update" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-border-radius: 5; -fx-background-radius: 5;"/>
+        </VBox>
+    </children>
+</AnchorPane>

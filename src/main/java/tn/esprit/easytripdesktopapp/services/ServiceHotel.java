@@ -18,7 +18,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public void add(Hotel hotel) {
-        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`,`user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, hotel.getName());
@@ -30,19 +30,23 @@ public class ServiceHotel implements CRUDService<Hotel> {
             pstm.setString(7, hotel.getTypeRoom());
             pstm.setInt(8, hotel.getNumRoom());
             pstm.setString(9, hotel.getImage());
-            pstm.setInt(10, hotel.getUserId());
 
+            // Gestion des valeurs null pour promotion_id
             if (hotel.getPromotion() != null) {
                 pstm.setInt(10, hotel.getPromotion().getId());
             } else {
                 pstm.setNull(10, java.sql.Types.INTEGER);
             }
 
+            // Gestion des valeurs null pour agency_id
             if (hotel.getAgence() != null) {
                 pstm.setInt(11, hotel.getAgence().getId());
             } else {
                 pstm.setNull(11, java.sql.Types.INTEGER);
             }
+
+            // Ajout du user_id
+            pstm.setInt(12, hotel.getUserId());
 
             pstm.executeUpdate();
             System.out.println("Hôtel ajouté avec succès !");
@@ -72,7 +76,6 @@ public class ServiceHotel implements CRUDService<Hotel> {
                 h.setImage(rs.getString("image"));
                 h.setPromotionId(rs.getInt("promotion_id"));
                 h.setUserId(rs.getInt("user_id"));
-
 
                 if (!rs.wasNull()) {
                     Promotion promotion = new ServicePromotion().getById(rs.getInt("promotion_id"));
@@ -106,13 +109,13 @@ public class ServiceHotel implements CRUDService<Hotel> {
             if (hotel.getPromotion() != null) {
                 pstm.setInt(10, hotel.getPromotion().getId());
             } else {
-                pstm.setNull(10, java.sql.Types.INTEGER); // Définir la valeur NULL pour promotion_id
+                pstm.setNull(10, java.sql.Types.INTEGER);
             }
 
             if (hotel.getAgence() != null) {
                 pstm.setInt(11, hotel.getAgence().getId());
             } else {
-                pstm.setNull(11, java.sql.Types.INTEGER); // Définir la valeur NULL pour agence_id
+                pstm.setNull(11, java.sql.Types.INTEGER);
             }
 
             pstm.setInt(12, hotel.getId());
@@ -179,8 +182,6 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
         return hotels;
     }
-
-
 
     @Override
     public List<Hotel> search(String keyword) {

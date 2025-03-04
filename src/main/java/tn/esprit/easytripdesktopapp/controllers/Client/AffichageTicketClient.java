@@ -21,6 +21,7 @@ import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.Ticket;
 import tn.esprit.easytripdesktopapp.services.ServiceTicket;
 import tn.esprit.easytripdesktopapp.utils.CurrencyConverter;
+import tn.esprit.easytripdesktopapp.utils.WeatherAPI;
 
 import java.io.IOException;
 import java.util.List;
@@ -84,32 +85,21 @@ public class AffichageTicketClient {
         // Ajouter l'image de la ville
         ImageView imageView = new ImageView();
         try {
-            // Récupérer le chemin de l'image depuis le ticket
             String imagePath = ticket.getCityImage();
-
-            // Si le chemin est une URL web (commence par http ou https), charger directement
             if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-                // Charger l'image depuis le web
                 Image image = new Image(imagePath);
                 imageView.setImage(image);
-            }
-            // Si le chemin est local (depuis le bureau ou un autre dossier)
-            else {
-                // Ajouter le préfixe "file:" si nécessaire
+            } else {
                 if (!imagePath.startsWith("file:")) {
                     imagePath = "file:" + imagePath;
                 }
-                // Charger l'image locale
                 Image image = new Image(imagePath);
                 imageView.setImage(image);
             }
-
-            // Ajuster la taille de l'image
-            imageView.setFitWidth(200); // Ajuster la largeur de l'image
-            imageView.setFitHeight(150); // Ajuster la hauteur de l'image
-            imageView.setPreserveRatio(true); // Conserver le ratio de l'image
+            imageView.setFitWidth(200);
+            imageView.setFitHeight(150);
+            imageView.setPreserveRatio(true);
         } catch (Exception e) {
-            // Si l'image ne peut pas être chargée, utiliser une image par défaut
             imageView.setImage(new Image("file:src/main/resources/default_image.png"));
             System.out.println("Erreur lors du chargement de l'image : " + e.getMessage());
         }
@@ -123,12 +113,15 @@ public class AffichageTicketClient {
         String selectedCurrency = currencyComboBox.getValue();
         double convertedPrice;
         try {
-            convertedPrice = currencyConverter.convert(ticket.getPrice(), "EUR", selectedCurrency); // Par défaut, EUR
+            convertedPrice = currencyConverter.convert(ticket.getPrice(), "EUR", selectedCurrency);
         } catch (Exception e) {
             System.err.println("Erreur lors de la conversion du prix : " + e.getMessage());
-            convertedPrice = ticket.getPrice(); // Utiliser le prix d'origine en cas d'erreur
+            convertedPrice = ticket.getPrice();
         }
         Text priceText = new Text("Prix : " + String.format("%.2f", convertedPrice) + " " + selectedCurrency);
+
+        // Ajouter la météo de la ville d'arrivée
+        Text weatherText = new Text("Météo : " + WeatherAPI.getWeather(ticket.getArrivalCity()));
 
         // Bouton pour voir les détails
         Button detailsButton = new Button("Voir les détails");
@@ -136,7 +129,7 @@ public class AffichageTicketClient {
         detailsButton.setOnAction(e -> showTicketDetails(ticket));
 
         // Ajouter les éléments à la carte
-        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, detailsButton);
+        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, weatherText, detailsButton);
 
         return card;
     }

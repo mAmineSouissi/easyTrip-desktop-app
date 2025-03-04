@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
 
 <VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.DetailHotel" spacing="10" alignment="CENTER"
@@ -18,8 +19,14 @@
     <Label fx:id="descriptionLabel" wrapText="true"/>
     <Label fx:id="typeRoomLabel"/>
     <Label fx:id="numRoomLabel"/>
-    <Label fx:id="promotionLabel" style="-fx-text-fill: #FF5722;"/> <!-- Nouveau Label pour la promotion -->
-    <Button fx:id="reserveButton" text="Réserver" onAction="#handleReserveButton"/>
-    <Button fx:id="feedbackbutton" text="Soummettre Feedback" onAction="#handleFeedbackButton"/>
+    <Label fx:id="promotionLabel" style="-fx-text-fill: #FF5722;"/>
 
+    <!-- Ajouter la note moyenne -->
+    <Label fx:id="averageRatingLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+
+    <!-- Ajouter la distribution des étoiles -->
+    <VBox fx:id="ratingDistributionBox" spacing="5" alignment="CENTER_LEFT"/>
+
+    <Button fx:id="reserveButton" text="Réserver" onAction="#handleReserveButton"/>
+    <Button fx:id="feedbackbutton" text="Soumettre Feedback" onAction="#handleFeedbackButton"/>
 </VBox>

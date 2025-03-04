@@ -1,6 +1,8 @@
 package tn.esprit.easytripdesktopapp.models;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 
+import java.util.List;
+
 public class Hotel {
 
     private int id;
@@ -106,5 +108,23 @@ public class Hotel {
                 ", promotion=" + (promotion != null ? promotion.getTitle() : "null") +
                 ", agence=" + (agence != null ? agence.getNom() : "null") +
                 '}';
+    }
+    // Méthode pour calculer la note moyenne
+    public double getAverageRating(List<Feedback> feedbacks) {
+        if (feedbacks.isEmpty()) {
+            return 0.0;
+        }
+        return feedbacks.stream().mapToInt(Feedback::getRating).average().orElse(0.0);
+    }
+
+    // Méthode pour calculer la distribution des étoiles
+    public int[] getRatingDistribution(List<Feedback> feedbacks) {
+        int[] distribution = new int[5]; // Indices 0 à 4 pour les notes 1 à 5
+        for (Feedback feedback : feedbacks) {
+            if (feedback.getRating() >= 1 && feedback.getRating() <= 5) {
+                distribution[feedback.getRating() - 1]++;
+            }
+        }
+        return distribution;
     }
 }

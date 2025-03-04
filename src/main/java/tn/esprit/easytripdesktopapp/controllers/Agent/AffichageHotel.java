@@ -45,7 +45,8 @@ public class AffichageHotel {
     private final ServiceHotel hotelService = new ServiceHotel();  // Service pour gérer les hôtels
     private List<Hotel> hotels;  // Liste des hôtels pour garder une référence
 
-    UserSession session=UserSession.getInstance();
+    UserSession session = UserSession.getInstance();
+
     @FXML
     public void initialize() {
         // Initialiser les filtres

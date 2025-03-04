@@ -2,40 +2,47 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.media.MediaView?>
-<?import javafx.scene.media.MediaPlayer?>
-<?import javafx.scene.media.Media?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.WebinaireViewController" stylesheets="@../../styles/styles3.css" prefWidth="800" prefHeight="600">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.WebinaireViewController" stylesheets="@../styles3.css" prefWidth="800" prefHeight="600" style="-fx-background-color: #f0f4f8;">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>
     </padding>
 
+    <!-- En-tête avec titre et barre de progression -->
+    <top>
+        <VBox alignment="CENTER" spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <Label fx:id="titleLabel" text="Webinaire en Cours" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, #000000, 5, 0.3, 0, 0);" />
+            <ProgressBar fx:id="progressBar" prefWidth="300" progress="0.5" style="-fx-accent: #3498db;" />
+        </VBox>
+    </top>
+
     <center>
-        <StackPane>
-            <VBox spacing="20" alignment="CENTER">
-                <Label fx:id="titleLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" />
-                <MediaView fx:id="mediaView" fitWidth="600" fitHeight="400" />
-                <HBox spacing="10" alignment="CENTER">
+        <StackPane alignment="CENTER">
+            <VBox spacing="20" alignment="CENTER" style="-fx-background-color: white; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+                <MediaView fx:id="mediaView" fitWidth="600" fitHeight="400" style="-fx-background-color: #e6f3ff;" />
+
+                <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
                     <Button fx:id="microButton" text="Désactiver Micro" onAction="#toggleMicro" styleClass="action-button">
                         <graphic>
-                            <ImageView>
+                            <ImageView fx:id="microImageView" fitWidth="24" fitHeight="24">
                                 <Image url="@../../icons/microphone.png" />
                             </ImageView>
                         </graphic>
                     </Button>
                     <Button fx:id="quitButton" text="Quitter" onAction="#quitWebinaire" styleClass="action-button">
                         <graphic>
-                            <ImageView>
+                            <ImageView fitWidth="24" fitHeight="24">
                                 <Image url="@../../icons/exit.png" />
                             </ImageView>
                         </graphic>
@@ -44,4 +51,9 @@
             </VBox>
         </StackPane>
     </center>
+
+    <!-- Pied de page (optionnel, pour des informations supplémentaires) -->
+    <bottom>
+        <Label text="© 2025 EasyTrip - Tout droit réservé" style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-alignment: center;" />
+    </bottom>
 </BorderPane>

@@ -6,10 +6,9 @@
 
 /* Boutons avec effet hover et transition */
 .action-button {
-    -fx-background-color: #3498db;
+    -fx-background-color: #4CAF50;
     -fx-text-fill: white;
     -fx-font-weight: bold;
-    -fx-font-size: 14px;
     -fx-padding: 10 20;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
@@ -17,20 +16,20 @@
 }
 
 .action-button:hover {
-    -fx-background-color: #2980b9;
+    -fx-background-color: #45a049;
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
     -fx-transition: all 0.3s ease;
 }
 
 .action-button:pressed {
-    -fx-background-color: #1f6ea0;
+    -fx-background-color: #3d8b40;
     -fx-scale-x: 0.98;
     -fx-scale-y: 0.98;
 }
 
-/* MediaView */
-.media-view {
+/* ImageView */
+.image-view {
     -fx-background-color: #e6f3ff;
     -fx-border-radius: 10;
     -fx-background-radius: 10;
@@ -41,23 +40,11 @@
     -fx-text-fill: #2c3e50;
 }
 
-/* ProgressBar */
-.progress-bar .bar {
-    -fx-background-color: #3498db;
-    -fx-background-radius: 5;
-    -fx-padding: 2;
-}
-
-.progress-bar .track {
-    -fx-background-color: #e6f3ff;
-    -fx-background-radius: 5;
-}
-
-/* Image de fond en plein écran */
-.background-image {
-    -fx-fit-to-width: true;
-    -fx-fit-to-height: true;
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover;
-    -fx-background-position: center;
+/* GridPane pour les détails */
+.grid-pane {
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.3, 0, 2);
 }

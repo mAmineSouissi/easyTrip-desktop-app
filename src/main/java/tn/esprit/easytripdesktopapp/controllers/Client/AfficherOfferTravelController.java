@@ -174,10 +174,18 @@ public class AfficherOfferTravelController implements Initializable {
         Button btnReserver = new Button("Réserver");
         btnReserver.getStyleClass().add("button-reserver");
         btnReserver.setOnAction(event -> {
-            // Logique pour réserver l'offre
-            System.out.println("User Id : " + session.getUser().getId());
-            System.out.println("Offre réservée : " + offer.getDestination());
-            detailAlert.close(); // Fermer la boîte de dialogue après la réservation
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/addreservation.fxml"));
+                Parent root = loader.load();
+                Addreservation detailController = loader.getController();
+                detailController.setOffer(offer);
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Reservation Screen");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         // Ajouter le bouton au VBox

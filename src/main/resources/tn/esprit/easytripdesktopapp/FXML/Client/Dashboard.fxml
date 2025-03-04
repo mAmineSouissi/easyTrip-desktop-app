@@ -7,9 +7,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 
+<?import javafx.scene.image.Image?>
 <AnchorPane prefHeight="553.0" prefWidth="911.0" stylesheets="@../../styles/dashboardClient.css"
-    xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-    fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.ClientDashboardController">
+            xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.ClientDashboardController">
 
     <!-- Navigation Bar -->
     <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
@@ -17,6 +18,16 @@
 
         <!-- Welcome Text on the Left -->
         <Label fx:id="welcomeLabel" styleClass="nav-label" text="Welcome, User" />
+        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="790.0" layoutY="41.0" mnemonicParsing="false"
+                nodeOrientation="RIGHT_TO_LEFT" onAction="#naviger" textAlignment="RIGHT">
+            <graphic>
+                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../assets/panier.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
 
         <!-- Spacer to push items to the center -->
         <Region HBox.hgrow="ALWAYS" />

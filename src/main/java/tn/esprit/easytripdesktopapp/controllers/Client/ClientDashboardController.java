@@ -307,7 +307,7 @@ public class ClientDashboardController implements Initializable {
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Login Screen");
+            stage.setTitle("Reservation Screen");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -382,4 +382,17 @@ public class ClientDashboardController implements Initializable {
         }
     }
 
+    @FXML
+    void naviger(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/listreservation.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reservation Screen");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

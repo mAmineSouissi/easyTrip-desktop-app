@@ -3,6 +3,7 @@ package tn.esprit.easytripdesktopapp.controllers.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -83,19 +84,6 @@ public class DetailHotel {
         }
     }
 
-    @FXML
-    private void handleReserveButton() {
-        int userID=session.getUser().getId();
-        if (hotel != null) {
-            int Id = hotel.getId(); // Récupérer l'ID du ticket
-            System.out.println("Offer Hotel réservé avec l'ID : " + Id);
-
-            // Vous pouvez également afficher une boîte de dialogue ou effectuer une autre action ici
-            // Par exemple, ouvrir une nouvelle fenêtre pour confirmer la réservation
-        } else {
-            System.out.println("Aucun Hotel sélectionné.");
-        }
-    }
 
     public void handleFeedbackButton(ActionEvent actionEvent) {
         try {
@@ -121,5 +109,20 @@ public class DetailHotel {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void handleReserveButton(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/addreservation.fxml"));
+            Parent root = loader.load();
+            Addreservation detailController = loader.getController();
+            detailController.setHotel(hotel);
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reservation Screen");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

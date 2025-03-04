@@ -199,5 +199,15 @@ public class Listreservation {
         }
     }
 
+    @FXML
+    void btnstatisric() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/reservationstatics.fxml"));
+            listres.getScene().setRoot(root);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
 }

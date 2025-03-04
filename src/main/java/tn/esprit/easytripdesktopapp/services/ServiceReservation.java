@@ -8,7 +8,9 @@ import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ServiceReservation implements IService<Reservation> {
     private Connection cnx ;
@@ -125,5 +127,23 @@ public class ServiceReservation implements IService<Reservation> {
         return c;
     }
 
+    public Map<String, Integer> getReservationsByDate() {
+        Map<String, Integer> reservationsByDate = new HashMap<>();
+        String query = "SELECT ordreDate, COUNT(*) AS total FROM reservation GROUP BY ordreDate";
+
+        try {
+            Statement st = cnx.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                String date = rs.getDate("ordreDate").toString(); // Convertir en String pour l'affichage
+                int total = rs.getInt("total");
+                reservationsByDate.put(date, total);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des statistiques : " + e.getMessage());
+        }
+
+        return reservationsByDate;
+    }
 
 }

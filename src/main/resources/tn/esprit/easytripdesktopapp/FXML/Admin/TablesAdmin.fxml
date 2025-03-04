@@ -15,10 +15,10 @@
       <HBox prefHeight="68.0" prefWidth="960.0">
          <children>
              <ImageView fx:id="image" fitHeight="54.0" fitWidth="65.0" layoutX="156.0" layoutY="249.0" AnchorPane.leftAnchor="156.0" AnchorPane.topAnchor="249.0" />
-      
+
               <!-- Title -->
               <Label styleClass="dashboard-title" text="Users List" />
-      
+
               <!-- LogOut Button -->
               <Button onAction="#handleLogOut" styleClass="logout-button" text="Log Out">
                <HBox.margin>

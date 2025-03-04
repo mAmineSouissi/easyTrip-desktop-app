@@ -1,0 +1,41 @@
+/* Style pour le conteneur principal */
+.dashboard-container {
+    -fx-background-color: #f0f0f0;
+    -fx-padding: 20px;
+}
+
+/* Style pour le graphique */
+.chart {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+.chart-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+}
+
+.chart-bar {
+    -fx-bar-fill: #4CAF50; /* Couleur des barres (vert, comme ton thème) */
+}
+
+.axis-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+/* Style pour le bouton Actualiser */
+.refresh-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 5px;
+    -fx-cursor: hand;
+}
+
+.refresh-button:hover {
+    -fx-background-color: #367C39;
+}

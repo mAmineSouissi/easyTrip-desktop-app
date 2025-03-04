@@ -8,9 +8,8 @@ import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
 
 public class ServiceOfferTravel implements CRUDService<OfferTravel> {
 
@@ -474,6 +473,28 @@ public class ServiceOfferTravel implements CRUDService<OfferTravel> {
             System.out.println(e.getMessage());
         }
         return offers;
+    }
+
+    // Méthode pour obtenir le nombre d'offres par agence
+    public Map<Agence, Integer> getOfferCountByAgency() {
+        Map<Agence, Integer> offerCountByAgency = new HashMap<>();
+        String query = "SELECT a.id, a.name, COUNT(ot.id) as offer_count " +
+                "FROM agency a " +
+                "LEFT JOIN offer_travel ot ON a.id = ot.agency_id " +
+                "GROUP BY a.id, a.name";
+        try (PreparedStatement stmt = cnx.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                Agence agence = new Agence();
+                agence.setId(rs.getInt("id"));
+                agence.setNom(rs.getString("name"));
+                int offerCount = rs.getInt("offer_count");
+                offerCountByAgency.put(agence, offerCount);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération des offres par agence : " + e.getMessage());
+        }
+        return offerCountByAgency;
     }
 
 

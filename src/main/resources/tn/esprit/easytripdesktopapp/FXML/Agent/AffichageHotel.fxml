@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 
@@ -35,8 +34,7 @@
                 <TextField fx:id="searchField" promptText="Rechercher par nom ou ville" />
                 <ComboBox fx:id="ratingFilter" promptText="Note minimale" />
                 <ComboBox fx:id="priceFilter" promptText="Prix maximum" />
-                <Button text="Filtrer" onAction="#applyFilters" styleClass="action-button" />
-                <Button text="Réinitialiser" onAction="#resetFilters" styleClass="action-button" />
+                <!-- Boutons "Filtrer" et "Réinitialiser" supprimés -->
             </HBox>
         </VBox>
     </top>
@@ -44,11 +42,11 @@
     <!-- Contenu central -->
     <center>
         <VBox spacing="20" alignment="CENTER">
-            <!-- HBox pour les boutons Ajouter, Rafraîchir, Retour à l'accueil -->
+            <!-- HBox pour les boutons Ajouter et Retour à l'accueil -->
             <HBox spacing="20" alignment="CENTER">
                 <Button fx:id="addButton" text="Ajouter Hôtel" onAction="#goToAddHotel" styleClass="action-button" />
-                <Button fx:id="refreshButton" text="Rafraîchir" onAction="#refreshPage" styleClass="action-button" />
                 <Button fx:id="backButton" text="Retour à l'accueil" onAction="#goToAccueil" styleClass="action-button" />
+                <!-- Bouton "Rafraîchir" supprimé -->
             </HBox>
 
             <!-- FlowPane pour contenir les cartes des hôtels horizontalement -->

@@ -5,11 +5,7 @@ import tn.esprit.easytripdesktopapp.models.OfferTravel;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
 import tn.esprit.easytripdesktopapp.models.Promotion;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +17,6 @@ public class ServicePromotion implements CRUDService<Promotion> {
     public ServicePromotion() {
         cnx = MyDataBase.getInstance().getCnx();
     }
-
 
     @Override
     public void add(Promotion promotion) {
@@ -122,7 +117,6 @@ public class ServicePromotion implements CRUDService<Promotion> {
         return null;
     }
 
-
     public Optional<Promotion> getByid(int id) {
         String qry = "SELECT * FROM `promotion` WHERE `id`=?";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
@@ -206,7 +200,6 @@ public class ServicePromotion implements CRUDService<Promotion> {
         return 0;
     }
 
-
     public Promotion getByTitle(String title) {
         String qry = "SELECT * FROM `promotion` WHERE `title`=?";
         try {
@@ -227,6 +220,4 @@ public class ServicePromotion implements CRUDService<Promotion> {
         }
         return null;
     }
-
-
 }

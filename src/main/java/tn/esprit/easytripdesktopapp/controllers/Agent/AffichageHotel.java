@@ -1,7 +1,9 @@
 package tn.esprit.easytripdesktopapp.controllers.Agent;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -11,7 +13,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import tn.esprit.easytripdesktopapp.interfaces.CRUDService;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceHotel;
 import tn.esprit.easytripdesktopapp.models.Hotel;
@@ -19,105 +20,53 @@ import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AffichageHotel {
 
     @FXML
-    private FlowPane cardContainer;  // FlowPane pour contenir les cartes des hôtels horizontalement
+    private FlowPane cardContainer;
 
     @FXML
-    private TextField searchField;  // Champ de recherche par nom ou ville
+    private TextField searchField;
 
     @FXML
-    private ComboBox<Integer> ratingFilter;  // Filtre par note minimale
+    private ComboBox<Integer> ratingFilter;
 
     @FXML
-    private ComboBox<Float> priceFilter;  // Filtre par prix maximum
+    private ComboBox<Float> priceFilter;
 
     @FXML
-    private Button refreshButton;  // Bouton pour rafraîchir la page
+    private Button backButton;
 
-    @FXML
-    private Button backButton;  // Bouton pour retourner à l'accueil
-
-    private final ServiceHotel hotelService = new ServiceHotel();  // Service pour gérer les hôtels
-    private List<Hotel> hotels;  // Liste des hôtels pour garder une référence
+    private final ServiceHotel hotelService = new ServiceHotel();
+    private List<Hotel> hotels;
 
     UserSession session = UserSession.getInstance();
+    ResourceBundle bundel;
 
     @FXML
     public void initialize() {
-        // Initialiser les filtres
+        bundel = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+
         ratingFilter.getItems().addAll(1, 2, 3, 4, 5);
         priceFilter.getItems().addAll(50f, 100f, 150f, 200f, 250f, 300f);
 
-        loadHotels();  // Charger les hôtels à l'initialisation
+        loadHotels();
+
+        searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilters());
+        ratingFilter.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> applyFilters());
+        priceFilter.getSelectionModel().selectedItemProperty().addListener((obs, oldValue, newValue) -> applyFilters());
     }
 
-    // Méthode pour charger les hôtels dans la CardView
-    @FXML
     private void loadHotels() {
-        cardContainer.getChildren().clear();  // Effacer les cartes existantes
         hotels = hotelService.getByUserId(session.getUser().getId());
-
-        for (Hotel hotel : hotels) {
-            // Créer une carte pour chaque hôtel
-            VBox card = new VBox(10);
-            card.setStyle("-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);");
-
-            // Ajouter l'image de l'hôtel
-            ImageView imageView = new ImageView(new Image(hotel.getImage()));
-            imageView.setFitWidth(200);
-            imageView.setFitHeight(150);
-            imageView.setPreserveRatio(true);
-
-            // Ajouter les informations de l'hôtel à la carte
-            Label nameLabel = new Label("Nom: " + hotel.getName());
-            nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-
-            Label addressLabel = new Label("Adresse: " + hotel.getAdresse());
-            Label cityLabel = new Label("Ville: " + hotel.getCity());
-
-            // Afficher la note sous forme d'étoiles
-            HBox ratingBox = new HBox(5); // Conteneur pour les étoiles
-            int rating = hotel.getRating();
-            for (int i = 1; i <= 5; i++) {
-                Label starLabel = new Label(i <= rating ? "★" : "☆"); // Étoile pleine ou vide
-                starLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: " + (i <= rating ? "#FFD700" : "#C0C0C0") + ";");
-                ratingBox.getChildren().add(starLabel);
-            }
-
-            Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
-            priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
-
-            // Afficher la promotion si elle existe
-            Label promotionLabel = new Label("Promotion: " + (hotel.getPromotion() != null ? hotel.getPromotion().getTitle() : "Aucune promotion"));
-            promotionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
-
-            // Boutons pour modifier et supprimer
-            HBox buttonBox = new HBox(10);
-            Button updateButton = new Button("Modifier");
-            updateButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
-            updateButton.setOnAction(e -> updateHotel(hotel));
-
-            Button deleteButton = new Button("Supprimer");
-            deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-cursor: hand;");
-            deleteButton.setOnAction(e -> deleteHotel(hotel));
-
-            buttonBox.getChildren().addAll(updateButton, deleteButton);
-
-            // Ajouter les éléments à la carte
-            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, promotionLabel, buttonBox);
-
-            // Ajouter la carte au conteneur
-            cardContainer.getChildren().add(card);
-        }
+        applyFilters();
     }
 
-    // Appliquer les filtres de recherche
-    @FXML
     private void applyFilters() {
         String searchText = searchField.getText().toLowerCase();
         Integer minRating = ratingFilter.getValue();
@@ -131,66 +80,62 @@ public class AffichageHotel {
 
         cardContainer.getChildren().clear();
         for (Hotel hotel : filteredHotels) {
-            // Créer une carte pour chaque hôtel filtré
-            VBox card = new VBox(10);
-            card.setStyle("-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);");
-
-            // Ajouter l'image de l'hôtel
-            ImageView imageView = new ImageView(new Image(hotel.getImage()));
-            imageView.setFitWidth(200);
-            imageView.setFitHeight(150);
-            imageView.setPreserveRatio(true);
-
-            // Ajouter les informations de l'hôtel à la carte
-            Label nameLabel = new Label("Nom: " + hotel.getName());
-            nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-
-            Label addressLabel = new Label("Adresse: " + hotel.getAdresse());
-            Label cityLabel = new Label("Ville: " + hotel.getCity());
-
-            // Afficher la note sous forme d'étoiles
-            HBox ratingBox = new HBox(5); // Conteneur pour les étoiles
-            int rating = hotel.getRating();
-            for (int i = 1; i <= 5; i++) {
-                Label starLabel = new Label(i <= rating ? "★" : "☆"); // Étoile pleine ou vide
-                starLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: " + (i <= rating ? "#FFD700" : "#C0C0C0") + ";");
-                ratingBox.getChildren().add(starLabel);
-            }
-
-            Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
-            priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
-
-            // Afficher la promotion si elle existe
-            Label promotionLabel = new Label("Promotion: " + (hotel.getPromotion() != null ? hotel.getPromotion().getTitle() : "Aucune promotion"));
-            promotionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
-
-            // Boutons pour modifier et supprimer
-            HBox buttonBox = new HBox(10);
-            Button updateButton = new Button("Modifier");
-            updateButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
-            updateButton.setOnAction(e -> updateHotel(hotel));
-
-            Button deleteButton = new Button("Supprimer");
-            deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-cursor: hand;");
-            deleteButton.setOnAction(e -> deleteHotel(hotel));
-
-            buttonBox.getChildren().addAll(updateButton, deleteButton);
-
-            // Ajouter les éléments à la carte
-            card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, promotionLabel, buttonBox);
-
-            // Ajouter la carte au conteneur
+            VBox card = createHotelCard(hotel);
             cardContainer.getChildren().add(card);
         }
     }
 
-    // Réinitialiser les filtres
-    @FXML
-    private void resetFilters() {
-        searchField.clear();
-        ratingFilter.getSelectionModel().clearSelection();
-        priceFilter.getSelectionModel().clearSelection();
-        loadHotels();  // Recharger tous les hôtels
+    private VBox createHotelCard(Hotel hotel) {
+        VBox card = new VBox(10);
+        card.setStyle("-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);");
+
+        // Charger l'image depuis l'URL publique (http://localhost/img/)
+        ImageView imageView = new ImageView(new Image(hotel.getImage()));
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(true);
+
+        Label nameLabel = new Label("Nom: " + hotel.getName());
+        nameLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+        Label addressLabel = new Label("Adresse: " + hotel.getAdresse());
+        Label cityLabel = new Label("Ville: " + hotel.getCity());
+
+        HBox ratingBox = new HBox(5);
+        int rating = hotel.getRating();
+        for (int i = 1; i <= 5; i++) {
+            Label starLabel = new Label(i <= rating ? "★" : "☆");
+            starLabel.setStyle("-fx-font-size: 20px; -fx-text-fill: " + (i <= rating ? "#FFD700" : "#C0C0C0") + ";");
+            ratingBox.getChildren().add(starLabel);
+        }
+
+        Label priceLabel = new Label("Prix: " + hotel.getPrice() + " €");
+        if (hotel.getPromotion() != null) {
+            priceLabel.setText("Prix après promotion: " + hotel.getPrice() + " €");
+        }
+        priceLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4CAF50;");
+
+        Label promotionLabel = new Label("Promotion: " + (hotel.getPromotion() != null ? hotel.getPromotion().getTitle() : "Aucune promotion"));
+        promotionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #FF5722;");
+
+        HBox buttonBox = new HBox(10);
+        Button updateButton = new Button("Modifier");
+        updateButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
+        updateButton.setOnAction(e -> updateHotel(hotel));
+
+        Button deleteButton = new Button("Supprimer");
+        deleteButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-cursor: hand;");
+        deleteButton.setOnAction(e -> deleteHotel(hotel));
+
+        buttonBox.getChildren().addAll(updateButton, deleteButton);
+
+        card.getChildren().addAll(imageView, nameLabel, addressLabel, cityLabel, ratingBox, priceLabel, promotionLabel, buttonBox);
+        return card;
+    }
+
+    public void addHotelCard(Hotel hotel) {
+        hotels.add(hotel);
+        applyFilters(); // Réappliquer les filtres pour inclure le nouvel hôtel
     }
 
     @FXML
@@ -198,15 +143,12 @@ public class AffichageHotel {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/AjouterHotel.fxml"));
             Parent root = loader.load();
-
-            Scene scene = new Scene(root, 600, 400);
-
-            // Créer une nouvelle fenêtre
+            AjouterHotel ajouterController = loader.getController();
+            ajouterController.setAffichageHotel(this);
             Stage stage = new Stage();
             stage.setTitle("Ajouter un Hôtel");
-            stage.setScene(scene);
+            stage.setScene(new Scene(root, 600, 400));
             stage.show();
-            loadHotels();
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Erreur", "Erreur lors du chargement de l'interface Ajouter un Hôtel.");
@@ -217,16 +159,13 @@ public class AffichageHotel {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/ModifierHotel.fxml"));
             Parent root = loader.load();
-
             ModifierHotel modifierController = loader.getController();
             modifierController.setHotel(hotel);
-
             Stage stage = new Stage();
             stage.setTitle("Modifier un Hôtel");
             stage.setScene(new Scene(root, 600, 400));
-            stage.showAndWait();  // Attendre que la fenêtre de modification soit fermée
-
-            loadHotels();  // Recharger les hôtels après modification
+            stage.showAndWait();
+            loadHotels();
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Erreur", "Erreur lors du chargement de l'interface de modification.");
@@ -241,33 +180,27 @@ public class AffichageHotel {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             hotelService.delete(hotel);
-            loadHotels();  // Recharger les hôtels après suppression
+            loadHotels();
         }
     }
 
     @FXML
-    private void refreshPage() {
-        loadHotels();  // Recharger la liste des hôtels
-    }
-
-    @FXML
-    private void goToAccueil() {
+    private void goToAccueil(ActionEvent actionEvent) {
+        Stage stage;
+        Scene scene;
+        FXMLLoader loader;
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Accueil.fxml"));
-            Parent root = loader.load();
-
-            // Fermer la fenêtre actuelle
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.setTitle("Accueil");
+            loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/Dashboard.fxml"), bundel);
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            scene = new Scene(loader.load());
+            stage.setScene(scene);
+            stage.setTitle(bundel.getString(session.getUser().getRole().toLowerCase() + "_dashboard"));
             stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 
-    // Méthode pour afficher un message d'alerte
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

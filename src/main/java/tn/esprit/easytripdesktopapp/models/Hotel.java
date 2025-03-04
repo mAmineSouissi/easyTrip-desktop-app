@@ -1,5 +1,4 @@
 package tn.esprit.easytripdesktopapp.models;
-import tn.esprit.easytripdesktopapp.models.Promotion;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class Hotel {
     private int numRoom;
     private String image;
     private Promotion promotion;
-    private  int promotionId;
+    private int promotionId;
     private Agence agence;
     private int userId;
 
@@ -30,7 +29,7 @@ public class Hotel {
 
     public Hotel() {}
 
-    public Hotel(int id, String name, String adresse, String city, int rating, String description, float price, String typeRoom, int numRoom, String image, Promotion promotion, Agence agence, int promotionID,int userId) {
+    public Hotel(int id, String name, String adresse, String city, int rating, String description, float price, String typeRoom, int numRoom, String image, Promotion promotion, Agence agence, int promotionID, int userId) {
         this.id = id;
         this.name = name;
         this.adresse = adresse;
@@ -109,6 +108,7 @@ public class Hotel {
                 ", agence=" + (agence != null ? agence.getNom() : "null") +
                 '}';
     }
+
     // Méthode pour calculer la note moyenne
     public double getAverageRating(List<Feedback> feedbacks) {
         if (feedbacks.isEmpty()) {
@@ -126,5 +126,13 @@ public class Hotel {
             }
         }
         return distribution;
+    }
+
+    // Méthode pour appliquer la promotion au prix
+    public float getDiscountedPrice() {
+        if (promotion != null) {
+            return price * (1 - promotion.getDiscount_percentage() / 100);
+        }
+        return price;
     }
 }

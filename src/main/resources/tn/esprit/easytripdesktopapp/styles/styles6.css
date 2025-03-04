@@ -15,11 +15,13 @@
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
 }
+
+/* Style pour l'arrière-plan du root */
 .root {
-    -fx-background-image: url("images/hotel-background.jpg");
-    -fx-background-size: 100% 100%;  /* Ajuste la taille de l’image */
-    -fx-background-position: center center;
-    -fx-background-repeat: no-repeat;
+    -fx-background-image: url("../assets/hotel-background.jpg"); /* Chemin relatif au dossier styles */
+    -fx-background-size: cover; /* Remplit l'écran en étirant l'image */
+    -fx-background-position: center; /* Centre l'image */
+    -fx-background-repeat: no-repeat; /* Pas de répétition */
 }
 
 /* Style pour les cartes */

@@ -9,47 +9,58 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="882.0" prefWidth="1328.0" stylesheets="@../../styles/AdminTables.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.TablesAdminController">
-    <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="882.0" prefWidth="1328.0"
+            stylesheets="@../../styles/AdminTables.css" xmlns="http://javafx.com/javafx/22"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.TablesAdminController">
+    <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          AnchorPane.topAnchor="0">
 
         <!-- Welcome Text on the Left -->
-        <Label fx:id="welcomeLabel" styleClass="nav-label" text="%welcome_label" />
+        <Label fx:id="welcomeLabel" styleClass="nav-label" text="%welcome_label"/>
 
         <!-- Spacer to push items to the center -->
-        <Region HBox.hgrow="ALWAYS" />
+        <Region HBox.hgrow="ALWAYS"/>
 
         <!-- Centered Navigation Items -->
-        <Label fx:id="manageOfferLabel" onMouseClicked="#navigateToAdminTravel" styleClass="nav-label" text="%travel_offers" />
-        <Label fx:id="manageAgencies" onMouseClicked="#navigateToAdminAgence" styleClass="nav-label" text="%manage_agency" />
-        <Label fx:id="managePromotions" styleClass="nav-label" onMouseClicked="#navigateToPromotionAdmin" text="%manage_promotions" />
-        <Label fx:id="manageReservations" styleClass="nav-label" text="%manage_reservations" />
-        <Label fx:id="manageReclamations" styleClass="nav-label" text="%manage_reclamations" />
-        <Label fx:id="manageFeedbacks" styleClass="nav-label" text="%manage-feedbacks" />
-        <Label fx:id="manageTickets" styleClass="nav-label" text="%manage_ticket" />
-        <Label fx:id="manageHotels" styleClass="nav-label" text="%manage_hotel" />
-        <Label fx:id="manageSurvey" styleClass="nav-label" text="%Survey" />
+        <Label fx:id="manageOfferLabel" onMouseClicked="#navigateToAdminTravel" styleClass="nav-label"
+               text="%travel_offers"/>
+        <Label fx:id="manageAgencies" onMouseClicked="#navigateToAdminAgence" styleClass="nav-label"
+               text="%manage_agency"/>
+        <Label fx:id="managePromotions" styleClass="nav-label" onMouseClicked="#navigateToPromotionAdmin"
+               text="%manage_promotions"/>
+        <Label fx:id="manageReservations" styleClass="nav-label" text="%manage_reservations"/>
+        <Label fx:id="manageReclamations" onMouseClicked="#navigateToReclamationAdmin" styleClass="nav-label"
+               text="%manage_reclamations"/>
+        <Label fx:id="manageFeedbacks" onMouseClicked="#navigateToAdminFeedbacks" styleClass="nav-label"
+               text="%manage-feedbacks"/>
+        <Label fx:id="manageTickets" styleClass="nav-label" text="%manage_ticket"/>
+        <Label fx:id="manageHotels" styleClass="nav-label" text="%manage_hotel"/>
+        <Label fx:id="manageSurvey" styleClass="nav-label" text="%Survey"/>
         <!-- Spacer to push profile and logout to the right -->
-        <Region HBox.hgrow="ALWAYS" />
+        <Region HBox.hgrow="ALWAYS"/>
 
 
         <!-- LogOut Button -->
-        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button" text="%profile_button" />
-        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button" text="%logout_button" />
+        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button" text="%profile_button"/>
+        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button" text="%logout_button"/>
 
         <!-- Profile Image -->
-        <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
+        <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true"
+                   styleClass="profile-image"/>
     </HBox>
-    <VBox layoutX="20.0" layoutY="72.0" spacing="20" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="72.0">
+    <VBox layoutX="20.0" layoutY="72.0" spacing="20" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
+          AnchorPane.topAnchor="72.0">
         <HBox prefHeight="68.0" prefWidth="960.0">
             <children>
-                <ImageView fx:id="image" fitHeight="54.0" fitWidth="65.0" layoutX="156.0" layoutY="249.0" AnchorPane.leftAnchor="156.0" AnchorPane.topAnchor="249.0" />
+                <ImageView fx:id="image" fitHeight="54.0" fitWidth="65.0" layoutX="156.0" layoutY="249.0"
+                           AnchorPane.leftAnchor="156.0" AnchorPane.topAnchor="249.0"/>
                 <!-- Title -->
-                <Label styleClass="dashboard-title" text="%user_list" />
+                <Label styleClass="dashboard-title" text="%user_list"/>
             </children>
         </HBox>
 
         <!-- ListView -->
-        <ListView fx:id="userListView" VBox.vgrow="ALWAYS" />
+        <ListView fx:id="userListView" VBox.vgrow="ALWAYS"/>
 
     </VBox>
 

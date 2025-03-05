@@ -16,10 +16,12 @@ import org.mindrot.jbcrypt.BCrypt;
 import tn.esprit.easytripdesktopapp.models.AccountType;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.services.ServiceUser;
+import tn.esprit.easytripdesktopapp.utils.UTF8Control;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,47 +30,38 @@ public class SignUpController {
 
     @FXML
     private TextArea addressField;
-
     @FXML
     private TextField emailField;
-
     @FXML
     private TextField nameField;
-
     @FXML
     private PasswordField passwordField;
-
     @FXML
     private TextField phoneField;
-
     @FXML
     private TextField profilePhotoField;
-
     @FXML
     private ComboBox<AccountType> roleComboBox;
-
     @FXML
     private ImageView image;
-
     @FXML
     private Button signUpButton;
-
     @FXML
     private Button backArrow;
-
     @FXML
     private Button backButton;
-
     @FXML
     private TextField surnameField;
-
     @FXML
     private Button chooseImageButton;
+    @FXML
+    private Label captchaLabel; // Display CAPTCHA text
+    @FXML
+    private TextField captchaInput; // User enters CAPTCHA
 
     private String imageUrl;
-
+    private String captchaText; // Store generated CAPTCHA
     private ResourceBundle bundle;
-
 
     @FXML
     public void initialize() {
@@ -76,9 +69,9 @@ public class SignUpController {
         roleComboBox.setItems(FXCollections.observableArrayList(AccountType.Agent, AccountType.Client));
         roleComboBox.getSelectionModel().select(AccountType.Client);
         imageUrl = "http://localhost/img/profile/defaultPic.jpg";
-        Image img = new Image(imageUrl);
-        image.setImage(img);
+        image.setImage(new Image(imageUrl));
 
+        generateCaptcha(); // Generate CAPTCHA on form load
     }
 
     @FXML
@@ -106,8 +99,15 @@ public class SignUpController {
             return;
         }
 
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        // Validate CAPTCHA
+        if (!captchaInput.getText().equals(captchaText)) {
+            showAlert(bundle.getString("error"), "CAPTCHA incorrect. Please try again.");
+            generateCaptcha(); // Refresh CAPTCHA
+            return;
+        }
 
+        // Hash password
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
         User newUser = new User(name, surname, hashedPassword, email, phone, address, imageUrl, role);
 
         ServiceUser serviceUser = new ServiceUser();
@@ -139,27 +139,22 @@ public class SignUpController {
         phoneField.clear();
         addressField.clear();
         roleComboBox.getSelectionModel().clearSelection();
+        captchaInput.clear();
+        generateCaptcha(); // Generate new CAPTCHA after reset
     }
 
-    @FXML
-    void reset(ActionEvent event) {
-        resetFields();
-    }
+    // Generate a simple CAPTCHA
+    private void generateCaptcha() {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder captchaBuilder = new StringBuilder();
+        Random rand = new Random();
 
-
-    @FXML
-    private void goBack(ActionEvent event) {
-        try {
-            ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"), loginBundle);
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Login Screen");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 0; i < 6; i++) {
+            captchaBuilder.append(chars.charAt(rand.nextInt(chars.length())));
         }
+
+        captchaText = captchaBuilder.toString();
+        captchaLabel.setText("CAPTCHA: " + captchaText);
     }
 
     @FXML
@@ -170,33 +165,40 @@ public class SignUpController {
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
         if (selectedFile != null) {
-            // Extract the filename from the selected file
             String fileName = selectedFile.getName();
-
-            // Maintain the base URL and replace only the filename
             String baseUrl = "http://localhost/img/profile/";
             imageUrl = baseUrl + fileName;
-
-            // Set the new image in the ImageView
-            Image img = new Image(imageUrl);
-            image.setImage(img);
+            image.setImage(new Image(imageUrl));
         }
     }
-
 
     // Email Validation
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        return Pattern.compile(emailRegex).matcher(email).matches();
     }
 
     private boolean isValidPhone(String phone) {
-        String phoneRegex = "^\\d{8}$";
-        Pattern pattern = Pattern.compile(phoneRegex);
-        Matcher matcher = pattern.matcher(phone);
-        return matcher.matches();
+        return phone.matches("^\\d{8}$");
     }
 
+    public void reset(ActionEvent actionEvent) {
+        resetFields();
+    }
+
+    public void goBack(ActionEvent actionEvent) {
+        try {
+            ResourceBundle loginBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault(),new UTF8Control());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Login.fxml"), loginBundle);
+            Parent root = loader.load();
+
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle(bundle.getString("signup"));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(bundle.getString("error"), bundle.getString("load_signup_error"));
+        }
+    }
 }

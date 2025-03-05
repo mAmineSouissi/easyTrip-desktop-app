@@ -54,7 +54,8 @@ public class ServiceReservation implements IService<Reservation> {
 
             while (rs.next()) {
                 Reservation r = new Reservation();
-                r.setId(rs.getInt("id"));
+
+                r.setId(rs.getInt("id_reservation"));
                 r.setUser_id(rs.getInt("user_id"));
                 r.setTravel_id(rs.getInt("travel_id"));
                 r.setStatus(rs.getString("status"));
@@ -66,6 +67,7 @@ public class ServiceReservation implements IService<Reservation> {
                 r.setPhone(rs.getInt("phone"));
                 r.setEmail(rs.getString("email"));
                 r.setPlaces(rs.getInt("places"));
+
                 reservations.add(r);
             }
         } catch (SQLException e) {
@@ -73,6 +75,21 @@ public class ServiceReservation implements IService<Reservation> {
         }
         return reservations;
     }
+
+    public float getOfferPrice(int offerId) {
+        String qry = "SELECT price FROM offer WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(qry)) {
+            ps.setInt(1, offerId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat("price");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+
 
     @Override
     public void delete(int id) {

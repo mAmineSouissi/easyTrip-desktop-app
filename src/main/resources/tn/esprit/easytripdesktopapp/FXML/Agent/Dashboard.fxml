@@ -24,7 +24,7 @@
         <Label fx:id="consultPromotion" onMouseClicked="#navigatToPromotionAgent" styleClass="nav-label" text="%consult_promotions" />
         <Label fx:id="manageOfferTravel" onMouseClicked="#navigateToOfferTravel" styleClass="nav-label" text="%manage_travel" />
         <Label fx:id="manageFeedbackLabel" styleClass="nav-label" text="%manage_feedback" />
-        <Label fx:id="manageReclamationsLabel" styleClass="nav-label" text="%manage_reclamations" />
+        <Label fx:id="manageReclamationsLabel" styleClass="nav-label" onMouseClicked="#navigatToReclamationAgent" text="%manage_reclamations" />
 
         <!-- Spacer to push profile and logout to the right -->
         <Region HBox.hgrow="ALWAYS" />

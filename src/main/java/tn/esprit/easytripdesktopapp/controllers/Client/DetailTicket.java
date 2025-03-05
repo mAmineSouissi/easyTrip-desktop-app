@@ -1,15 +1,23 @@
 package tn.esprit.easytripdesktopapp.controllers.Client;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Reservation;
 import tn.esprit.easytripdesktopapp.models.Ticket;
 import tn.esprit.easytripdesktopapp.services.ServiceReservation;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
+
+import java.io.IOException;
 
 public class DetailTicket {
 
@@ -86,20 +94,18 @@ public class DetailTicket {
 
     // Gestionnaire d'événements pour le bouton Réserver
     @FXML
-    private void handleReserveButton() {
-        System.out.println("Name:" + session.getUser().getName());
+    private void handleReserveButton(ActionEvent actionEvent) {
         try {
-            Reservation r = new Reservation();
-            r.setUser_id(session.getUser().getId());
-            r.setNom(session.getUser().getName());
-            r.setPrenom(session.getUser().getSurname());
-            r.setPhone(Integer.parseInt(session.getUser().getPhone()));
-            r.setEmail(session.getUser().getEmail());
-            r.setTicket_id(ticket.getIdTicket());
-            sr.addWithTicketOnly(r);
-            System.out.println("Réservation ajoutée avec succès");
-        } catch (NumberFormatException e) {
-            System.out.println("Le téléphone doit être un nombre valide.");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/addreservation.fxml"));
+            Parent root = loader.load();
+            Addreservation detailController = loader.getController();
+            detailController.setTicket(ticket);
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reservation Screen");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

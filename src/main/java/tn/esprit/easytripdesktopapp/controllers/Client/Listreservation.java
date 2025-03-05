@@ -1,20 +1,34 @@
 package tn.esprit.easytripdesktopapp.controllers.Client;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Reservation;
 import tn.esprit.easytripdesktopapp.services.ServiceReservation;
+import tn.esprit.easytripdesktopapp.services.StripeService;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Listreservation {
 
@@ -22,15 +36,46 @@ public class Listreservation {
 
     @FXML
     private GridPane listres;
+    @FXML
+    private TableView<Reservation> table;
+    @FXML
+    private TableColumn<Reservation, String> col1;
+    @FXML
+    private TableColumn<Reservation, Integer> col2;
+    @FXML
+    private TableColumn<Reservation, Double> col3;
+
+    @FXML
+    private Label totalp;
+
+    @FXML
+    private TextField searchField;
+    @FXML
+    private Button btnPay;
 
     @FXML
     void initialize() {
-        col1.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
+        col1.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
         col2.setCellValueFactory(new PropertyValueFactory<>("places"));
-      // col3.setCellValueFactory(new PropertyValueFactory<>("prix"));
-        loadReservations1();
+        col3.setCellValueFactory(cellData -> {
+            double price = sr.getOfferPrice(cellData.getValue().getOfferId());
+            return new SimpleObjectProperty<>(price);
+        });
+        List<Reservation> reservations = sr.getAll();
+        ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
+        table.setItems(observableReservations);
         loadReservations("");
+        calculateTotalPrice();
+        table.getItems().addListener((ListChangeListener<Reservation>) change -> calculateTotalPrice());
+    }
+
+    private void calculateTotalPrice() {
+        double totalPrice = 0.0;
+        for (Reservation reservation : table.getItems()) {
+            double price = sr.getOfferPrice(reservation.getOfferId());
+            totalPrice += reservation.getPlaces() * price;
+        }
+        totalp.setText(totalPrice + " ");
     }
 
     private void loadReservations(String searchText) {
@@ -38,25 +83,19 @@ public class Listreservation {
         ObservableList<Reservation> filteredReservations = FXCollections.observableArrayList();
 
         for (Reservation reservation : reservations) {
-            if (reservation.getNom().toLowerCase().contains(searchText) ||
-                    reservation.getPrenom().toLowerCase().contains(searchText)) {
+            if (reservation.getNom().toLowerCase().contains(searchText) || reservation.getPrenom().toLowerCase().contains(searchText)) {
                 filteredReservations.add(reservation);
             }
         }
-
         listres.getChildren().clear();
-
-        int columns = 3;
+        int columns = 2;
         int row = 0;
         int col = 0;
         for (Reservation reservation : filteredReservations) {
             BorderPane card = new BorderPane();
-            card.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; " +
-                    "-fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
+            card.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; " + "-fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
 
-            Label infoLabel = new Label(String.format("👤 %s %s \n📧 %s\n📞 %d \n📅 %s",
-                    reservation.getNom(), reservation.getPrenom(), reservation.getEmail(),
-                    reservation.getPhone(), reservation.getOrderDate()));
+            Label infoLabel = new Label(String.format("👤 %s %s \n📧 %s\n📞 %d \n📅 %s", reservation.getNom(), reservation.getPrenom(), reservation.getEmail(), reservation.getPhone(), reservation.getOrderDate()));
             infoLabel.setStyle("-fx-font-size: 14px;");
 
             Button btnModifier = new Button("Modifier");
@@ -80,13 +119,6 @@ public class Listreservation {
         }
     }
 
-
-    private void loadReservations1() {
-        List<Reservation> reservations = sr.getAll();
-        ObservableList<Reservation> observableReservations = FXCollections.observableArrayList(reservations);
-        table.setItems(observableReservations);
-    }
-
     private void modifierReservation(Reservation reservation) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/updatereservation.fxml"));
@@ -106,29 +138,30 @@ public class Listreservation {
     }
 
     @FXML
-    void retour() {
+    void retour(ActionEvent actionEvent) {
+        Stage stage;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/addreservation.fxml"));
-            listres.getScene().setRoot(root);
+            ResourceBundle resourcesBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), resourcesBundle);
+            Parent root = loader.load();
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Screen");
+            stage.show();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
         }
     }
 
-    @FXML
-    private TableView<Reservation> table;
-    @FXML
-    private TableColumn<Reservation, String> col1;
-    @FXML
-    private TableColumn<Reservation, Integer> col2;
-    @FXML
-    private TableColumn<Reservation, Double> col3;
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
 
-    @FXML
-    private Label totalp;
-
-    @FXML
-    private TextField searchField;
     @FXML
     void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
@@ -136,6 +169,46 @@ public class Listreservation {
             loadReservations("");
         } else {
             loadReservations(searchText);
+        }
+    }
+
+    @FXML
+    public void handlePayment(ActionEvent event) {
+        StripeService stripeService = new StripeService();
+        double totalAmount = extractTotalAmount();
+        String paymentUrl = stripeService.createCheckoutSession(totalAmount, "eur");
+
+        if (paymentUrl != null) {
+            openWebPage(paymentUrl);
+        } else {
+            showError("Erreur lors de la création de la session de paiement.");
+        }
+    }
+
+    private void openWebPage(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Impossible d'ouvrir la page de paiement.");
+        }
+    }
+
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Erreur");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private double extractTotalAmount() {
+        try {
+            String text = totalp.getText().replace(" DT", "").trim();
+            return Double.parseDouble(text);
+        } catch (NumberFormatException e) {
+            showError("Erreur : Impossible de récupérer le montant total.");
+            return 0.0;
         }
     }
 

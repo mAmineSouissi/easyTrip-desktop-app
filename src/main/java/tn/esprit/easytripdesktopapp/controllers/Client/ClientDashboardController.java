@@ -12,7 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.User;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
@@ -40,6 +42,8 @@ public class ClientDashboardController implements Initializable {
     public Label manageOfferHotel;
     public Label hotelOffersLabel;
     public Label ticketsOffersLabel;
+    public Label reclamationLabel;
+    public Label chatbot;
     @FXML
     private Label welcomeLabel;
 
@@ -78,6 +82,8 @@ public class ClientDashboardController implements Initializable {
         } else {
             welcomeLabel.setText(bundle.getString("welcome_guest"));
         }
+        chatbot.setText(bundle.getString("open_chatbot"));
+        reclamationLabel.setText(bundle.getString("manage_reclamations"));
         coming_soon.setText(bundle.getString("coming_soon"));
         travelOfferLabel.setText(bundle.getString("travel_offers"));
         hotelOffersLabel.setText(bundle.getString("offer_hotel"));
@@ -301,7 +307,7 @@ public class ClientDashboardController implements Initializable {
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Login Screen");
+            stage.setTitle("Reservation Screen");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -328,6 +334,62 @@ public class ClientDashboardController implements Initializable {
             Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void navigateToReclamationClient(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/ReclamationUser.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reclamation Client");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openChatbot(MouseEvent mouseEvent) {
+        try {
+            // Load the FXML layout
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Chatbot.fxml"));
+            VBox root = loader.load();
+
+            // Create a new Stage for the chatbot window
+            Stage chatbotStage = new Stage();
+            chatbotStage.setTitle("Chatbot");
+
+            // Create a Scene with the loaded layout (root)
+            Scene chatbotScene = new Scene(root, 600, 650);
+
+            // Add the CSS stylesheet to the Scene
+            chatbotScene.getStylesheets().add(getClass().getResource("/tn/esprit/easytripdesktopapp/styles/chatbot.css").toExternalForm());
+
+            // Set the Scene to the Stage
+            chatbotStage.setScene(chatbotScene);
+
+            // Set the window modality (blocking other windows until the chatbot is closed)
+            chatbotStage.initModality(Modality.APPLICATION_MODAL);
+
+            // Show the chatbot window
+            chatbotStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void naviger(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/listreservation.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reservation Screen");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -16,6 +16,7 @@ import tn.esprit.easytripdesktopapp.models.Reservation;
 import tn.esprit.easytripdesktopapp.models.Ticket;
 import tn.esprit.easytripdesktopapp.services.ServiceReservation;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
+import tn.esprit.easytripdesktopapp.utils.WeatherAPI;
 
 import java.io.IOException;
 
@@ -46,6 +47,9 @@ public class DetailTicket {
     private Label ticketTypeLabel;
 
     @FXML
+    private Label weatherLabel; // Nouveau Label pour la météo
+
+    @FXML
     private Button reserveButton; // Bouton Réserver
 
     private Ticket ticket;
@@ -64,35 +68,32 @@ public class DetailTicket {
             String imagePath = ticket.getCityImage();
 
             try {
-                // Vérifier si le chemin est déjà une URL valide
                 if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-                    // Charger l'image depuis le web
                     ticketImage.setImage(new Image(imagePath));
                 } else {
-                    // Si le chemin est local, ajouter le préfixe "file:"
                     if (!imagePath.startsWith("file:")) {
                         imagePath = "file:" + imagePath;
                     }
-                    // Charger l'image locale
                     ticketImage.setImage(new Image(imagePath));
                 }
             } catch (IllegalArgumentException e) {
-                // En cas d'erreur, utiliser une image par défaut
                 System.err.println("Erreur lors du chargement de l'image : " + e.getMessage());
                 ticketImage.setImage(new Image("file:src/main/resources/default_image.png"));
             }
 
-            // Afficher les autres détails du ticket
+
             airlineLabel.setText("Compagnie : " + ticket.getAirline());
             departureLabel.setText("Départ : " + ticket.getDepartureCity() + " - " + ticket.getDepartureDate() + " " + ticket.getDepartureTime());
             arrivalLabel.setText("Arrivée : " + ticket.getArrivalCity() + " - " + ticket.getArrivalDate() + " " + ticket.getArrivalTime());
             priceLabel.setText("Prix : " + ticket.getPrice() + " €");
             ticketClassLabel.setText("Classe : " + ticket.getTicketClass());
             ticketTypeLabel.setText("Type : " + ticket.getTicketType());
+
+
+            weatherLabel.setText("Météo : " + WeatherAPI.getWeather(ticket.getArrivalCity()));
         }
     }
 
-    // Gestionnaire d'événements pour le bouton Réserver
     @FXML
     private void handleReserveButton(ActionEvent actionEvent) {
         try {

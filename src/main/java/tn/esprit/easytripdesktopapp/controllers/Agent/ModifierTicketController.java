@@ -2,14 +2,18 @@ package tn.esprit.easytripdesktopapp.controllers.Agent;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Ticket;
+import tn.esprit.easytripdesktopapp.models.Promotion;
 import tn.esprit.easytripdesktopapp.services.ServiceTicket;
+import tn.esprit.easytripdesktopapp.services.ServicePromotion;
 
 import java.io.File;
+import java.util.List;
 
 public class ModifierTicketController {
 
@@ -36,14 +40,16 @@ public class ModifierTicketController {
     @FXML
     private TextField ticketType;
     @FXML
-    private TextField cityImage; // Champ pour afficher le chemin de l'image
+    private TextField cityImage;
     @FXML
-    private Button uploadButton; // Bouton pour télécharger l'image
+    private Button uploadButton;
+    @FXML
+    private ComboBox<String> promotionTitle;
 
     private Ticket ticketToUpdate;
     private final ServiceTicket ticketService = new ServiceTicket();
+    private final ServicePromotion promotionService = new ServicePromotion();
 
-    // Méthode pour initialiser les champs avec les informations du ticket à mettre à jour
     public void setTicket(Ticket ticket) {
         this.ticketToUpdate = ticket;
         flightNumber.setText(String.valueOf(ticket.getFlightNumber()));
@@ -55,12 +61,32 @@ public class ModifierTicketController {
         arrivalDate.setText(ticket.getArrivalDate());
         arrivalTime.setText(ticket.getArrivalTime());
         ticketClass.setText(ticket.getTicketClass());
-        price.setText(String.valueOf(ticket.getPrice()));
+        price.setText(String.valueOf(ticket.getPrice())); // Afficher le prix actuel
         ticketType.setText(ticket.getTicketType());
-        cityImage.setText(ticket.getCityImage()); // Initialisation de l'image de la ville
+        cityImage.setText(ticket.getCityImage());
+
+        initializePromotionComboBox(ticket.getPromotionId());
     }
 
-    // Méthode pour télécharger une image
+    private void initializePromotionComboBox(int currentPromotionId) {
+        promotionTitle.getItems().add("Aucune promotion");
+        List<Promotion> promotions = promotionService.getAll();
+        for (Promotion promotion : promotions) {
+            promotionTitle.getItems().add(promotion.getTitle());
+        }
+
+        if (currentPromotionId > 0) {
+            Promotion currentPromotion = promotionService.getById(currentPromotionId);
+            if (currentPromotion != null) {
+                promotionTitle.setValue(currentPromotion.getTitle());
+            } else {
+                promotionTitle.setValue("Aucune promotion");
+            }
+        } else {
+            promotionTitle.setValue("Aucune promotion");
+        }
+    }
+
     @FXML
     private void uploadImage() {
         FileChooser fileChooser = new FileChooser();
@@ -71,121 +97,84 @@ public class ModifierTicketController {
         Stage stage = (Stage) uploadButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
-            cityImage.setText(selectedFile.getAbsolutePath()); // Affiche le chemin de l'image sélectionnée
+            cityImage.setText(selectedFile.getAbsolutePath());
         }
     }
 
-    // Méthode pour enregistrer les modifications
     @FXML
     private void saveChanges() {
-        // Valider les champs avant de procéder à la mise à jour
         if (validateFields()) {
-            // Mettre à jour l'objet Ticket avec les nouvelles valeurs
-            ticketToUpdate.setFlightNumber(Integer.parseInt(flightNumber.getText()));
-            ticketToUpdate.setAirline(airline.getText());
-            ticketToUpdate.setDepartureCity(departureCity.getText());
-            ticketToUpdate.setArrivalCity(arrivalCity.getText());
-            ticketToUpdate.setDepartureDate(departureDate.getText());
-            ticketToUpdate.setDepartureTime(departureTime.getText());
-            ticketToUpdate.setArrivalDate(arrivalDate.getText());
-            ticketToUpdate.setArrivalTime(arrivalTime.getText());
-            ticketToUpdate.setTicketClass(ticketClass.getText());
-            ticketToUpdate.setPrice(Float.parseFloat(price.getText()));
-            ticketToUpdate.setTicketType(ticketType.getText());
-            ticketToUpdate.setCityImage(cityImage.getText()); // Mise à jour de l'image de la ville
+            try {
+                ticketToUpdate.setFlightNumber(Integer.parseInt(flightNumber.getText()));
+                ticketToUpdate.setAirline(airline.getText());
+                ticketToUpdate.setDepartureCity(departureCity.getText());
+                ticketToUpdate.setArrivalCity(arrivalCity.getText());
+                ticketToUpdate.setDepartureDate(departureDate.getText());
+                ticketToUpdate.setDepartureTime(departureTime.getText());
+                ticketToUpdate.setArrivalDate(arrivalDate.getText());
+                ticketToUpdate.setArrivalTime(arrivalTime.getText());
+                ticketToUpdate.setTicketClass(ticketClass.getText());
+                ticketToUpdate.setTicketType(ticketType.getText());
+                ticketToUpdate.setCityImage(cityImage.getText());
 
-            // Appeler le service pour mettre à jour le ticket dans la base de données
-            ticketService.update(ticketToUpdate);
 
-            // Fermer la fenêtre de mise à jour
-            flightNumber.getScene().getWindow().hide();
+                float pr = Float.parseFloat(price.getText());
+                String promoTitle = promotionTitle.getValue();
+                int promotionId = 0;
+
+                if (!promoTitle.equals("Aucune promotion")) {
+                    Promotion selectedPromotion = promotionService.getByTitle(promoTitle);
+                    if (selectedPromotion != null) {
+                        promotionId = selectedPromotion.getId();
+                        pr = pr * (1 - selectedPromotion.getDiscount_percentage() / 100);
+                    }
+                }
+                ticketToUpdate.setPromotionId(promotionId);
+                ticketToUpdate.setPrice(pr);
+
+                ticketService.update(ticketToUpdate);
+                flightNumber.getScene().getWindow().hide();
+            } catch (NumberFormatException e) {
+                showAlert("Erreur", "Le numéro de vol et le prix doivent être des nombres valides.");
+            }
         }
     }
 
-    // Méthode pour valider les champs du formulaire
     private boolean validateFields() {
         StringBuilder errors = new StringBuilder();
 
-        // Validation du numéro de vol
         try {
             int flightNum = Integer.parseInt(flightNumber.getText());
-            if (flightNum < 0) {
-                errors.append("Le numéro de vol doit être un nombre positif.\n");
-            }
+            if (flightNum < 0) errors.append("Le numéro de vol doit être un nombre positif.\n");
         } catch (NumberFormatException e) {
             errors.append("Le numéro de vol doit être un nombre entier.\n");
         }
 
-        // Validation de la compagnie aérienne
-        if (airline.getText().isEmpty()) {
-            errors.append("La compagnie aérienne est obligatoire.\n");
-        }
-
-        // Validation de la ville de départ
-        if (departureCity.getText().isEmpty()) {
-            errors.append("La ville de départ est obligatoire.\n");
-        }
-
-        // Validation de la ville d'arrivée
-        if (arrivalCity.getText().isEmpty()) {
-            errors.append("La ville d'arrivée est obligatoire.\n");
-        }
-
-        // Validation de la date de départ
-        if (departureDate.getText().isEmpty()) {
-            errors.append("La date de départ est obligatoire.\n");
-        }
-
-        // Validation de l'heure de départ
-        if (departureTime.getText().isEmpty()) {
-            errors.append("L'heure de départ est obligatoire.\n");
-        }
-
-        // Validation de la date d'arrivée
-        if (arrivalDate.getText().isEmpty()) {
-            errors.append("La date d'arrivée est obligatoire.\n");
-        }
-
-        // Validation de l'heure d'arrivée
-        if (arrivalTime.getText().isEmpty()) {
-            errors.append("L'heure d'arrivée est obligatoire.\n");
-        }
-
-        // Validation de la classe
-        if (ticketClass.getText().isEmpty()) {
-            errors.append("La classe est obligatoire.\n");
-        }
-
-        // Validation du prix
+        if (airline.getText().isEmpty()) errors.append("La compagnie aérienne est obligatoire.\n");
+        if (departureCity.getText().isEmpty()) errors.append("La ville de départ est obligatoire.\n");
+        if (arrivalCity.getText().isEmpty()) errors.append("La ville d'arrivée est obligatoire.\n");
+        if (departureDate.getText().isEmpty()) errors.append("La date de départ est obligatoire.\n");
+        if (departureTime.getText().isEmpty()) errors.append("L'heure de départ est obligatoire.\n");
+        if (arrivalDate.getText().isEmpty()) errors.append("La date d'arrivée est obligatoire.\n");
+        if (arrivalTime.getText().isEmpty()) errors.append("L'heure d'arrivée est obligatoire.\n");
+        if (ticketClass.getText().isEmpty()) errors.append("La classe est obligatoire.\n");
         try {
             float pr = Float.parseFloat(price.getText());
-            if (pr < 0) {
-                errors.append("Le prix doit être un nombre positif.\n");
-            }
+            if (pr < 0) errors.append("Le prix doit être un nombre positif.\n");
         } catch (NumberFormatException e) {
             errors.append("Le prix doit être un nombre valide.\n");
         }
+        if (ticketType.getText().isEmpty()) errors.append("Le type de ticket est obligatoire.\n");
+        if (cityImage.getText().isEmpty()) errors.append("L'image de la ville est obligatoire.\n");
+        if (promotionTitle.getValue() == null) errors.append("La promotion doit être sélectionnée.\n");
 
-        // Validation du type de ticket
-        if (ticketType.getText().isEmpty()) {
-            errors.append("Le type de ticket est obligatoire.\n");
-        }
-
-        // Validation de l'image de la ville
-        if (cityImage.getText().isEmpty()) {
-            errors.append("L'image de la ville est obligatoire.\n");
-        }
-
-        // Si des erreurs sont détectées, afficher une alerte
         if (errors.length() > 0) {
             showAlert("Erreur de validation", errors.toString());
             return false;
         }
-
         return true;
     }
 
-    // Méthode pour afficher un message d'alerte
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

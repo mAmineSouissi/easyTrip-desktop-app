@@ -27,12 +27,12 @@
     <!-- Titre -->
     <top>
         <VBox alignment="CENTER" spacing="10">
-         <HBox alignment="CENTER" prefHeight="61.0" prefWidth="760.0" style="-fx-spacing: 250px;">
-            <children>
-                  <Label styleClass="title" text="Recherche d'Hôtels" />
-               <Button fx:id="btnBack" onAction="#goBack" mnemonicParsing="false" style="-fx-background-color: red;" styleClass="action-button" text="Back" />
-            </children>
-         </HBox>
+            <HBox alignment="CENTER" prefHeight="61.0" prefWidth="760.0" style="-fx-spacing: 250px;">
+                <children>
+                    <Label styleClass="title" text="Recherche d'Hôtels" />
+                    <Button fx:id="btnBack" onAction="#goBack" mnemonicParsing="false" style="-fx-background-color: red;" styleClass="action-button" text="Back" />
+                </children>
+            </HBox>
 
             <!-- Filtres de recherche -->
             <HBox alignment="CENTER" spacing="10">

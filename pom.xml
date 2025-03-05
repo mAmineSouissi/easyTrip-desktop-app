@@ -157,6 +157,17 @@
             <artifactId>json</artifactId>
             <version>20210307</version> <!-- Use the latest version -->
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>17</version> <!-- Remplacez par la version de JavaFX que vous utilisez -->
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>17</version> <!-- Remplacez par la version de JavaFX que vous utilisez -->
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -18,7 +18,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public void add(Hotel hotel) {
-        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`,`user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, hotel.getName());
@@ -30,19 +30,23 @@ public class ServiceHotel implements CRUDService<Hotel> {
             pstm.setString(7, hotel.getTypeRoom());
             pstm.setInt(8, hotel.getNumRoom());
             pstm.setString(9, hotel.getImage());
-            pstm.setInt(10, hotel.getUserId());
 
+            // Gestion des valeurs null pour promotion_id
             if (hotel.getPromotion() != null) {
                 pstm.setInt(10, hotel.getPromotion().getId());
             } else {
                 pstm.setNull(10, java.sql.Types.INTEGER);
             }
 
+            // Gestion des valeurs null pour agency_id
             if (hotel.getAgence() != null) {
                 pstm.setInt(11, hotel.getAgence().getId());
             } else {
                 pstm.setNull(11, java.sql.Types.INTEGER);
             }
+
+            // Ajout du user_id
+            pstm.setInt(12, hotel.getUserId());
 
             pstm.executeUpdate();
             System.out.println("Hôtel ajouté avec succès !");
@@ -72,7 +76,6 @@ public class ServiceHotel implements CRUDService<Hotel> {
                 h.setImage(rs.getString("image"));
                 h.setPromotionId(rs.getInt("promotion_id"));
                 h.setUserId(rs.getInt("user_id"));
-
 
                 if (!rs.wasNull()) {
                     Promotion promotion = new ServicePromotion().getById(rs.getInt("promotion_id"));
@@ -106,13 +109,13 @@ public class ServiceHotel implements CRUDService<Hotel> {
             if (hotel.getPromotion() != null) {
                 pstm.setInt(10, hotel.getPromotion().getId());
             } else {
-                pstm.setNull(10, java.sql.Types.INTEGER); // Définir la valeur NULL pour promotion_id
+                pstm.setNull(10, java.sql.Types.INTEGER);
             }
 
             if (hotel.getAgence() != null) {
                 pstm.setInt(11, hotel.getAgence().getId());
             } else {
-                pstm.setNull(11, java.sql.Types.INTEGER); // Définir la valeur NULL pour agence_id
+                pstm.setNull(11, java.sql.Types.INTEGER);
             }
 
             pstm.setInt(12, hotel.getId());
@@ -138,7 +141,43 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public Hotel getById(int id) {
-        return null;
+        String qry = "SELECT * FROM `hotels` WHERE `id_hotel` = ?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                Hotel hotel = new Hotel();
+                hotel.setId(rs.getInt("id_hotel"));
+                hotel.setName(rs.getString("name"));
+                hotel.setAdresse(rs.getString("adresse"));
+                hotel.setCity(rs.getString("city"));
+                hotel.setRating(rs.getInt("rating"));
+                hotel.setDescription(rs.getString("description"));
+                hotel.setPrice(rs.getFloat("price"));
+                hotel.setTypeRoom(rs.getString("type_room"));
+                hotel.setNumRoom(rs.getInt("num_room"));
+                hotel.setImage(rs.getString("image"));
+                hotel.setPromotionId(rs.getInt("promotion_id"));
+                hotel.setUserId(rs.getInt("user_id"));
+
+                // Charger la promotion si elle existe
+                int promotionId = rs.getInt("promotion_id");
+                if (!rs.wasNull()) {
+                    Promotion promotion = new ServicePromotion().getById(promotionId);
+                    hotel.setPromotion(promotion);
+                }
+
+                System.out.println("Hôtel récupéré avec succès : " + hotel.getName() + " (ID: " + hotel.getId() + ")");
+                return hotel;
+            } else {
+                System.out.println("Aucun hôtel trouvé avec l'ID : " + id);
+                return null; // Retourner null si l'hôtel n'existe pas
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'hôtel avec l'ID " + id + " : " + e.getMessage());
+            return null;
+        }
     }
 
     public List<Hotel> getByUserId(int user_id) {
@@ -179,8 +218,6 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
         return hotels;
     }
-
-
 
     @Override
     public List<Hotel> search(String keyword) {

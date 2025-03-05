@@ -46,10 +46,6 @@
                 <TextField fx:id="cityImage" editable="false" GridPane.rowIndex="11" GridPane.columnIndex="1" />
                 <Button fx:id="uploadButton" text="Upload" onAction="#uploadImage" GridPane.rowIndex="11" GridPane.columnIndex="2" />
 
-                <Label text="ID de l'agence:" GridPane.rowIndex="12" GridPane.columnIndex="0" />
-                <TextField fx:id="agencyId" GridPane.rowIndex="12" GridPane.columnIndex="1" />
-
-                <!-- Remplacer promotionId par une ComboBox pour les titres des promotions -->
                 <Label text="Promotion:" GridPane.rowIndex="13" GridPane.columnIndex="0" />
                 <ComboBox fx:id="promotionTitle" GridPane.rowIndex="13" GridPane.columnIndex="1" />
             </GridPane>

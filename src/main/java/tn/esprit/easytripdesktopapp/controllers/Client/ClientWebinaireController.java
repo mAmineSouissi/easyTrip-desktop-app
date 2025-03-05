@@ -4,6 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,9 +15,12 @@ import javafx.util.Duration;
 import tn.esprit.easytripdesktopapp.models.Webinaire;
 import tn.esprit.easytripdesktopapp.services.ServiceWebinaire;
 
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class ClientWebinaireController {
 
@@ -123,21 +127,6 @@ public class ClientWebinaireController {
         }
     }
 
-    @FXML
-    private void goToAccueil() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) backButton.getScene().getWindow();
-            stage.setScene(new Scene(root, 800, 600));
-            stage.setTitle("Accueil");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
-        }
-    }
 
     private void setupSearch() {
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -154,5 +143,25 @@ public class ClientWebinaireController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public void goToAccueil(ActionEvent actionEvent) {
+    }
+
+    public void goToAccueil(javafx.event.ActionEvent actionEvent) {
+
+        Stage stage;
+        try {
+            ResourceBundle resourcesBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), resourcesBundle);
+            Parent root = loader.load();
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Screen");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
+        }
     }
 }

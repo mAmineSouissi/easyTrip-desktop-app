@@ -33,18 +33,19 @@ public class AjouterHotel {
     @FXML
     private TextField price;
     @FXML
-    private ComboBox<String> typeroom; // Utilisation d'un ComboBox pour le type de chambre
+    private ComboBox<String> typeroom;
     @FXML
     private TextField numroom;
     @FXML
     private ImageView image;
     @FXML
-    private ComboBox<String> promotionComboBox; // Nouveau ComboBox pour les promotions
+    private ComboBox<String> promotionComboBox;
 
     @FXML
     private Button chooseImageButton;
 
     private String imageUrl;
+    private AffichageHotel affichageHotel;
 
     private final ServiceHotel hotelService = new ServiceHotel();
     private final ServicePromotion promotionService = new ServicePromotion();
@@ -53,11 +54,15 @@ public class AjouterHotel {
 
     @FXML
     public void initialize() {
-        // Charger les promotions dans le ComboBox
         loadPromotions();
     }
 
+    public void setAffichageHotel(AffichageHotel affichageHotel) {
+        this.affichageHotel = affichageHotel;
+    }
+
     private void loadPromotions() {
+        promotionComboBox.getItems().add("Aucune promotion");
         List<Promotion> promotions = promotionService.getAll();
         for (Promotion promotion : promotions) {
             promotionComboBox.getItems().add(promotion.getTitle());
@@ -72,14 +77,16 @@ public class AjouterHotel {
             String ville = city.getText();
             int note = Integer.parseInt(rating.getText());
             String desc = description.getText();
-            float prix = Float.parseFloat(price.getText());
-            String typeChambre = typeroom.getValue(); // Récupérer la valeur sélectionnée dans le ComboBox
+            float prix = Float.parseFloat(price.getText().replace(",", "."));
+            String typeChambre = typeroom.getValue();
             int nbChambres = Integer.parseInt(numroom.getText());
             String img = imageUrl;
 
-            // Récupérer la promotion sélectionnée
             String promotionTitle = promotionComboBox.getValue();
-            Promotion promotion = promotionService.getByTitle(promotionTitle);
+            Promotion promotion = null;
+            if (promotionTitle != null && !promotionTitle.equals("Aucune promotion")) {
+                promotion = promotionService.getByTitle(promotionTitle);
+            }
 
             Hotel hotel = new Hotel();
             hotel.setName(nom);
@@ -93,72 +100,73 @@ public class AjouterHotel {
             hotel.setImage(img);
             hotel.setPromotion(promotion);
             hotel.setUserId(session.getUser().getId());
-            // Associer la promotion à l'hôtel
+
+            if (promotion != null) {
+                hotel.setPrice(hotel.getDiscountedPrice());
+            }
 
             hotelService.add(hotel);
-            name.getScene().getWindow().hide();
+
+            if (affichageHotel != null) {
+                affichageHotel.addHotelCard(hotel);
+            }
+
+            clearFields();
         }
+    }
+
+    private void clearFields() {
+        name.clear();
+        adresse.clear();
+        city.clear();
+        rating.clear();
+        description.clear();
+        price.clear();
+        typeroom.getSelectionModel().clearSelection();
+        numroom.clear();
+        image.setImage(null);
+        promotionComboBox.setValue("Aucune promotion");
+        imageUrl = null;
     }
 
     private boolean validateFields() {
         StringBuilder errors = new StringBuilder();
 
-        if (name.getText().isEmpty()) {
-            errors.append("Le nom de l'hôtel est obligatoire.\n");
-        }
-
-        if (adresse.getText().isEmpty()) {
-            errors.append("L'adresse de l'hôtel est obligatoire.\n");
-        }
-
-        if (city.getText().isEmpty()) {
-            errors.append("La ville de l'hôtel est obligatoire.\n");
-        }
+        if (name.getText().isEmpty()) errors.append("Le nom de l'hôtel est obligatoire.\n");
+        if (adresse.getText().isEmpty()) errors.append("L'adresse de l'hôtel est obligatoire.\n");
+        if (city.getText().isEmpty()) errors.append("La ville de l'hôtel est obligatoire.\n");
 
         try {
             int note = Integer.parseInt(rating.getText());
-            if (note < 0 || note > 5) {
-                errors.append("La note doit être comprise entre 0 et 5.\n");
-            }
+            if (note < 0 || note > 5) errors.append("La note doit être comprise entre 0 et 5.\n");
         } catch (NumberFormatException e) {
             errors.append("La note doit être un nombre entier.\n");
         }
 
-        if (description.getText().isEmpty()) {
-            errors.append("La description de l'hôtel est obligatoire.\n");
-        }
+        if (description.getText().isEmpty()) errors.append("La description de l'hôtel est obligatoire.\n");
 
         try {
-            float prix = Float.parseFloat(price.getText());
-            if (prix < 0) {
-                errors.append("Le prix doit être un nombre positif.\n");
-            }
+            float prix = Float.parseFloat(price.getText().replace(",", "."));
+            if (prix < 0) errors.append("Le prix doit être un nombre positif.\n");
         } catch (NumberFormatException e) {
-            errors.append("Le prix doit être un nombre valide.\n");
+            errors.append("Le prix doit être un nombre valide (ex. 12,00 ou 12.00).\n");
         }
 
-        if (typeroom.getValue() == null || typeroom.getValue().isEmpty()) {
-            errors.append("Le type de chambre est obligatoire.\n");
-        }
+        if (typeroom.getValue() == null || typeroom.getValue().isEmpty()) errors.append("Le type de chambre est obligatoire.\n");
 
         try {
             int nbChambres = Integer.parseInt(numroom.getText());
-            if (nbChambres < 0) {
-                errors.append("Le nombre de chambres doit être un nombre positif.\n");
-            }
+            if (nbChambres < 0) errors.append("Le nombre de chambres doit être un nombre positif.\n");
         } catch (NumberFormatException e) {
             errors.append("Le nombre de chambres doit être un nombre entier.\n");
         }
 
-        if (imageUrl == null || imageUrl.isEmpty()) {
-            errors.append("L'URL de l'image est obligatoire.\n");
-        }
+        if (imageUrl == null || imageUrl.isEmpty()) errors.append("L'URL de l'image est obligatoire.\n");
 
         if (errors.length() > 0) {
             showAlert("Erreur de validation", errors.toString());
             return false;
         }
-
         return true;
     }
 
@@ -178,9 +186,10 @@ public class AjouterHotel {
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
         if (selectedFile != null) {
-            imageUrl = selectedFile.toURI().toString();
-            Image img = new Image(imageUrl);
-            image.setImage(img);
+            String fileName = selectedFile.getName();
+            String baseUrl = "http://localhost/img/";
+            imageUrl = baseUrl + fileName; // URL pour la sauvegarde
+            image.setImage(new Image(selectedFile.toURI().toString())); // Affichage de l'image locale
         }
     }
 }

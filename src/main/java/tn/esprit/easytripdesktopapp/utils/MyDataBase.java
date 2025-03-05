@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class MyDataBase {
     private static MyDataBase instance;
-    private final String URL ="jdbc:mysql://127.0.0.1:3306/easyTrip";
+    private final String URL ="jdbc:mysql://127.0.0.1:3306/easyTrip3";
     private final String USERNAME ="root";
     private final String PASSWORD = "";
     private Connection cnx ;

@@ -17,7 +17,7 @@ import java.util.List;
 public class AjouterTicket {
 
     private final ServiceTicket ticketService = new ServiceTicket();
-    private final ServicePromotion promotionService = new ServicePromotion(); // Service pour gérer les promotions
+    private final ServicePromotion promotionService = new ServicePromotion();
     @FXML
     private TextField flightNumber;
     @FXML
@@ -43,24 +43,24 @@ public class AjouterTicket {
     @FXML
     private TextField cityImage;
     @FXML
-    private TextField agencyId;
-    @FXML
-    private ComboBox<String> promotionTitle; // Remplacement de promotionId par une ComboBox
+    private ComboBox<String> promotionTitle;
     @FXML
     private Button uploadButton;
 
-    UserSession session= UserSession.getInstance();
+    UserSession session = UserSession.getInstance();
 
     @FXML
     public void initialize() {
         ticketClass.getItems().addAll("Economy", "Business", "First");
         ticketType.getItems().addAll("One-way", "Round-trip");
 
-        // Charger les titres des promotions dans la ComboBox
+
+        promotionTitle.getItems().add("Aucune promotion");
         List<Promotion> promotions = promotionService.getAll();
         for (Promotion promotion : promotions) {
             promotionTitle.getItems().add(promotion.getTitle());
         }
+        promotionTitle.setValue("Aucune promotion");
 
         departureDate.setDayCellFactory(picker -> new DateCell() {
             @Override
@@ -119,14 +119,20 @@ public class AjouterTicket {
                 float pr = Float.parseFloat(price.getText());
                 String tType = ticketType.getValue();
                 String cityImg = cityImage.getText();
-                int agId = Integer.parseInt(agencyId.getText());
                 String promoTitle = promotionTitle.getValue();
 
-                // Récupérer l'ID de la promotion à partir du titre
-                Promotion selectedPromotion = promotionService.getByTitle(promoTitle);
-                if (selectedPromotion == null) {
-                    showAlert("Erreur", "Promotion non trouvée.");
-                    return;
+                // Gestion de la promotion
+                int promotionId = 0;
+                if (!promoTitle.equals("Aucune promotion")) {
+                    Promotion selectedPromotion = promotionService.getByTitle(promoTitle);
+                    if (selectedPromotion == null) {
+                        showAlert("Erreur", "Promotion non trouvée.");
+                        return;
+                    }
+                    promotionId = selectedPromotion.getId();
+                    // Appliquer la réduction au prix
+                    float discountPercentage = selectedPromotion.getDiscount_percentage();
+                    pr = pr * (1 - discountPercentage / 100); // Réduction en pourcentage
                 }
 
                 Ticket ticket = new Ticket();
@@ -139,11 +145,10 @@ public class AjouterTicket {
                 ticket.setArrivalDate(arrDate.toString());
                 ticket.setArrivalTime(arrTime);
                 ticket.setTicketClass(tClass);
-                ticket.setPrice(pr);
+                ticket.setPrice(pr); // Prix avec réduction si applicable
                 ticket.setTicketType(tType);
                 ticket.setCityImage(cityImg);
-                ticket.setAgencyId(agId);
-                ticket.setPromotionId(selectedPromotion.getId());
+                ticket.setPromotionId(promotionId); // 0 si "Aucune promotion"
                 ticket.setUserId(session.getUser().getId());
 
                 ticketService.add(ticket);
@@ -168,7 +173,6 @@ public class AjouterTicket {
         if (ticketClass.getValue() == null) errors.append("Classe requise.\n");
         if (ticketType.getValue() == null) errors.append("Type de billet requis.\n");
         if (cityImage.getText().isEmpty()) errors.append("Image de la ville requise.\n");
-        if (agencyId.getText().isEmpty()) errors.append("ID de l'agence requis.\n");
         if (promotionTitle.getValue() == null) errors.append("Promotion requise.\n");
 
         try {

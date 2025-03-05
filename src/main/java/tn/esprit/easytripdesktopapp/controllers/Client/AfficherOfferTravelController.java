@@ -188,8 +188,29 @@ public class AfficherOfferTravelController implements Initializable {
             }
         });
 
+        Button btnFeedback = new Button("Soumettre un Feedback");
+        btnFeedback.getStyleClass().add("button-reserver");
+        btnFeedback.setOnAction(event -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/FeedbackUser.fxml"));
+                Parent root = loader.load();
+
+                FeedbackUser detailController = loader.getController();
+                detailController.setOfferTravel(offer);
+
+                Stage stage = new Stage();
+                stage.setTitle("Détails de l'hôtel");
+                stage.setScene(new Scene(root));
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Erreur", "Erreur lors du chargement des détails de l'hôtel.");
+            }
+        });
+
         // Ajouter le bouton au VBox
         vbox.getChildren().add(btnReserver);
+        vbox.getChildren().add(btnFeedback);
 
         // Définir le VBox comme contenu de l'Alert
         detailAlert.getDialogPane().setContent(vbox);

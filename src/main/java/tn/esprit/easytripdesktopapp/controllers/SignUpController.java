@@ -140,7 +140,7 @@ public class SignUpController {
         addressField.clear();
         roleComboBox.getSelectionModel().clearSelection();
         captchaInput.clear();
-        generateCaptcha(); // Generate new CAPTCHA after reset
+        generateCaptcha();
     }
 
     // Generate a simple CAPTCHA

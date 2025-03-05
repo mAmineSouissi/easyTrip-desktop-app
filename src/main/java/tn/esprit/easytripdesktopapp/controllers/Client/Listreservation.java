@@ -7,7 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.Reservation;
 import tn.esprit.easytripdesktopapp.services.ServiceReservation;
 import tn.esprit.easytripdesktopapp.services.StripeService;
@@ -24,6 +27,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Listreservation {
 
@@ -45,14 +50,15 @@ public class Listreservation {
 
     @FXML
     private TextField searchField;
+    @FXML
+    private Button btnPay;
 
     @FXML
     void initialize() {
-        col1.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(
-                cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
+        col1.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
         col2.setCellValueFactory(new PropertyValueFactory<>("places"));
         col3.setCellValueFactory(cellData -> {
-            double price = (double) sr.getOfferPrice(cellData.getValue().getOfferId());
+            double price = sr.getOfferPrice(cellData.getValue().getOfferId());
             return new SimpleObjectProperty<>(price);
         });
         List<Reservation> reservations = sr.getAll();
@@ -66,20 +72,18 @@ public class Listreservation {
     private void calculateTotalPrice() {
         double totalPrice = 0.0;
         for (Reservation reservation : table.getItems()) {
-            double price = (double) sr.getOfferPrice(reservation.getOfferId());
+            double price = sr.getOfferPrice(reservation.getOfferId());
             totalPrice += reservation.getPlaces() * price;
         }
         totalp.setText(totalPrice + " ");
     }
-
 
     private void loadReservations(String searchText) {
         List<Reservation> reservations = sr.getAll();
         ObservableList<Reservation> filteredReservations = FXCollections.observableArrayList();
 
         for (Reservation reservation : reservations) {
-            if (reservation.getNom().toLowerCase().contains(searchText) ||
-                    reservation.getPrenom().toLowerCase().contains(searchText)) {
+            if (reservation.getNom().toLowerCase().contains(searchText) || reservation.getPrenom().toLowerCase().contains(searchText)) {
                 filteredReservations.add(reservation);
             }
         }
@@ -89,12 +93,9 @@ public class Listreservation {
         int col = 0;
         for (Reservation reservation : filteredReservations) {
             BorderPane card = new BorderPane();
-            card.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; " +
-                    "-fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
+            card.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-radius: 10; " + "-fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);");
 
-            Label infoLabel = new Label(String.format("👤 %s %s \n📧 %s\n📞 %d \n📅 %s",
-                    reservation.getNom(), reservation.getPrenom(), reservation.getEmail(),
-                    reservation.getPhone(), reservation.getOrderDate()));
+            Label infoLabel = new Label(String.format("👤 %s %s \n📧 %s\n📞 %d \n📅 %s", reservation.getNom(), reservation.getPrenom(), reservation.getEmail(), reservation.getPhone(), reservation.getOrderDate()));
             infoLabel.setStyle("-fx-font-size: 14px;");
 
             Button btnModifier = new Button("Modifier");
@@ -137,14 +138,30 @@ public class Listreservation {
     }
 
     @FXML
-    void retour() {
+    void retour(ActionEvent actionEvent) {
+        Stage stage;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/addreservation.fxml"));
-            listres.getScene().setRoot(root);
+            ResourceBundle resourcesBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), resourcesBundle);
+            Parent root = loader.load();
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Screen");
+            stage.show();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
         }
     }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
     @FXML
     void handleSearch() {
         String searchText = searchField.getText().toLowerCase();
@@ -154,10 +171,6 @@ public class Listreservation {
             loadReservations(searchText);
         }
     }
-
-
-    @FXML
-    private Button btnPay;
 
     @FXML
     public void handlePayment(ActionEvent event) {

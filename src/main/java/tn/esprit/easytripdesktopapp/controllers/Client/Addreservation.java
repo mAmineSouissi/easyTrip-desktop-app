@@ -4,31 +4,46 @@ package tn.esprit.easytripdesktopapp.controllers.Client;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import tn.esprit.easytripdesktopapp.models.Reservation;
+import javafx.stage.Stage;
+import tn.esprit.easytripdesktopapp.models.*;
 import tn.esprit.easytripdesktopapp.services.ServiceReservation;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class Addreservation {
+    UserSession session = UserSession.getInstance();
     @FXML
     private TextField mailres;
-
     @FXML
     private TextField nomres;
-
     @FXML
     private TextField phoneres;
-
     @FXML
     private TextField prenomres;
+    private final ServiceReservation sr = new ServiceReservation();
+    private Hotel hotel;
+    private Ticket ticket;
+    private OfferTravel offer;
 
-    private ServiceReservation sr = new ServiceReservation();
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
 
-    UserSession session = UserSession.getInstance();
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
+
+    public void setOffer(OfferTravel offer) {
+        this.offer = offer;
+    }
 
     @FXML
     public void initialize() {
@@ -44,7 +59,7 @@ public class Addreservation {
     void ajouterR(ActionEvent event) {
         System.out.println("Name:" + session.getUser().getName());
         try {
-           if (!allFieldsFilled()) {
+            if (!allFieldsFilled()) {
                 afficherErreur("Veuillez remplir tous les champs obligatoires.");
                 return;
             }
@@ -58,12 +73,15 @@ public class Addreservation {
             }
 
             Reservation r = new Reservation();
-            r.setUserId(session.getUser().getId());
+            r.setUser_id(session.getUser().getId());
             r.setNom(nomres.getText());
             r.setPrenom(prenomres.getText());
             r.setPhone(Integer.parseInt(phoneres.getText()));
             r.setEmail(mailres.getText());
-            r.setOfferId(1);
+            r.setHotel_id(hotel != null ? hotel.getId() : -1);
+            r.setTravel_id(offer != null ? offer.getId() : -1);
+            r.setTicket_id(ticket != null ? ticket.getIdTicket() : -1);
+            r.setStatus("En attente");
             sr.add(r);
             System.out.println("Réservation ajoutée avec succès");
         } catch (NumberFormatException e) {
@@ -72,10 +90,7 @@ public class Addreservation {
     }
 
     private boolean allFieldsFilled() {
-        return !nomres.getText().isEmpty() &&
-                !prenomres.getText().isEmpty() &&
-                !phoneres.getText().isEmpty() &&
-                !mailres.getText().isEmpty();
+        return !nomres.getText().isEmpty() && !prenomres.getText().isEmpty() && !phoneres.getText().isEmpty() && !mailres.getText().isEmpty();
     }
 
     private boolean isValidPhoneNumber(String phone) {
@@ -93,15 +108,7 @@ public class Addreservation {
         alert.showAndWait();
     }
 
-    @FXML
-    void naviger(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/listreservation.fxml"));
-            phoneres.getScene().setRoot(root);
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-    }
+
 
     @FXML
     void reset(ActionEvent event) {
@@ -112,13 +119,30 @@ public class Addreservation {
     }
 
     @FXML
-    void retour() {
+    void retour(ActionEvent actionEvent) {
+        Stage stage;
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"));
-            phoneres.getScene().setRoot(root);
+            ResourceBundle resourcesBundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"), resourcesBundle);
+            Parent root = loader.load();
+            stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Screen");
+            stage.show();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            showAlert("Erreur", "Erreur lors du chargement de l'interface d'accueil.");
         }
     }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+
 
 }

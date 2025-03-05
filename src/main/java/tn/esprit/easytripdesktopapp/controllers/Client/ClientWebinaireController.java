@@ -35,7 +35,7 @@ public class ClientWebinaireController {
     private final ServiceWebinaire webinaireService = new ServiceWebinaire();
     private List<Webinaire> webinaires;
 
-    private Timeline timeline; // Timeline pour rafraîchir automatiquement la page
+    private Timeline timeline;
 
     @FXML
     public void initialize() {
@@ -87,7 +87,7 @@ public class ClientWebinaireController {
         Button joinButton = new Button("Rejoindre");
         joinButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 5 10; -fx-border-radius: 5; -fx-background-radius: 5;");
 
-        // Vérifier si le webinaire est en cours
+
         LocalDateTime now = LocalDateTime.now();
         if (now.isAfter(webinaire.getDebutDateTime()) && now.isBefore(webinaire.getFinitDateTime())) {
             joinButton.setOnAction(e -> joinWebinaire(webinaire));
@@ -106,8 +106,8 @@ public class ClientWebinaireController {
     @FXML
     private void joinWebinaire(Webinaire webinaire) {
         try {
-            // Ouvrir une nouvelle fenêtre pour le webinaire personnalisé
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/WebinaireView.fxml"));
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/WebinaireView.fxml"));
             Parent root = loader.load();
 
             WebinaireViewController controller = loader.getController();
@@ -126,7 +126,7 @@ public class ClientWebinaireController {
     @FXML
     private void goToAccueil() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/AccueilClient.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/Dashboard.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) backButton.getScene().getWindow();

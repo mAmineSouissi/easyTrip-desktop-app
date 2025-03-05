@@ -55,6 +55,7 @@ public class AjouterWebinaireController {
     private void loadHotels() {
         List<Hotel> hotels = hotelService.getAll();
         for (Hotel hotel : hotels) {
+            System.out.println("Ajout de l'hôtel dans ComboBox : " + hotel.getName() + " (ID: " + hotel.getId() + ")");
             hotelComboBox.getItems().add(hotel.getName());
             hotelMap.put(hotel.getName(), hotel.getId());
         }
@@ -67,11 +68,10 @@ public class AjouterWebinaireController {
     private void save() {
         // Vérifier que tous les champs obligatoires sont remplis
         if (title.getText().isEmpty() || description.getText().isEmpty() || debutDateTime.getText().isEmpty()
-                || finitDateTime.getText().isEmpty() || link.getText().isEmpty() || hotelComboBox.getValue() == null) {
-            showAlert("Erreur de saisie", "Tous les champs doivent être remplis.");
+                || finitDateTime.getText().isEmpty()  || hotelComboBox.getValue() == null) {
+            showAlert("Erreur de saisie", "Tous les champs doivent être remplis, y compris l'hôtel.");
             return;
         }
-
 
         LocalDateTime debut;
         LocalDateTime fin;
@@ -83,37 +83,45 @@ public class AjouterWebinaireController {
             return;
         }
 
-
         if (debut.isAfter(fin)) {
             showAlert("Erreur de date", "La date de début doit être avant la date de fin.");
             return;
         }
 
 
-        if (!link.getText().startsWith("http://") && !link.getText().startsWith("https://")) {
-            showAlert("Erreur de lien", "Le lien doit commencer par 'http://' ou 'https://'.");
-            return;
-        }
-
-
         String titre = title.getText();
         String desc = description.getText();
-        String lien = link.getText();
         String selectedHotelName = hotelComboBox.getValue();
-        int hotelId = hotelMap.get(selectedHotelName);
+        Integer hotelId = hotelMap.get(selectedHotelName);
 
+        if (hotelId == null) {
+            showAlert("Erreur", "L'hôtel sélectionné n'est pas valide.");
+            return;
+        }
 
         Webinaire webinaire = new Webinaire();
         webinaire.setTitle(titre);
         webinaire.setDescription(desc);
         webinaire.setDebutDateTime(debut);
         webinaire.setFinitDateTime(fin);
-        webinaire.setLink(lien);
+
 
         Hotel hotel = hotelService.getById(hotelId);
+        if (hotel == null) {
+            showAlert("Erreur", "L'hôtel avec l'ID " + hotelId + " n'existe pas dans la base de données.");
+            return;
+        }
         webinaire.setHotel(hotel);
 
-        webinaireService.add(webinaire);
+        try {
+            webinaireService.add(webinaire);
+        } catch (IllegalArgumentException e) {
+            showAlert("Erreur", e.getMessage());
+            return;
+        } catch (RuntimeException e) {
+            showAlert("Erreur", "Une erreur est survenue lors de l'ajout du webinaire : " + e.getMessage());
+            return;
+        }
 
         if (refreshCallback != null) {
             refreshCallback.accept(null);

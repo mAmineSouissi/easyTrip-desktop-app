@@ -69,8 +69,6 @@ public class AdminWebinaireController {
         Label dateLabel = new Label("Date: " + webinaire.getDebutDateTime() + " - " + webinaire.getFinitDateTime());
         dateLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #34495e;");
 
-        Label linkLabel = new Label("Lien: " + webinaire.getLink());
-        linkLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #34495e;");
 
         Label hotelLabel = new Label("Hôtel: " + webinaire.getHotel().getName());
         hotelLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #34495e;");
@@ -85,7 +83,7 @@ public class AdminWebinaireController {
         deleteButton.setOnAction(e -> deleteWebinaire(webinaire));
 
         buttonBox.getChildren().addAll(updateButton, deleteButton);
-        listItem.getChildren().addAll(titleLabel, descriptionLabel, dateLabel, linkLabel, hotelLabel, buttonBox);
+        listItem.getChildren().addAll(titleLabel, descriptionLabel, dateLabel,  hotelLabel, buttonBox);
 
         return listItem;
     }
@@ -108,7 +106,7 @@ public class AdminWebinaireController {
     @FXML
     private void updateWebinaire(Webinaire webinaire) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Admin/ModifierWebinaire.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/ModifierWebinaire.fxml"));
             Parent root = loader.load();
 
             ModifierWebinaireController controller = loader.getController();
@@ -131,7 +129,7 @@ public class AdminWebinaireController {
     @FXML
     private void goToAddWebinaire() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Admin/AjouterWebinaire.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/AjouterWebinaire.fxml"));
             Parent root = loader.load();
 
             AjouterWebinaireController controller = loader.getController();
@@ -157,7 +155,7 @@ public class AdminWebinaireController {
     @FXML
     private void goToAccueil() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/agent/Accueil.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Dashboard.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) backButton.getScene().getWindow();

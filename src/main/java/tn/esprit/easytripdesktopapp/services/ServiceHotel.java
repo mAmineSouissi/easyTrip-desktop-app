@@ -141,7 +141,43 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public Hotel getById(int id) {
-        return null;
+        String qry = "SELECT * FROM `hotels` WHERE `id_hotel` = ?";
+        try {
+            PreparedStatement pstm = cnx.prepareStatement(qry);
+            pstm.setInt(1, id);
+            ResultSet rs = pstm.executeQuery();
+            if (rs.next()) {
+                Hotel hotel = new Hotel();
+                hotel.setId(rs.getInt("id_hotel"));
+                hotel.setName(rs.getString("name"));
+                hotel.setAdresse(rs.getString("adresse"));
+                hotel.setCity(rs.getString("city"));
+                hotel.setRating(rs.getInt("rating"));
+                hotel.setDescription(rs.getString("description"));
+                hotel.setPrice(rs.getFloat("price"));
+                hotel.setTypeRoom(rs.getString("type_room"));
+                hotel.setNumRoom(rs.getInt("num_room"));
+                hotel.setImage(rs.getString("image"));
+                hotel.setPromotionId(rs.getInt("promotion_id"));
+                hotel.setUserId(rs.getInt("user_id"));
+
+                // Charger la promotion si elle existe
+                int promotionId = rs.getInt("promotion_id");
+                if (!rs.wasNull()) {
+                    Promotion promotion = new ServicePromotion().getById(promotionId);
+                    hotel.setPromotion(promotion);
+                }
+
+                System.out.println("Hôtel récupéré avec succès : " + hotel.getName() + " (ID: " + hotel.getId() + ")");
+                return hotel;
+            } else {
+                System.out.println("Aucun hôtel trouvé avec l'ID : " + id);
+                return null; // Retourner null si l'hôtel n'existe pas
+            }
+        } catch (SQLException e) {
+            System.out.println("Erreur lors de la récupération de l'hôtel avec l'ID " + id + " : " + e.getMessage());
+            return null;
+        }
     }
 
     public List<Hotel> getByUserId(int user_id) {

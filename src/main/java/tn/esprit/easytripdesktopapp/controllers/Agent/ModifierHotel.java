@@ -45,11 +45,11 @@ public class ModifierHotel {
     private final ServiceHotel hotelService = new ServiceHotel();
     private final ServicePromotion promotionService = new ServicePromotion();
 
-    // Initialiser les données de l'hôtel à modifier
+
     public void setHotel(Hotel hotel) {
         this.hotelToUpdate = hotel;
 
-        // Sauvegarder le prix de base (sans promotion)
+
         this.basePrice = (hotel.getPromotion() != null ?
                 hotel.getPrice() / (1 - hotel.getPromotion().getDiscount_percentage() / 100) :
                 hotel.getPrice());
@@ -80,7 +80,7 @@ public class ModifierHotel {
         promotionComboBox.setOnAction(event -> updatePriceBasedOnPromotion());
     }
 
-    // Charger les promotions disponibles
+
     private void loadPromotions() {
         promotionComboBox.getItems().add("Aucune promotion");
         List<Promotion> promotions = promotionService.getAll();
@@ -89,7 +89,7 @@ public class ModifierHotel {
         }
     }
 
-    // Mettre à jour le prix en fonction de la promotion sélectionnée
+
     private void updatePriceBasedOnPromotion() {
         String promotionTitle = promotionComboBox.getValue();
         if (promotionTitle != null && !promotionTitle.equals("Aucune promotion")) {
@@ -104,7 +104,7 @@ public class ModifierHotel {
         }
     }
 
-    // Sauvegarder les modifications
+
     @FXML
     private void saveChanges() {
         if (validateFields()) {
@@ -130,7 +130,7 @@ public class ModifierHotel {
         }
     }
 
-    // Valider les champs
+
     private boolean validateFields() {
         StringBuilder errors = new StringBuilder();
 
@@ -175,7 +175,7 @@ public class ModifierHotel {
         return true;
     }
 
-    // Afficher une alerte
+
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -184,7 +184,7 @@ public class ModifierHotel {
         alert.showAndWait();
     }
 
-    // Télécharger une nouvelle image
+
     @FXML
     private void uploadImage() {
         FileChooser fileChooser = new FileChooser();

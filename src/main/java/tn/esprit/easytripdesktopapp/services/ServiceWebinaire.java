@@ -18,6 +18,10 @@ public class ServiceWebinaire implements CRUDService<Webinaire> {
 
     @Override
     public void add(Webinaire webinaire) {
+        if (webinaire == null || webinaire.getHotel() == null) {
+            throw new IllegalArgumentException("Le webinaire ou l'hôtel associé ne peut pas être null.");
+        }
+
         String qry = "INSERT INTO `webinaire`(`title`, `description`, `debutDateTime`, `finitDateTime`, `link`, `hotel_id`, `room_id`) VALUES (?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
@@ -27,11 +31,12 @@ public class ServiceWebinaire implements CRUDService<Webinaire> {
             pstm.setTimestamp(4, Timestamp.valueOf(webinaire.getFinitDateTime()));
             pstm.setString(5, webinaire.getLink());
             pstm.setInt(6, webinaire.getHotel().getId());
-            pstm.setString(7, webinaire.getRoomId()); // Sauvegarder le roomId
+            pstm.setString(7, webinaire.getRoomId());
             pstm.executeUpdate();
             System.out.println("Webinaire ajouté avec succès !");
         } catch (SQLException e) {
             System.out.println("Erreur lors de l'ajout du webinaire : " + e.getMessage());
+            throw new RuntimeException("Erreur lors de l'ajout du webinaire : " + e.getMessage(), e);
         }
     }
 

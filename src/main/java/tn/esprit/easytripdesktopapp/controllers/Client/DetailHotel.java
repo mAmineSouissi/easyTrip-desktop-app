@@ -88,7 +88,7 @@ public class DetailHotel {
                 promotionLabel.setText("Promotion: Aucune promotion");
             }
 
-            // Calculer et afficher la note moyenne et la distribution des étoiles
+
             List<Feedback> feedbacks = getFeedbacksForHotel(hotel.getId());
             double averageRating = hotel.getAverageRating(feedbacks);
             int[] ratingDistribution = hotel.getRatingDistribution(feedbacks);

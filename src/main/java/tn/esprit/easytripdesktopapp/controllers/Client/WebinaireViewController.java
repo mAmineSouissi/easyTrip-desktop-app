@@ -97,18 +97,18 @@ public class WebinaireViewController {
                 return;
             }
 
-            // Initialisation de la ligne audio
+
             audioLine = (TargetDataLine) AudioSystem.getLine(info);
             audioLine.open(format);
             audioLine.start();
 
-            // Connexion au serveur audio
+
             System.out.println("Tentative de connexion au serveur audio : " + SERVER_IP + ":" + SERVER_PORT);
             socket = new Socket(SERVER_IP, SERVER_PORT);
             audioOut = socket.getOutputStream();
             System.out.println("Connexion au serveur audio réussie.");
 
-            // Démarrage du thread pour capturer et envoyer l'audio
+
             audioThread = new Thread(() -> {
                 byte[] buffer = new byte[BUFFER_SIZE];
                 try {

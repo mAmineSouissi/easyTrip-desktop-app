@@ -52,14 +52,14 @@ public class AffichageTicketClient {
 
     @FXML
     public void initialize() {
-        // Initialiser le filtre de prix avec des valeurs
+
         priceFilter.getItems().addAll(50f, 100f, 150f, 200f, 250f, 300f);
 
-        // Initialiser la sélection de la devise
+
         currencyComboBox.getItems().addAll("EUR", "USD", "GBP", "JPY", "CAD"); // Ajoutez d'autres devises si nécessaire
         currencyComboBox.setValue("EUR"); // Par défaut, EUR
 
-        // Recharger les tickets lorsque la devise change
+
         currencyComboBox.setOnAction(e -> loadTickets());
 
         loadTickets(); // Charger les tickets au démarrage
@@ -71,18 +71,18 @@ public class AffichageTicketClient {
         tickets = ticketService.getAll(); // Récupérer tous les tickets
 
         for (Ticket ticket : tickets) {
-            // Créer une carte pour chaque ticket
+
             VBox card = createTicketCard(ticket);
             cardContainer.getChildren().add(card);
         }
     }
 
-    // Méthode pour créer une carte de ticket
+
     private VBox createTicketCard(Ticket ticket) {
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);");
 
-        // Ajouter l'image de la ville
+
         ImageView imageView = new ImageView();
         try {
             String imagePath = ticket.getCityImage();
@@ -104,12 +104,12 @@ public class AffichageTicketClient {
             System.out.println("Erreur lors du chargement de l'image : " + e.getMessage());
         }
 
-        // Ajouter les informations du ticket
+
         Text airlineText = new Text("Compagnie : " + ticket.getAirline());
         Text departureText = new Text("Départ : " + ticket.getDepartureCity() + " - " + ticket.getDepartureDate() + " " + ticket.getDepartureTime());
         Text arrivalText = new Text("Arrivée : " + ticket.getArrivalCity() + " - " + ticket.getArrivalDate() + " " + ticket.getArrivalTime());
 
-        // Convertir le prix dans la devise sélectionnée
+
         String selectedCurrency = currencyComboBox.getValue();
         double convertedPrice;
         try {
@@ -120,15 +120,15 @@ public class AffichageTicketClient {
         }
         Text priceText = new Text("Prix : " + String.format("%.2f", convertedPrice) + " " + selectedCurrency);
 
-        // Ajouter la météo de la ville d'arrivée
+
         Text weatherText = new Text("Météo : " + WeatherAPI.getWeather(ticket.getArrivalCity()));
 
-        // Bouton pour voir les détails
+
         Button detailsButton = new Button("Voir les détails");
         detailsButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-cursor: hand;");
         detailsButton.setOnAction(e -> showTicketDetails(ticket));
 
-        // Ajouter les éléments à la carte
+
         card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, weatherText, detailsButton);
 
         return card;
@@ -139,7 +139,7 @@ public class AffichageTicketClient {
         String searchText = searchField.getText().toLowerCase();
         Float maxPrice = priceFilter.getValue();
 
-        // Filtrer les tickets en fonction des critères
+
         List<Ticket> filteredTickets = tickets.stream()
                 .filter(ticket -> ticket.getAirline().toLowerCase().contains(searchText) ||
                         ticket.getDepartureCity().toLowerCase().contains(searchText) ||
@@ -147,7 +147,7 @@ public class AffichageTicketClient {
                 .filter(ticket -> maxPrice == null || ticket.getPrice() <= maxPrice)
                 .collect(Collectors.toList());
 
-        // Effacer les cartes actuelles et afficher les tickets filtrés
+
         cardContainer.getChildren().clear();
         for (Ticket ticket : filteredTickets) {
             VBox card = createTicketCard(ticket);
@@ -157,9 +157,9 @@ public class AffichageTicketClient {
 
     @FXML
     private void resetFilters() {
-        searchField.clear(); // Réinitialiser le champ de recherche
-        priceFilter.getSelectionModel().clearSelection(); // Réinitialiser le filtre de prix
-        loadTickets(); // Recharger tous les tickets
+        searchField.clear(); //
+        priceFilter.getSelectionModel().clearSelection();
+        loadTickets();
     }
 
     @FXML
@@ -168,7 +168,7 @@ public class AffichageTicketClient {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/client/AccueilClient.fxml"));
             Parent root = loader.load();
 
-            // Fermer la fenêtre actuelle
+
             Stage stage = (Stage) backButton.getScene().getWindow();
             stage.setScene(new Scene(root, 800, 600));
             stage.setTitle("Accueil");

@@ -20,7 +20,6 @@
             <TextField fx:id="description" promptText="Description du webinaire" style="-fx-pref-width: 400px;"/>
             <TextField fx:id="debutDateTime" promptText="Date et heure de début (yyyy-MM-dd HH:mm:ss)" style="-fx-pref-width: 400px;"/>
             <TextField fx:id="finitDateTime" promptText="Date et heure de fin (yyyy-MM-dd HH:mm:ss)" style="-fx-pref-width: 400px;"/>
-            <TextField fx:id="link" promptText="Lien du webinaire" style="-fx-pref-width: 400px;"/>
             <ComboBox fx:id="hotelComboBox" promptText="Sélectionner un hôtel" style="-fx-pref-width: 400px;"/>
             <Button text="Modifier" onAction="#update" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-border-radius: 5; -fx-background-radius: 5;"/>
         </VBox>

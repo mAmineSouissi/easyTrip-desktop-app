@@ -54,7 +54,7 @@ public class Hotel {
         this.userId = userId;
     }
 
-    // Getters and Setters
+
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

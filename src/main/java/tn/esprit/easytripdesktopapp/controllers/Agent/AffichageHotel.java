@@ -89,7 +89,7 @@ public class AffichageHotel {
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);");
 
-        // Charger l'image depuis l'URL publique (http://localhost/img/)
+
         ImageView imageView = new ImageView(new Image(hotel.getImage()));
         imageView.setFitWidth(200);
         imageView.setFitHeight(150);

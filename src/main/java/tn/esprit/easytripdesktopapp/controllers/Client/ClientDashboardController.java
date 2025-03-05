@@ -41,6 +41,7 @@ public class ClientDashboardController implements Initializable {
     public Label coming_soon;
     public Label manageOfferHotel;
     public Label hotelOffersLabel;
+    public Label webinaireLabel;
     public Label ticketsOffersLabel;
     public Label reclamationLabel;
     public Label chatbot;
@@ -86,6 +87,7 @@ public class ClientDashboardController implements Initializable {
         reclamationLabel.setText(bundle.getString("manage_reclamations"));
         coming_soon.setText(bundle.getString("coming_soon"));
         travelOfferLabel.setText(bundle.getString("travel_offers"));
+        webinaireLabel.setText(bundle.getString("webinaire"));
         hotelOffersLabel.setText(bundle.getString("offer_hotel"));
         ticketsOffersLabel.setText(bundle.getString("offer_tickets"));
         editProfile.setText(bundle.getString("profile_button"));
@@ -383,4 +385,16 @@ public class ClientDashboardController implements Initializable {
     }
 
 
+    public void navigateToWebinaire(MouseEvent mouseEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Client/ClientWebinaire.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("webinaire");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

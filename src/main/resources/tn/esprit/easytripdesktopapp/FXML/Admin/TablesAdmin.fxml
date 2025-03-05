@@ -22,6 +22,7 @@
         <Label fx:id="manageOfferLabel" onMouseClicked="#navigateToAdminTravel" styleClass="nav-label" text="%travel_offers" />
         <Label fx:id="manageAgencies" onMouseClicked="#navigateToAdminAgence" styleClass="nav-label" text="%manage_agency" />
         <Label fx:id="managePromotions" styleClass="nav-label" onMouseClicked="#navigateToPromotionAdmin" text="%manage_promotions" />
+        <Label fx:id="manageWebinaire" styleClass="nav-label" onMouseClicked="#navigateToWebinaireAdmin" text="%manage_webinaire" />
         <Label fx:id="manageReservations" styleClass="nav-label" text="%manage_reservations" />
         <Label fx:id="manageReclamations" onMouseClicked="#navigateToReclamationAdmin" styleClass="nav-label" text="%manage_reclamations" />
         <Label fx:id="manageFeedbacks" onMouseClicked="#navigateToAdminFeedbacks" styleClass="nav-label" text="%manage-feedbacks" />

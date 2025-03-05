@@ -52,12 +52,3 @@
     -fx-background-color: #e6f3ff;
     -fx-background-radius: 5;
 }
-
-/* Image de fond en plein écran */
-.background-image {
-    -fx-fit-to-width: true;
-    -fx-fit-to-height: true;
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover;
-    -fx-background-position: center;
-}

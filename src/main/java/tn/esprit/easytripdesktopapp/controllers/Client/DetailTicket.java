@@ -73,7 +73,7 @@ public class DetailTicket {
                 ticketImage.setImage(new Image("file:src/main/resources/default_image.png"));
             }
 
-            // Afficher les détails du ticket
+
             airlineLabel.setText("Compagnie : " + ticket.getAirline());
             departureLabel.setText("Départ : " + ticket.getDepartureCity() + " - " + ticket.getDepartureDate() + " " + ticket.getDepartureTime());
             arrivalLabel.setText("Arrivée : " + ticket.getArrivalCity() + " - " + ticket.getArrivalDate() + " " + ticket.getArrivalTime());
@@ -81,7 +81,7 @@ public class DetailTicket {
             ticketClassLabel.setText("Classe : " + ticket.getTicketClass());
             ticketTypeLabel.setText("Type : " + ticket.getTicketType());
 
-            // Afficher la météo de la ville d'arrivée
+
             weatherLabel.setText("Météo : " + WeatherAPI.getWeather(ticket.getArrivalCity()));
         }
     }

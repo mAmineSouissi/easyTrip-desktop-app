@@ -54,13 +54,13 @@ public class AjouterTicket {
         ticketClass.getItems().addAll("Economy", "Business", "First");
         ticketType.getItems().addAll("One-way", "Round-trip");
 
-        // Charger les titres des promotions dans la ComboBox avec "Aucune promotion" en premier
-        promotionTitle.getItems().add("Aucune promotion"); // Ajout de l'option
+
+        promotionTitle.getItems().add("Aucune promotion");
         List<Promotion> promotions = promotionService.getAll();
         for (Promotion promotion : promotions) {
             promotionTitle.getItems().add(promotion.getTitle());
         }
-        promotionTitle.setValue("Aucune promotion"); // Valeur par défaut
+        promotionTitle.setValue("Aucune promotion");
 
         departureDate.setDayCellFactory(picker -> new DateCell() {
             @Override

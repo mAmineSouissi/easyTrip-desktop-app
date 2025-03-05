@@ -117,7 +117,7 @@ public class ModifierTicketController {
                 ticketToUpdate.setTicketType(ticketType.getText());
                 ticketToUpdate.setCityImage(cityImage.getText());
 
-                // Utiliser le prix saisi dans le champ price comme base
+
                 float pr = Float.parseFloat(price.getText());
                 String promoTitle = promotionTitle.getValue();
                 int promotionId = 0;
@@ -126,11 +126,11 @@ public class ModifierTicketController {
                     Promotion selectedPromotion = promotionService.getByTitle(promoTitle);
                     if (selectedPromotion != null) {
                         promotionId = selectedPromotion.getId();
-                        pr = pr * (1 - selectedPromotion.getDiscount_percentage() / 100); // Appliquer la réduction au prix saisi
+                        pr = pr * (1 - selectedPromotion.getDiscount_percentage() / 100);
                     }
                 }
                 ticketToUpdate.setPromotionId(promotionId);
-                ticketToUpdate.setPrice(pr); // Prix final après réduction ou prix saisi si aucune promotion
+                ticketToUpdate.setPrice(pr);
 
                 ticketService.update(ticketToUpdate);
                 flightNumber.getScene().getWindow().hide();

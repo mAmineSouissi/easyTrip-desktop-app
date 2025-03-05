@@ -206,6 +206,7 @@ public class AfficherOfferTravelController implements Initializable {
                 e.printStackTrace();
                 showAlert("Erreur", "Erreur lors du chargement des détails de l'hôtel.");
             }
+
         });
 
         // Ajouter le bouton au VBox

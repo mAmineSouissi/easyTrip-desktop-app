@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.geometry.Insets?>
 
-<?import javafx.scene.control.Button?>
-<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.DetailTicket" spacing="10" alignment="CENTER"
-      style="-fx-padding: 20;">
-    <ImageView fx:id="ticketImage" fitWidth="300" fitHeight="200" preserveRatio="true"/>
-    <Label fx:id="airlineLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-    <Label fx:id="departureLabel"/>
-    <Label fx:id="arrivalLabel"/>
-    <Label fx:id="priceLabel" style="-fx-text-fill: #4CAF50;"/>
-    <Label fx:id="ticketClassLabel"/>
-    <Label fx:id="ticketTypeLabel"/>
-    <Button fx:id="reserveButton" text="Réserver" onAction="#handleReserveButton"/>
+<VBox xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Client.DetailTicket" spacing="20" alignment="CENTER" style="-fx-padding: 20; -fx-background-color: #f0f4f8; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+    <children>
+        <!-- Image du ticket -->
+        <ImageView fx:id="ticketImage" fitWidth="400" fitHeight="250" preserveRatio="true" style="-fx-background-color: #e6f3ff; -fx-border-radius: 10; -fx-background-radius: 10;" />
 
+        <!-- Détails du ticket dans une grille pour une meilleure organisation -->
+        <GridPane hgap="10" vgap="10" alignment="CENTER" style="-fx-padding: 15; -fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0.3, 0, 2);">
+            <children>
+                <Label text="Compagnie :" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                <Label fx:id="airlineLabel" style="-fx-font-size: 16px; -fx-text-fill: #34495e;" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+                <Label text="Départ :" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" GridPane.rowIndex="1" GridPane.columnIndex="0" />
+                <Label fx:id="departureLabel" style="-fx-font-size: 16px; -fx-text-fill: #34495e;" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+                <Label text="Arrivée :" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" GridPane.rowIndex="2" GridPane.columnIndex="0" />
+                <Label fx:id="arrivalLabel" style="-fx-font-size: 16px; -fx-text-fill: #34495e;" GridPane.rowIndex="2" GridPane.columnIndex="1" />
+
+                <Label text="Prix :" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                <Label fx:id="priceLabel" style="-fx-font-size: 16px; -fx-text-fill: #4CAF50;" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+                <Label text="Classe :" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" GridPane.rowIndex="4" GridPane.columnIndex="0" />
+                <Label fx:id="ticketClassLabel" style="-fx-font-size: 16px; -fx-text-fill: #34495e;" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+                <Label text="Type :" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                <Label fx:id="ticketTypeLabel" style="-fx-font-size: 16px; -fx-text-fill: #34495e;" GridPane.rowIndex="5" GridPane.columnIndex="1" />
+            </children>
+        </GridPane>
+
+        <!-- Météo -->
+        <Label fx:id="weatherLabel" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #2196F3; -fx-padding: 10;" />
+
+        <!-- Bouton Réserver -->
+        <Button fx:id="reserveButton" text="Réserver" onAction="#handleReserveButton" styleClass="action-button" style="-fx-font-size: 16px; -fx-padding: 12 24;" />
+    </children>
 </VBox>

@@ -1,67 +1,96 @@
-/* Set general background and font for the entire layout */
-#chatbotLayout {
-    -fx-padding: 20;
-    -fx-background-color: #FFFFFF;  /* Light background */
-    -fx-border-radius: 15;
-    -fx-background-radius: 15;
-    -fx-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+/* Style pour le conteneur principal */
+.chat-container {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
 }
 
-/* Style for the title label */
-#titleLabel {
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #333333;  /* Dark grey color for text */
-    -fx-font-family: 'Segoe UI', sans-serif;
-    -fx-padding: 10 0 15 0;
+/* Style pour le VBox qui contient tous les messages */
+.chat-messages {
+    -fx-padding: 10px 10px 40px 10px; /* Augmenter à 40px en bas pour plus d'espace */
+    -fx-spacing: 10px;
+    -fx-background-color: #f0f0f0;
 }
 
-/* Style for chat area (TextArea) */
-#chatArea {
-    -fx-background-color: #F9F9F9; /* Light grey background */
-    -fx-border-color: #E0E0E0;
-    -fx-border-radius: 10;
-    -fx-font-family: 'Segoe UI', sans-serif;
+/* Style pour le HBox qui enveloppe chaque message (pour l'alignement) */
+.message-container {
+    -fx-padding: 0px;
+    -fx-min-width: 200px;
+    -fx-min-height: 30px;
+}
+
+/* Style de base pour tous les messages */
+.chat-message {
+    -fx-max-width: 70%;
+    -fx-padding: 8px 12px;
+    -fx-border-radius: 15px;
+    -fx-wrap-text: true;
     -fx-font-size: 14px;
-    -fx-padding: 10;
-    -fx-text-fill: #555555;  /* Dark grey for text */
-    -fx-scroll-bar-width: 8;
-    -fx-scroll-bar-color: #90CAF9; /* Light blue scroll bar */
+    -fx-min-width: 200px;
+    -fx-min-height: 30px;
 }
 
-/* Style for user input section */
-#inputArea {
-    -fx-padding: 10;
-}
-
-/* Style for TextField (input) */
-#userInput {
-    -fx-background-color: #F1F1F1;
-    -fx-border-radius: 10;
-    -fx-border-color: #D0D0D0;
-    -fx-font-size: 14px;
-    -fx-padding: 10 15;
-    -fx-focus-color: #90CAF9;  /* Blue focus effect */
-}
-
-/* Style for Send Button */
-#sendButton {
-    -fx-background-color: #4CAF50;  /* Green background */
+/* Style pour les messages de l'utilisateur */
+.user-message {
+    -fx-background-color: #00BFFF;
     -fx-text-fill: white;
+}
+
+/* Style pour les messages du bot */
+.bot-message {
+    -fx-background-color: #E0E0E0;
+    -fx-text-fill: #333;
+}
+
+/* Style pour le conteneur de l'entrée (HBox en bas) */
+.chat-input-container {
+    -fx-padding: 10px;
+    -fx-spacing: 10px;
+    -fx-alignment: center-right;
+}
+
+/* Style pour le TextField */
+.chat-input {
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+    -fx-padding: 5px;
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-border-radius: 10;
-    -fx-padding: 10 20;
+}
+
+/* Style pour le bouton Envoyer */
+.chat-send-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 5px 10px;
+    -fx-border-radius: 5px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 8, 0.5, 0, 3);  /* Add subtle shadow effect */
 }
 
-#sendButton:hover {
-    -fx-background-color: #45A049;  /* Darker green on hover */
+.chat-send-button:hover {
+    -fx-background-color: #367C39;
 }
 
-/* Optional: Styling for buttons inside input area */
-#inputArea Button {
-    -fx-padding: 8 16;
-    -fx-font-size: 14px;
+/* Style pour la barre de défilement du ScrollPane */
+.scroll-pane > .viewport {
+    -fx-background-color: #f0f0f0;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-pref-width: 10px;
+}
+
+.scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: #f0f0f0;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 5px;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #aaaaaa;
 }

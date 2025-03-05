@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 
+<?import javafx.scene.image.Image?>
 <AnchorPane prefHeight="868.0" prefWidth="1340.0" stylesheets="@../../styles/dashboardClient.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AgentDashboardController">
 
     <!-- Navigation Bar -->
@@ -37,6 +38,14 @@
 
         <!-- Profile Image -->
         <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
+
+        <!-- Chatbot Icon -->
+        <ImageView fx:id="chatbotIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true"
+                   styleClass="chatbot-icon" onMouseClicked="#startChatWithBot">
+            <image>
+                <Image url="@../../assets/chatbot.png" />
+            </image>
+        </ImageView>
     </HBox>
 
     <!-- Centered "Coming Soon..." Text -->

@@ -1,0 +1,125 @@
+/* Style général de l'application */
+.root {
+    -fx-background-color: #f4f4f4; /* Fond clair */
+}
+
+/* Style pour le HBox en haut (contenant les boutons) */
+.top-hbox {
+    -fx-background-color: #2c3e50; /* Bleu foncé */
+    -fx-padding: 15px; /* Espacement interne */
+    -fx-alignment: CENTER; /* Centrer les éléments */
+    -fx-spacing: 10px; /* Espacement entre les éléments */
+}
+
+/* Style pour le bouton de retour (flèche) */
+.arrow-back-button {
+    -fx-background-color: transparent; /* Fond transparent */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-size: 24px; /* Taille de la flèche */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-cursor: hand; /* Curseur en forme de main */
+}
+
+.arrow-back-button:hover {
+    -fx-text-fill: #bdc3c7; /* Gris clair au survol */
+}
+
+/* Style pour le bouton "Ajouter Agence" */
+.add-button {
+    -fx-background-color: #3498db; /* Bleu moderne */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-background-radius: 20; /* Coins arrondis */
+    -fx-border-radius: 20; /* Coins arrondis */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de police */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 3); /* Ombre légère */
+    -fx-cursor: hand; /* Curseur en forme de main */
+}
+
+.add-button:hover {
+    -fx-background-color: #2980b9; /* Bleu plus foncé au survol */
+}
+
+.add-button:pressed {
+    -fx-background-color: #1c6ea4; /* Bleu encore plus foncé lors du clic */
+}
+
+/* Style pour le ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent; /* Fond transparent */
+    -fx-fit-to-width: true; /* Adapter à la largeur */
+    -fx-fit-to-height: true; /* Adapter à la hauteur */
+}
+
+/* Style pour le FlowPane (conteneur des cartes) */
+.flow-pane {
+    -fx-padding: 20px; /* Espacement interne */
+    -fx-hgap: 10px; /* Espacement horizontal entre les cartes */
+    -fx-vgap: 10px; /* Espacement vertical entre les cartes */
+}
+
+/* Style pour les cartes d'agences */
+.card {
+    -fx-background-color: white; /* Fond blanc */
+    -fx-padding: 15px; /* Espacement interne */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 3); /* Ombre légère */
+    -fx-spacing: 10px; /* Espacement entre les éléments */
+    -fx-alignment: CENTER; /* Centrer les éléments */
+}
+
+/* Style pour l'image dans la carte */
+.card-image {
+    -fx-fit-width: 120px; /* Largeur fixe */
+    -fx-fit-height: 120px; /* Hauteur fixe */
+    -fx-preserve-ratio: true; /* Conserver le ratio */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-background-radius: 5px; /* Coins arrondis */
+}
+
+/* Style pour le titre de la carte */
+.card-title {
+    -fx-font-size: 18px; /* Taille du texte */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-fill: #2c3e50; /* Couleur sombre */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 2, 0, 0, 1); /* Ombre légère */
+}
+
+/* Style pour les boutons dans les cartes */
+.button-modifier, .button-supprimer {
+    -fx-background-radius: 20; /* Coins arrondis */
+    -fx-border-radius: 20; /* Coins arrondis */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de police */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 5, 0, 0, 3); /* Ombre légère */
+    -fx-cursor: hand; /* Curseur en forme de main */
+}
+
+/* Style pour le bouton "Modifier" */
+.button-modifier {
+    -fx-background-color: #f39c12; /* Orange */
+    -fx-text-fill: white; /* Texte blanc */
+}
+
+.button-modifier:hover {
+    -fx-background-color: #e67e22; /* Orange plus foncé au survol */
+}
+
+.button-modifier:pressed {
+    -fx-background-color: #d35400; /* Orange encore plus foncé lors du clic */
+}
+
+/* Style pour le bouton "Supprimer" */
+.button-supprimer {
+    -fx-background-color: #e74c3c; /* Rouge */
+    -fx-text-fill: white; /* Texte blanc */
+}
+
+.button-supprimer:hover {
+    -fx-background-color: #c0392b; /* Rouge plus foncé au survol */
+}
+
+.button-supprimer:pressed {
+    -fx-background-color: #a93226; /* Rouge encore plus foncé lors du clic */
+}

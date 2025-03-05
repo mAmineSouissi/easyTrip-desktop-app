@@ -31,7 +31,7 @@
     -fx-cursor: hand;
 }
 
-.profile-button:hover{
+.profile-button:hover {
     -fx-background-color: #0056b3; /* Darker blue on hover */
 }
 
@@ -98,4 +98,17 @@
 .logout-button:focused {
     -fx-border-color: #FF5C5C; /* Highlight border on focus */
     -fx-border-width: 2px; /* Border thickness */
+}
+
+/* Charts Icon */
+.charts-icon {
+    -fx-cursor: hand; /* Pointer cursor to indicate clickability */
+    -fx-padding: 5px; /* Consistent padding with other elements */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.5, 1, 1); /* Subtle shadow for depth */
+}
+
+/* Hover Effect for Charts Icon */
+.charts-icon:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 2, 2); /* Stronger shadow on hover */
+    -fx-opacity: 0.8; /* Slight fade effect on hover */
 }

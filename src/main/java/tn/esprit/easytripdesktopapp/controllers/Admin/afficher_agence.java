@@ -81,10 +81,11 @@ public class afficher_agence implements Initializable {
         card.getStyleClass().add("card");
         card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 1);");
 
+        // ImageView pour l'image de l'agence
         ImageView imageView = new ImageView();
-        imageView.setFitWidth(120);
-        imageView.setFitHeight(120);
-        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(200); // Largeur fixe ou utilisez -fx-max-width dans CSS
+        imageView.setFitHeight(150); // Hauteur fixe ou utilisez -fx-max-height dans CSS
+        imageView.setPreserveRatio(false); // Désactiver le ratio pour remplir le conteneur
 
         if (agence.getImage() != null && !agence.getImage().isEmpty()) {
             try {
@@ -97,24 +98,33 @@ public class afficher_agence implements Initializable {
             imageView.setImage(new Image("file:src/main/resources/images/default_agence.png"));
         }
 
+        // Nom de l'agence
         Text nomAgence = new Text(agence.getNom());
         nomAgence.getStyleClass().add("card-title");
         nomAgence.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
 
+        // Bouton Détails
+        Button btnDetails = new Button("Détails");
+        btnDetails.getStyleClass().add("button-details"); // Appliquer le style Détails
+        btnDetails.setOnAction(event -> showDetails(agence));
+
+        // Bouton Modifier
         Button btnModifier = new Button("Modifier");
         btnModifier.getStyleClass().add("button-modifier"); // Appliquer le style Modifier
         btnModifier.setOnAction(event -> openUpdateAgence(agence));
 
+        // Bouton Supprimer
         Button btnSupprimer = new Button("Supprimer");
         btnSupprimer.getStyleClass().add("button-supprimer"); // Appliquer le style Supprimer
         btnSupprimer.setOnAction(event -> confirmDelete(agence));
 
-        HBox buttonBox = new HBox(10, btnModifier, btnSupprimer);
+        // HBox pour les boutons
+        HBox buttonBox = new HBox(10, btnDetails, btnModifier, btnSupprimer);
         buttonBox.setAlignment(Pos.CENTER);
 
+        // Ajouter les éléments à la carte
         card.getChildren().addAll(imageView, nomAgence, buttonBox);
         return card;
-
     }
 
     private void openUpdateAgence(Agence agence) {
@@ -205,5 +215,20 @@ public class afficher_agence implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showDetails(Agence agence) {
+        Alert detailAlert = new Alert(Alert.AlertType.INFORMATION);
+        detailAlert.setTitle("Détails de l'agence");
+        detailAlert.setHeaderText(null);
+
+        // Créer un contenu détaillé
+        String content = "Nom: " + agence.getNom() + "\n"
+                + "Adresse: " + agence.getAddress() + "\n"
+                + "Téléphone: " + agence.getPhone() + "\n"
+                + "Email: " + agence.getEmail();
+
+        detailAlert.setContentText(content);
+        detailAlert.showAndWait();
     }
 }

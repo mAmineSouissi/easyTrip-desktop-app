@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.image.Image?>
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="882.0" prefWidth="1328.0"
             stylesheets="@../../styles/AdminTables.css" xmlns="http://javafx.com/javafx/22"
             fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.TablesAdminController">
@@ -47,6 +48,15 @@
         <!-- Profile Image -->
         <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true"
                    styleClass="profile-image"/>
+        <ImageView fx:id="chartsIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true"
+                   styleClass="charts-icon" onMouseClicked="#showCharts">
+            <image>
+                <Image url="@../../assets/img.png" />
+            </image>
+        </ImageView>
+
+
+
     </HBox>
     <VBox layoutX="20.0" layoutY="72.0" spacing="20" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0"
           AnchorPane.topAnchor="72.0">

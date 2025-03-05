@@ -1,53 +1,53 @@
-/* ---- Style Général ---- */
-.root {
-    -fx-background-color: #f4f4f4;
-    -fx-font-family: "Arial";
+/* styles/style4.css */
+
+/* Style de base pour l'AnchorPane */
+AnchorPane {
+    -fx-background-color: #f4f4f4; /* Fond clair */
+    -fx-padding: 20;
 }
 
-/* ---- Titre ---- */
-.title-label {
-    -fx-font-size: 20px;
+/* Style pour les labels */
+Label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50; /* Couleur sombre */
     -fx-font-weight: bold;
-    -fx-text-fill: #2c3e50;
-    -fx-alignment: center;
 }
 
-/* ---- Champs de texte ---- */
-.text-field, .text-area, .date-picker {
-    -fx-background-color: #ffffff;
+/* Style pour le titre */
+.title-label {
+    -fx-font-size: 24px;
+    -fx-text-fill: #3498db; /* Bleu moderne */
+    -fx-font-weight: bold;
+}
+
+/* Style pour les champs de texte */
+TextField, TextArea, DatePicker {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
     -fx-border-color: #bdc3c7;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
+    -fx-border-width: 1px;
+    -fx-padding: 5 10;
     -fx-font-size: 14px;
-    -fx-padding: 8px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 1, 1);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
 }
 
-.text-area {
-    -fx-pref-height: 80px;
+TextField:focused, TextArea:focused, DatePicker:focused {
+    -fx-border-color: #3498db; /* Bleu moderne */
 }
 
-.text-field:focused, .text-area:focused, .date-picker:focused {
-    -fx-border-color: #3498db;
-    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.5), 5, 0, 2, 2);
-}
-
-/* ---- Bouton Sauvegarder ---- */
+/* Style pour le bouton Sauvegarder */
 .save-button {
-    -fx-background-color: #2ecc71;
+    -fx-background-color: #3498db; /* Bleu moderne */
     -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
     -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
 }
 
 .save-button:hover {
-    -fx-background-color: #27ae60;
-}
-
-.save-button:pressed {
-    -fx-background-color: #1e8449;
+    -fx-background-color: #2980b9; /* Bleu plus foncé au survol */
 }

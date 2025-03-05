@@ -515,4 +515,25 @@ public class TablesAdminController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    protected void showCharts(MouseEvent event) {
+        try {
+            // Load the Charts.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Charts.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage for the charts
+            Stage chartsStage = new Stage();
+            chartsStage.setTitle("Charts");
+            chartsStage.setScene(new Scene(root));
+
+            // Show the charts stage
+            chartsStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed, e.g., show an alert to the user
+        }
+    }
 }

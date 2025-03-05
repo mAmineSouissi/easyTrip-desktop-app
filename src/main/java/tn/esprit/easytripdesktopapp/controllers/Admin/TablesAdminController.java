@@ -47,6 +47,7 @@ public class TablesAdminController implements Initializable {
     public Button editProfile;
     public Label manageAgencies;
     public Label manageReservations;
+    public Label manageWebinaire;
     public Label manageReclamations;
     public Label manageFeedbacks;
     public Label manageTickets;
@@ -89,6 +90,7 @@ public class TablesAdminController implements Initializable {
         managePromotions.setText(bundle.getString("manage_promotions"));
         manageAgencies.setText(bundle.getString("manage_agency"));
         manageReservations.setText(bundle.getString("manage_reservations"));
+        manageWebinaire.setText(bundle.getString("manage_webinaire"));
         manageReclamations.setText(bundle.getString("manage_reclamations"));
         manageFeedbacks.setText(bundle.getString("manage-feedbacks"));
         manageTickets.setText(bundle.getString("manage_ticket"));
@@ -501,6 +503,20 @@ public class TablesAdminController implements Initializable {
             e.printStackTrace();
         }
     }
+    public void navigateToWebinaireAdmin(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/AdminWebinaire.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Webinaire");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void navigateToAdminFeedbacks(MouseEvent mouseEvent) {
         Stage stage;
@@ -515,4 +531,6 @@ public class TablesAdminController implements Initializable {
             e.printStackTrace();
         }
     }
+
+
 }

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="882.0" prefWidth="1328.0" stylesheets="@../../styles/AdminTables.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.TablesAdminController">
+<AnchorPane prefHeight="910.0" prefWidth="1340.0" stylesheets="@../../styles/AdminTables.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.TablesAdminController">
     <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
         <!-- Welcome Text on the Left -->
@@ -21,14 +21,13 @@
         <!-- Centered Navigation Items -->
         <Label fx:id="manageOfferLabel" onMouseClicked="#navigateToAdminTravel" styleClass="nav-label" text="%travel_offers" />
         <Label fx:id="manageAgencies" onMouseClicked="#navigateToAdminAgence" styleClass="nav-label" text="%manage_agency" />
-        <Label fx:id="managePromotions" styleClass="nav-label" onMouseClicked="#navigateToPromotionAdmin" text="%manage_promotions" />
-        <Label fx:id="manageWebinaire" styleClass="nav-label" onMouseClicked="#navigateToWebinaireAdmin" text="%manage_webinaire" />
+        <Label fx:id="managePromotions" onMouseClicked="#navigateToPromotionAdmin" styleClass="nav-label" text="%manage_promotions" />
+        <Label fx:id="manageWebinaire" onMouseClicked="#navigateToWebinaireAdmin" styleClass="nav-label" text="%manage_webinaire" />
         <Label fx:id="manageReservations" styleClass="nav-label" text="%manage_reservations" />
         <Label fx:id="manageReclamations" onMouseClicked="#navigateToReclamationAdmin" styleClass="nav-label" text="%manage_reclamations" />
         <Label fx:id="manageFeedbacks" onMouseClicked="#navigateToAdminFeedbacks" styleClass="nav-label" text="%manage-feedbacks" />
         <Label fx:id="manageTickets" styleClass="nav-label" text="%manage_ticket" />
         <Label fx:id="manageHotels" styleClass="nav-label" text="%manage_hotel" />
-        <Label fx:id="manageSurvey" styleClass="nav-label" text="%Survey" />
         <!-- Spacer to push profile and logout to the right -->
         <Region HBox.hgrow="ALWAYS" />
 

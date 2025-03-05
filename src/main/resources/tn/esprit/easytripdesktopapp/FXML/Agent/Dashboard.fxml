@@ -30,7 +30,6 @@
                text="%consult_promotions"/>
         <Label fx:id="manageOfferTravel" onMouseClicked="#navigateToOfferTravel" styleClass="nav-label"
                text="%manage_travel"/>
-        <Label fx:id="manageFeedbackLabel" styleClass="nav-label" text="%manage_feedback"/>
         <Label fx:id="manageReclamationsLabel" styleClass="nav-label" onMouseClicked="#navigatToReclamationAgent"
                text="%manage_reclamations"/>
 

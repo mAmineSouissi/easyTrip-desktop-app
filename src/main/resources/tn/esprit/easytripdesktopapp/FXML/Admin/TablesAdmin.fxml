@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="910.0" prefWidth="1340.0" stylesheets="@../../styles/AdminTables.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.TablesAdminController">
-    <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+    <HBox prefHeight="93.0" prefWidth="1340.0" spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
 
         <!-- Welcome Text on the Left -->
         <Label fx:id="welcomeLabel" styleClass="nav-label" text="%welcome_label" />
@@ -29,6 +29,8 @@
         <Label fx:id="manageFeedbacks" onMouseClicked="#navigateToAdminFeedbacks" styleClass="nav-label" text="%manage-feedbacks" />
         <Label fx:id="manageTickets" styleClass="nav-label" text="%manage_ticket" />
         <Label fx:id="manageHotels" styleClass="nav-label" text="%manage_hotel" />
+        <Label fx:id="manageTransports" onMouseClicked="#navigateToTransport" styleClass="nav-label" text="%manage_transports" />
+        <Label fx:id="manageCars" onMouseClicked="#navigateToCars" prefHeight="44.0" prefWidth="37.0" styleClass="nav-label" text="%manage_cars" />
         <!-- Spacer to push profile and logout to the right -->
         <Region HBox.hgrow="ALWAYS" />
 
@@ -39,8 +41,7 @@
 
         <!-- Profile Image -->
         <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
-         <ImageView fx:id="chartsIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true"
-                   styleClass="charts-icon" onMouseClicked="#showCharts">
+        <ImageView fx:id="chartsIcon" fitHeight="36.0" fitWidth="36.0" onMouseClicked="#showCharts" pickOnBounds="true" preserveRatio="true" styleClass="charts-icon">
             <image>
                 <Image url="@../../assets/img.png" />
             </image>

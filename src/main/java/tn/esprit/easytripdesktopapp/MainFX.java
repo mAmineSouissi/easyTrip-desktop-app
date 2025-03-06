@@ -14,7 +14,7 @@ public class MainFX extends Application {
 
     private static Stage primaryStage;
     private static Locale currentLocale = new Locale("en");
-
+    public static final String CURRENCY = "$";
     @Override
     public void start(Stage primaryStage) {
         MainFX.primaryStage = primaryStage;

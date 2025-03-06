@@ -38,6 +38,7 @@
         <Label fx:id="reclamationLabel" onMouseClicked="#navigateToReclamationClient" styleClass="nav-label" text="%manage_reclamations" />
         <Button styleClass="nav-label" text="Reservation" onAction="#navigateToReservation" />
         <Label fx:id="ticketsOffersLabel" onMouseClicked="#navigateToTicktsAffichage" styleClass="nav-label" text="%offer_tickets" />
+        <Label fx:id="ShowCar" onMouseClicked="#navigateToCars" styleClass="nav-label" text="%manage_cars" />
         <Label fx:id="chatbot" onMouseClicked="#openChatbot" styleClass="nav-label" text="%open_chatbot"/>
 
         <!-- Spacer to push profile and logout to the right -->

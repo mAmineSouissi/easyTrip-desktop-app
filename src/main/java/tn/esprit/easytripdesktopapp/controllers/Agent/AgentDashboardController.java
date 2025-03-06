@@ -50,8 +50,6 @@ public class AgentDashboardController implements Initializable {
     @FXML
     private Label manageAgencyLabel;
 
-    @FXML
-    private Label manageFeedbackLabel;
 
     @FXML
     private Label manageReclamationsLabel;
@@ -94,7 +92,6 @@ public class AgentDashboardController implements Initializable {
         consultPromotion.setText(bundle.getString("consult_promotions"));
         coming_soon.setText(bundle.getString("coming_soon"));
         manageAgencyLabel.setText(bundle.getString("manage_agency"));
-        manageFeedbackLabel.setText(bundle.getString("manage_feedback"));
         manageReclamationsLabel.setText(bundle.getString("manage_reclamations"));
         editProfile.setText(bundle.getString("profile_button"));
         logOutButton.setText(bundle.getString("logout_button"));

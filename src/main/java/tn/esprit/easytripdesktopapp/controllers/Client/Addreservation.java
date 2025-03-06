@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Addreservation {
+    private final ServiceReservation sr = new ServiceReservation();
     UserSession session = UserSession.getInstance();
     @FXML
     private TextField mailres;
@@ -28,7 +29,6 @@ public class Addreservation {
     private TextField phoneres;
     @FXML
     private TextField prenomres;
-    private final ServiceReservation sr = new ServiceReservation();
     private Hotel hotel;
     private Ticket ticket;
     private OfferTravel offer;
@@ -109,7 +109,6 @@ public class Addreservation {
     }
 
 
-
     @FXML
     void reset(ActionEvent event) {
         mailres.clear();
@@ -142,7 +141,4 @@ public class Addreservation {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
-
-
 }

@@ -77,7 +77,7 @@ public class ServiceReservation implements IService<Reservation> {
     }
 
     public float getOfferPrice(int offerId) {
-        String qry = "SELECT price FROM offer WHERE id = ?";
+        String qry = "SELECT price FROM offer_travel WHERE id = ?";
         try (PreparedStatement ps = cnx.prepareStatement(qry)) {
             ps.setInt(1, offerId);
             ResultSet rs = ps.executeQuery();
@@ -89,6 +89,35 @@ public class ServiceReservation implements IService<Reservation> {
         }
         return 0;
     }
+
+    public float getHotelPrice(int hotelId) {
+        String qry = "SELECT price FROM hotels WHERE id_hotel = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(qry)) {
+            ps.setInt(1, hotelId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat("price");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+
+    public float getTicketPrice(int ticketId) {
+        String qry = "SELECT price FROM tickets WHERE id_ticket = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(qry)) {
+            ps.setInt(1, ticketId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getFloat("price");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+    }
+
 
 
     @Override
@@ -104,7 +133,7 @@ public class ServiceReservation implements IService<Reservation> {
 
     @Override
     public void update(Reservation reservation) {
-        String qry = "UPDATE `Reservation` SET `user_id`=?, `travel_id`=?, `status`=?, `orderDate`=?, `ticket_id`=?, `hotel_id`=?, `nom`=?, `prenom`=?, `phone`=?, `email`=?, `places`=? WHERE id=?";
+        String qry = "UPDATE `Reservation` SET `user_id`=?, `travel_id`=?, `status`=?, `orderDate`=?, `ticket_id`=?, `hotel_id`=?, `nom`=?, `prenom`=?, `phone`=?, `email`=?, `places`=? WHERE id_reservation=?";
         try (PreparedStatement pstm = cnx.prepareStatement(qry)) {
             pstm.setInt(1, reservation.getUser_id());
             pstm.setInt(2, reservation.getTravel_id());

@@ -162,20 +162,4 @@ public class DetailHotel {
     }
 
 
-    @FXML
-    public void handleReserveButton(ActionEvent actionEvent) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Reservation/addreservation.fxml"));
-            Parent root = loader.load();
-            Addreservation detailController = loader.getController();
-            detailController.setHotel(hotel);
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Reservation Screen");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

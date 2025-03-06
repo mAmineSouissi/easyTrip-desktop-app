@@ -52,7 +52,6 @@ public class TablesAdminController implements Initializable {
     public Label manageFeedbacks;
     public Label manageTickets;
     public Label manageHotels;
-    public Label manageSurvey;
     public Label managePromotions;
 
     @FXML
@@ -95,7 +94,6 @@ public class TablesAdminController implements Initializable {
         manageFeedbacks.setText(bundle.getString("manage-feedbacks"));
         manageTickets.setText(bundle.getString("manage_ticket"));
         manageHotels.setText(bundle.getString("manage_hotel"));
-        manageSurvey.setText(bundle.getString("Survey"));
         manageOfferLabel.setText(bundle.getString("travel_offers"));
         editProfile.setText(bundle.getString("profile_button"));
         logOutButton.setText(bundle.getString("logout_button"));

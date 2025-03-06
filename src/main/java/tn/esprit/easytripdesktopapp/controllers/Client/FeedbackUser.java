@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 import tn.esprit.easytripdesktopapp.models.Feedback;
 import tn.esprit.easytripdesktopapp.models.Hotel;
+import tn.esprit.easytripdesktopapp.models.OfferTravel;
+import tn.esprit.easytripdesktopapp.models.Ticket;
 import tn.esprit.easytripdesktopapp.services.ServiceFeedback;
 import tn.esprit.easytripdesktopapp.utils.UserSession;
 
@@ -19,42 +21,41 @@ import java.sql.Date;
 
 public class FeedbackUser {
 
-    UserSession session=UserSession.getInstance();
-
-    private int userId = session.getUser().getId();
+    UserSession session = UserSession.getInstance();
+    private final int userId = session.getUser().getId();
     Hotel hotel;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private ListView<Feedback> feedbackList;
+    @FXML
+    private TextField messageField;
+    @FXML
+    private Spinner<Integer> ratingSpinner;
+    @FXML
+    private TextField searchField;
+    @FXML
+    private Label offerIdError;
+    @FXML
+    private Label ratingError;
+    @FXML
+    private Label messageError;
+    @FXML
+    private Label dateError;
+    private Ticket ticket;
+    private OfferTravel offerTravel;
+
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
     }
 
-    @FXML
-    private DatePicker datePicker;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
+    }
 
-    @FXML
-    private ListView<Feedback> feedbackList;
-
-    @FXML
-    private TextField messageField;
-
-
-
-    @FXML
-    private Spinner<Integer> ratingSpinner;
-
-    @FXML
-    private TextField searchField;
-
-    @FXML
-    private Label offerIdError;
-
-    @FXML
-    private Label ratingError;
-
-    @FXML
-    private Label messageError;
-
-    @FXML
-    private Label dateError;
+    public void setOfferTravel(OfferTravel offerTravel) {
+        this.offerTravel = offerTravel;
+    }
 
     // Initialisation du contrôleur
     @FXML
@@ -110,7 +111,13 @@ public class FeedbackUser {
 
             Feedback feedback = new Feedback();
             feedback.setUserId(userId);
-            feedback.setOfferId(hotel.getId());
+            if (hotel != null) {
+                feedback.setOfferId(hotel.getId());
+            } else if (ticket != null) {
+                feedback.setOfferId(ticket.getIdTicket());
+            } else {
+                feedback.setOfferId(offerTravel.getId());
+            }
             feedback.setRating(ratingSpinner.getValue());
             feedback.setMessage(messageField.getText());
             feedback.setDate(Date.valueOf(datePicker.getValue()));
@@ -141,7 +148,13 @@ public class FeedbackUser {
             }
 
             selectedFeedback.setUserId(userId);
-            selectedFeedback.setOfferId(hotel.getId());
+            if (hotel != null) {
+                selectedFeedback.setOfferId(hotel.getId());
+            } else if (ticket != null) {
+                selectedFeedback.setOfferId(ticket.getIdTicket());
+            } else {
+                selectedFeedback.setOfferId(offerTravel.getId());
+            }
             selectedFeedback.setRating(ratingSpinner.getValue());
             selectedFeedback.setMessage(messageField.getText());
             selectedFeedback.setDate(Date.valueOf(datePicker.getValue()));
@@ -237,12 +250,7 @@ public class FeedbackUser {
         ServiceFeedback feedbackService = new ServiceFeedback();
         ObservableList<Feedback> allFeedbacks = FXCollections.observableArrayList(feedbackService.getAll());
 
-        ObservableList<Feedback> filteredList = allFeedbacks.filtered(feedback ->
-                feedback.getUserId() == userId &&
-                        (String.valueOf(feedback.getOfferId()).contains(searchText) ||
-                                String.valueOf(feedback.getRating()).contains(searchText) ||
-                                feedback.getMessage().toLowerCase().contains(searchText))
-        );
+        ObservableList<Feedback> filteredList = allFeedbacks.filtered(feedback -> feedback.getUserId() == userId && (String.valueOf(feedback.getOfferId()).contains(searchText) || String.valueOf(feedback.getRating()).contains(searchText) || feedback.getMessage().toLowerCase().contains(searchText)));
 
         feedbackList.setItems(filteredList);
     }

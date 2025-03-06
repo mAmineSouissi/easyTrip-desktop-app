@@ -58,7 +58,14 @@ public class Listreservation {
         col1.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getNom() + " " + cellData.getValue().getPrenom()));
         col2.setCellValueFactory(new PropertyValueFactory<>("places"));
         col3.setCellValueFactory(cellData -> {
-            double price = sr.getOfferPrice(cellData.getValue().getOfferId());
+            double price;
+            if (cellData.getValue().getTravel_id() != -1) {
+                price = sr.getOfferPrice(cellData.getValue().getTravel_id());
+            } else if (cellData.getValue().getHotel_id() != -1) {
+                price = sr.getHotelPrice(cellData.getValue().getHotel_id());
+            } else {
+                price = sr.getTicketPrice(cellData.getValue().getTicket_id());
+            }
             return new SimpleObjectProperty<>(price);
         });
         List<Reservation> reservations = sr.getAll();
@@ -71,10 +78,25 @@ public class Listreservation {
 
     private void calculateTotalPrice() {
         double totalPrice = 0.0;
+        double price;
         for (Reservation reservation : table.getItems()) {
-            double price = sr.getOfferPrice(reservation.getOfferId());
+            System.out.println("Processing Reservation: " + reservation);
+            System.out.println("Offer ID: " + reservation.getTravel_id());
+            System.out.println("Hotel ID: " + reservation.getHotel_id());
+            System.out.println("Ticket ID: " + reservation.getTicket_id());
+
+            if (reservation.getTravel_id() != -1) {
+                price = sr.getOfferPrice(reservation.getTravel_id());
+            } else if (reservation.getHotel_id() != -1) {
+                price = sr.getHotelPrice(reservation.getHotel_id());
+            } else {
+                price = sr.getTicketPrice(reservation.getTicket_id());
+            }
+
+            System.out.println("Retrieved Price: " + price);
             totalPrice += reservation.getPlaces() * price;
         }
+
         totalp.setText(totalPrice + " ");
     }
 

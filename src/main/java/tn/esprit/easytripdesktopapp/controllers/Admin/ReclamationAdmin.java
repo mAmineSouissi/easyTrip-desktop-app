@@ -1,5 +1,8 @@
 package tn.esprit.easytripdesktopapp.controllers.Admin;
 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.twilio.Twilio;
+import com.twilio.type.PhoneNumber;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -9,34 +12,27 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import tn.esprit.easytripdesktopapp.models.Reclamation;
 import tn.esprit.easytripdesktopapp.services.ServiceReclamation;
-import org.mindrot.jbcrypt.BCrypt;
 import tn.esprit.easytripdesktopapp.utils.MyDataBase;
-
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Random;
-
+import java.util.*;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-
-import java.util.Properties;
-
 import java.io.IOException;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class ReclamationAdmin {
 
@@ -64,8 +60,20 @@ public class ReclamationAdmin {
     private Label dateError;
     @FXML
     private TextField searchField;
+    private Connection connection;
 
     private Reclamation selectedReclamation;
+
+    // Map to track whether a communication has been sent to a specific client
+    private final Map<Integer, Set<String>> communicationSentMap = new HashMap<>();
+
+    private static final String EXCEL_FILE_PATH = "/tn/esprit/easytripdesktopapp/assets/reclamations.xlsx";
+    public ReclamationAdmin() {
+        this.connection = MyDataBase.getInstance().getCnx();
+    }
+
+    // Twilio credentials
+
 
     @FXML
     void initialize() {
@@ -82,7 +90,7 @@ public class ReclamationAdmin {
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle("Login Screen");
+            stage.setTitle("Admin Screen");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,6 +134,7 @@ public class ReclamationAdmin {
 
     private void handleCardClick(Reclamation reclamation) {
         selectedReclamation = reclamation;
+        System.out.println("Selected reclamation: " + reclamation); // Log pour vérifier
         fillFormWithReclamation(reclamation);
     }
 
@@ -194,6 +203,141 @@ public class ReclamationAdmin {
         }
     }
 
+    @FXML
+    void exportToExcel(ActionEvent event) {
+        try {
+            String filePath = "exported_reclamations.xlsx";
+            ServiceReclamation reclamationService = new ServiceReclamation();
+            List<Reclamation> reclamations = reclamationService.getAll();
+
+            // Debug: Check if reclamations list is empty
+            if (reclamations.isEmpty()) {
+                showAlert(Alert.AlertType.WARNING, "No reclamations found to export.");
+                return;
+            }
+            System.out.println("Reclamations to export: " + reclamations);
+
+            try (Workbook workbook = new XSSFWorkbook()) {
+                Sheet sheet = workbook.createSheet("Reclamations");
+                System.out.println("Workbook and sheet created successfully.");
+
+                // Create header row
+                Row headerRow = sheet.createRow(0);
+                headerRow.createCell(0).setCellValue("ID");
+                headerRow.createCell(1).setCellValue("User ID");
+                headerRow.createCell(2).setCellValue("Issue");
+                headerRow.createCell(3).setCellValue("Category");
+                headerRow.createCell(4).setCellValue("Status");
+                headerRow.createCell(5).setCellValue("Date");
+
+                // Populate data rows
+                int rowNum = 1;
+                for (Reclamation reclamation : reclamations) {
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(reclamation.getId());
+                    row.createCell(1).setCellValue(reclamation.getUserId());
+                    row.createCell(2).setCellValue(reclamation.getIssue());
+                    row.createCell(3).setCellValue(reclamation.getCategory());
+                    row.createCell(4).setCellValue(reclamation.getStatus());
+                    row.createCell(5).setCellValue(reclamation.getDate().toString());
+                }
+                System.out.println("Data written to sheet successfully.");
+
+                // Write workbook to file
+                try (FileOutputStream outFile = new FileOutputStream(filePath)) {
+                    workbook.write(outFile);
+                    System.out.println("File written successfully to: " + filePath);
+                }
+            }
+
+            showAlert(Alert.AlertType.INFORMATION, "Réclamations exportées avec succès dans : " + filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'export Excel : " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Unexpected error: " + e.getMessage());
+        }
+    }
+    @FXML
+    void synchronizeWithDatabase(ActionEvent event) {
+        try {
+            String filePath = "exported_reclamations.xlsx";
+            List<Reclamation> modifiedReclamations = readModifiedExcelFile(filePath);
+            synchronizeWithDatabase(modifiedReclamations);
+            loadReclamations();
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de la synchronisation : " + e.getMessage());
+        }
+    }
+
+    private List<Reclamation> readModifiedExcelFile(String filePath) {
+        List<Reclamation> reclamations = new ArrayList<>();
+        try (FileInputStream fileInputStream = new FileInputStream(filePath)) {
+            Workbook workbook = new XSSFWorkbook(fileInputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) continue;
+
+                int id = (int) row.getCell(0).getNumericCellValue();
+                int userId = (int) row.getCell(1).getNumericCellValue();
+                String issue = row.getCell(2).getStringCellValue();
+                String category = row.getCell(3).getStringCellValue();
+                String status = row.getCell(4).getStringCellValue();
+                Date date = Date.valueOf(row.getCell(5).getStringCellValue());
+
+                Reclamation reclamation = new Reclamation(id, userId, issue, date, category, status);
+                reclamations.add(reclamation);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de la lecture du fichier Excel modifié : " + e.getMessage());
+        }
+        return reclamations;
+    }
+
+    private void synchronizeWithDatabase(List<Reclamation> modifiedReclamations) {
+        ServiceReclamation reclamationService = new ServiceReclamation();
+        List<Reclamation> databaseReclamations = reclamationService.getAll();
+
+        for (Reclamation modifiedReclamation : modifiedReclamations) {
+            boolean existsInDatabase = false;
+
+            for (Reclamation databaseReclamation : databaseReclamations) {
+                if (databaseReclamation.getId() == modifiedReclamation.getId()) {
+                    existsInDatabase = true;
+
+                    if (!databaseReclamation.equals(modifiedReclamation)) {
+                        reclamationService.update(modifiedReclamation);
+                    }
+                    break;
+                }
+            }
+
+            if (!existsInDatabase) {
+                reclamationService.add(modifiedReclamation);
+            }
+        }
+
+        for (Reclamation databaseReclamation : databaseReclamations) {
+            boolean existsInExcel = false;
+
+            for (Reclamation modifiedReclamation : modifiedReclamations) {
+                if (databaseReclamation.getId() == modifiedReclamation.getId()) {
+                    existsInExcel = true;
+                    break;
+                }
+            }
+
+            if (!existsInExcel) {
+                reclamationService.delete(databaseReclamation);
+            }
+        }
+
+        showAlert(Alert.AlertType.INFORMATION, "Synchronisation avec la base de données terminée.");
+    }
+
     private boolean validateInputs() {
         boolean isValid = true;
 
@@ -245,126 +389,92 @@ public class ReclamationAdmin {
         alert.show();
     }
 
-//    @FXML
-//    void sendEmail(ActionEvent event) {
-//        if (selectedReclamation == null) {
-//            showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation pour envoyer un e-mail.");
-//            return;
-//        }
-//
-//        // Utiliser l'adresse e-mail de test (omsehli@gmail.com)
-//        String clientEmail = "omsehli@gmail.com"; // Adresse e-mail de test
-//
-//        // Simuler les informations de l'utilisateur (nom, prénom)
-//        String clientName = "Om"; // Nom de l'utilisateur
-//        String clientSurname = "Sehli"; // Prénom de l'utilisateur
-//
-//        // Envoyer l'e-mail
-//        String subject = "Votre réclamation a été traitée";
-//        String body = "Bonjour " + clientName + " " + clientSurname + ",\n\n" +
-//                "Votre réclamation concernant '" + selectedReclamation.getIssue() + "' a été traitée. " +
-//                "Le statut est maintenant '" + selectedReclamation.getStatus() + "'.\n\n" +
-//                "Cordialement,\nL'équipe de support.";
-//
-////        try {
-////            SendGridUtil.sendEmail(clientEmail, "omsehli@gmail.com", subject, body);
-////            showAlert(Alert.AlertType.INFORMATION, "E-mail envoyé avec succès à " + clientEmail);
-////        } catch (Exception e) {
-////            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail : " + e.getMessage());
-////        }
-//    }
 
-@FXML
-void sendEmail(ActionEvent event) {
-    if (selectedReclamation == null) {
-        showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation pour envoyer un e-mail.");
-        return;
-    }
-
-    // Fetch the email of the user associated with the selected reclamation
-    String clientEmail = getEmailByUserId(selectedReclamation.getUserId());
-
-    if (clientEmail == null || clientEmail.trim().isEmpty()) {
-        showAlert(Alert.AlertType.ERROR, "Aucun e-mail trouvé pour cet utilisateur.");
-        return;
-    }
-
-    // Simuler les informations de l'utilisateur (nom, prénom)
-    String clientName = "Om"; // Nom de l'utilisateur
-    String clientSurname = "Sehli"; // Prénom de l'utilisateur
-
-    // Envoyer l'e-mail
-    String subject = "Votre réclamation a été traitée";
-    String body = "Bonjour " + clientName + " " + clientSurname + ",\n\n" +
-            "Votre réclamation concernant '" + selectedReclamation.getIssue() + "' a été traitée. " +
-            "Le statut est maintenant '" + selectedReclamation.getStatus() + "'.\n\n" +
-            "Cordialement,\nL'équipe de support.";
-
-    try {
-        // Use the sendReclamationEmail method to send the email
-        if (sendReclamationEmail(clientEmail, selectedReclamation.getStatus(), selectedReclamation.getIssue())) {
-            showAlert(Alert.AlertType.INFORMATION, "E-mail envoyé avec succès à " + clientEmail);
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail.");
+    @FXML
+    void sendEmail(ActionEvent event) {
+        if (selectedReclamation == null) {
+            showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation pour envoyer un e-mail.");
+            return;
         }
-    } catch (Exception e) {
-        showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail : " + e.getMessage());
-    }
-}
 
-    public String getEmailByUserId(int userId) {
-        String email = null;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        int userId = selectedReclamation.getUserId();
+        System.out.println("Attempting to send email to user ID: " + userId); // Log the userId
+
+        // Check if an email has already been sent to this client
+        if (communicationSentMap.containsKey(userId) && communicationSentMap.get(userId).contains("email")) {
+            showAlert(Alert.AlertType.WARNING, "Un e-mail a déjà été envoyé à ce client.");
+            return;
+        }
+
+        String clientEmail = getEmailByUserId(userId);
+        System.out.println("Retrieved email for user " + userId + ": " + clientEmail); // Log the retrieved email
+
+        if (clientEmail == null || clientEmail.trim().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Aucun e-mail trouvé pour cet utilisateur.");
+            return;
+        }
+
+        String clientName = "Om"; // Nom de l'utilisateur
+        String clientSurname = "Sehli"; // Prénom de l'utilisateur
+
+        String subject = "Votre réclamation a été traitée";
+        String body = "Bonjour " + clientName + " " + clientSurname + ",\n\n" +
+                "Votre réclamation concernant '" + selectedReclamation.getIssue() + "' a été traitée. " +
+                "Le statut est maintenant '" + selectedReclamation.getStatus() + "'.\n\n" +
+                "Cordialement,\nL'équipe de support.";
 
         try {
-            // Establish a connection to the database
-            connection = MyDataBase.getInstance().getCnx();
-            System.out.println(userId);
+            if (sendReclamationEmail(clientEmail, selectedReclamation.getStatus(), selectedReclamation.getIssue())) {
+                // Mark this client as having received an email
+                communicationSentMap.computeIfAbsent(userId, k -> new HashSet<>()).add("email");
+                System.out.println("Email sent to user " + userId + ". Map updated: " + communicationSentMap); // Log the updated map
+                showAlert(Alert.AlertType.INFORMATION, "E-mail envoyé avec succès à " + clientEmail);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail.");
+            }
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi de l'e-mail : " + e.getMessage());
+        }
+    }
 
-            // Prepare the SQL query to fetch the email by userId
-            String query = "SELECT email FROM User WHERE id = ?";
-            preparedStatement = connection.prepareStatement(query);
+    public String getEmailByUserId(int userId) {
+
+        String email = null;
+
+        try (
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT email FROM User WHERE id = ?")) {
+
+            System.out.println("Executing query: SELECT email FROM user WHERE id = ? for user ID: " + userId);
+
+            // Définir le paramètre userId avant d'exécuter la requête
             preparedStatement.setInt(1, userId);
 
-            // Execute the query
-            resultSet = preparedStatement.executeQuery();
-
-            // If a result is found, retrieve the email
-            if (resultSet.next()) {
-                email = resultSet.getString("email");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    email = resultSet.getString("email");
+                    System.out.println("Email retrieved for user " + userId + ": " + email);
+                } else {
+                    System.out.println("No email found for user " + userId);
+                }
             }
         } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération de l'e-mail : " + e.getMessage());
             e.printStackTrace();
-        } finally {
-            // Close the resources
-            try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
         return email;
     }
 
-
     public boolean sendReclamationEmail(String email, String status, String issue) {
-        // Email configuration
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        // Email credentials (use your application's email and password/app password)
         final String senderEmail = "aminesouissi681@gmail.com"; // Replace with your email
         final String password = "cimh ylri oahd pvlz"; // Replace with your app password
 
-        // Create a session with authentication
         Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
@@ -373,13 +483,11 @@ void sendEmail(ActionEvent event) {
         });
 
         try {
-            // Create a message
-            Message message = new MimeMessage(session);
+            MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(senderEmail));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            message.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Mise à jour du statut de votre réclamation");
 
-            // Create the email body
             String emailBody = "Bonjour,\n\n"
                     + "Nous avons une mise à jour concernant votre réclamation.\n\n"
                     + "Statut de la réclamation : " + status + "\n"
@@ -389,14 +497,108 @@ void sendEmail(ActionEvent event) {
                     + "L'équipe Easy Trip";
 
             message.setText(emailBody);
-
-            // Send the message
             Transport.send(message);
 
             System.out.println("E-mail de réclamation envoyé à : " + email);
             return true;
         } catch (MessagingException e) {
             System.out.println("Erreur lors de l'envoi de l'e-mail de réclamation : " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @FXML
+    public String getPhoneNumberByUserId(int userId) {
+
+        String phoneNumber = null;
+
+        try (
+                PreparedStatement preparedStatement = connection.prepareStatement("SELECT phone FROM User WHERE id = ?")) {
+
+            System.out.println("Executing query: SELECT phone FROM user WHERE id = ? for user ID: " + userId);
+
+            // Définir le paramètre userId avant d'exécuter la requête
+            preparedStatement.setInt(1, userId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    phoneNumber = resultSet.getString("phone");
+                    System.out.println("Phone number retrieved for user " + userId + ": " + phoneNumber);
+                } else {
+                    System.out.println("No phone number found for user " + userId);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erreur lors de la récupération du numéro de téléphone : " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return phoneNumber;
+    }
+
+    @FXML
+    public void sendSms(ActionEvent actionEvent) {
+        if (selectedReclamation == null) {
+            showAlert(Alert.AlertType.WARNING, "Veuillez sélectionner une réclamation pour envoyer un SMS.");
+            return;
+        }
+
+        int userId = selectedReclamation.getUserId();
+
+        // Check if an SMS has already been sent to this client
+        if (communicationSentMap.containsKey(userId) && communicationSentMap.get(userId).contains("sms")) {
+            showAlert(Alert.AlertType.WARNING, "Un SMS a déjà été envoyé à ce client.");
+            return;
+        }
+
+        String recipientPhoneNumber = getPhoneNumberByUserId(userId);
+
+        if (recipientPhoneNumber == null || recipientPhoneNumber.trim().isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Aucun numéro de téléphone trouvé pour cet utilisateur.");
+            return;
+        }
+
+        if (!isValidPhoneNumber(recipientPhoneNumber)) {
+            showAlert(Alert.AlertType.ERROR, "Le numéro de téléphone n'est pas valide. Il doit être au format international (ex: +2162865XXXX).");
+            return;
+        }
+
+        String clientName = "Oussema"; // User's name
+        String clientSurname = "Msehli"; // User's surname
+
+        String smsBody = "Bonjour " + clientName + " " + clientSurname + ",\n\n" +
+                "Votre réclamation concernant '" + selectedReclamation.getIssue() + "' a été traitée. " +
+                "Le statut est maintenant '" + selectedReclamation.getStatus() + "'.\n\n" +
+                "Cordialement,\nL'équipe de support.";
+
+        if (sendSMS(recipientPhoneNumber, smsBody)) {
+            // Mark this client as having received an SMS
+            communicationSentMap.computeIfAbsent(userId, k -> new HashSet<>()).add("sms");
+            System.out.println("SMS sent to user " + userId + ". Map updated: " + communicationSentMap); // Log the updated map
+            showAlert(Alert.AlertType.INFORMATION, "SMS envoyé avec succès à " + recipientPhoneNumber);
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Erreur lors de l'envoi du SMS.");
+        }
+    }
+    public boolean isValidPhoneNumber(String phoneNumber) {
+        return phoneNumber != null && phoneNumber.matches("^\\+[1-9]\\d{1,14}$");
+    }
+    public boolean sendSMS(String recipientPhoneNumber, String smsBody) {
+        try {
+            // Initialize Twilio
+            Twilio.init(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+
+            // Send the SMS
+            com.twilio.rest.api.v2010.account.Message message = com.twilio.rest.api.v2010.account.Message.creator(
+                    new PhoneNumber(recipientPhoneNumber), // To
+                    new PhoneNumber(TWILIO_PHONE_NUMBER), // From
+                    smsBody // Message body
+            ).create();
+
+            System.out.println("SMS sent successfully! SID: " + message.getSid());
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error sending SMS: " + e.getMessage());
             e.printStackTrace();
             return false;
         }

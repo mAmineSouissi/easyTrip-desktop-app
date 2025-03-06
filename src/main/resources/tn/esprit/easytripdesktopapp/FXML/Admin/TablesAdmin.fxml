@@ -24,11 +24,10 @@
         <Label fx:id="manageAgencies" onMouseClicked="#navigateToAdminAgence" styleClass="nav-label" text="%manage_agency" />
         <Label fx:id="managePromotions" onMouseClicked="#navigateToPromotionAdmin" styleClass="nav-label" text="%manage_promotions" />
         <Label fx:id="manageWebinaire" onMouseClicked="#navigateToWebinaireAdmin" styleClass="nav-label" text="%manage_webinaire" />
-        <Label fx:id="manageReservations" styleClass="nav-label" text="%manage_reservations" />
+
         <Label fx:id="manageReclamations" onMouseClicked="#navigateToReclamationAdmin" styleClass="nav-label" text="%manage_reclamations" />
         <Label fx:id="manageFeedbacks" onMouseClicked="#navigateToAdminFeedbacks" styleClass="nav-label" text="%manage-feedbacks" />
-        <Label fx:id="manageTickets" styleClass="nav-label" text="%manage_ticket" />
-        <Label fx:id="manageHotels" styleClass="nav-label" text="%manage_hotel" />
+
         <!-- Spacer to push profile and logout to the right -->
         <Region HBox.hgrow="ALWAYS" />
 

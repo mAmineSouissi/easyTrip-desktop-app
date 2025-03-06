@@ -46,12 +46,10 @@ public class TablesAdminController implements Initializable {
     public ImageView profilePic;
     public Button editProfile;
     public Label manageAgencies;
-    public Label manageReservations;
     public Label manageWebinaire;
     public Label manageReclamations;
     public Label manageFeedbacks;
-    public Label manageTickets;
-    public Label manageHotels;
+
     public Label managePromotions;
 
     @FXML
@@ -88,12 +86,9 @@ public class TablesAdminController implements Initializable {
         }
         managePromotions.setText(bundle.getString("manage_promotions"));
         manageAgencies.setText(bundle.getString("manage_agency"));
-        manageReservations.setText(bundle.getString("manage_reservations"));
         manageWebinaire.setText(bundle.getString("manage_webinaire"));
         manageReclamations.setText(bundle.getString("manage_reclamations"));
         manageFeedbacks.setText(bundle.getString("manage-feedbacks"));
-        manageTickets.setText(bundle.getString("manage_ticket"));
-        manageHotels.setText(bundle.getString("manage_hotel"));
         manageOfferLabel.setText(bundle.getString("travel_offers"));
         editProfile.setText(bundle.getString("profile_button"));
         logOutButton.setText(bundle.getString("logout_button"));

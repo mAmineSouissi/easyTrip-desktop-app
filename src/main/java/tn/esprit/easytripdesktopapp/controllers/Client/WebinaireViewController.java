@@ -48,7 +48,7 @@ public class WebinaireViewController {
         String roomId = webinaire.getRoomId();
         System.out.println("Rejoindre la salle : " + roomId);
 
-        String videoFile = getClass().getResource("/hotel.mp4").toString();
+        String videoFile = getClass().getResource("hotel.mp4").toString();
         if (videoFile != null) {
             try {
                 Media media = new Media(videoFile);

@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.Region?>
 
 <BorderPane stylesheets="@../../styles/style3.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.AfficherPromotion">
     <top>
-        <HBox spacing="10">
+        <HBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 15;">
+            <!-- Icône de flèche pour "Back" -->
+            <Button onAction="#goBack" text="←" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 36px; -fx-font-weight: bold; -fx-padding: 0 10 0 0;" />
+
+            <!-- Titre "Liste des Promotions" -->
+            <Label text="Liste des Promotions" style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
+
             <Region HBox.hgrow="ALWAYS" />
-            <TextField fx:id="searchField" promptText="Rechercher par titre..." />
+
+            <!-- Champ de recherche -->
+            <TextField fx:id="searchField" promptText="Rechercher par titre..." style="-fx-background-radius: 20; -fx-border-radius: 20; -fx-pref-width: 300;" />
+
             <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="addPromotionButton" onAction="#openAddPromotion" text="Ajouter Promotion" />
-         <Button mnemonicParsing="false" onAction="#goBack" text="Back" />
+
+            <!-- Bouton "Ajouter Promotion" -->
+            <Button fx:id="addPromotionButton" onAction="#openAddPromotion" text="Ajouter Promotion" style="-fx-background-radius: 20; -fx-border-radius: 20;" />
         </HBox>
-
-
     </top>
     <center>
-        <ScrollPane>
-            <FlowPane fx:id="cardContainer" hgap="10" minWidth="600" vgap="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-                <!-- Les cartes de promotion seront ajoutées ici -->
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <FlowPane fx:id="cardContainer" hgap="10" vgap="10" style="-fx-padding: 20;">
+                <!-- Exemple de carte de promotion -->
+                <VBox styleClass="card" spacing="10">
+                    <Label text="Promotion d'été" styleClass="promo-name" />
+                    <Label text="Discount: 20%" styleClass="promo-discount" />
+                    <Label text="Valide jusqu'au: 31/12/2023" styleClass="promo-valid-until" />
+                    <HBox spacing="10">
+                        <Button text="Modifier" styleClass="modify-button" />
+                        <Button text="Supprimer" styleClass="delete-button" />
+                    </HBox>
+                </VBox>
+                <!-- Ajoutez d'autres cartes ici dynamiquement -->
             </FlowPane>
         </ScrollPane>
     </center>

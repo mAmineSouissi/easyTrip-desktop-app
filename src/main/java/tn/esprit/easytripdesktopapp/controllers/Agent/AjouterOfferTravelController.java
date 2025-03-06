@@ -136,15 +136,21 @@ public class AjouterOfferTravelController {
     @FXML
     private void choisirImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choisir une image");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg"));
-        File file = fileChooser.showOpenDialog(new Stage());
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif", "*.bmp"));
 
-        if (file != null) {
-            imagePath = file.getAbsolutePath();
-            imgOffer.setImage(new Image(file.toURI().toString())); // Affiche l'image dans ImageView
-        } else {
-            showAlert("Avertissement", "Aucune image sélectionnée !", Alert.AlertType.WARNING);
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            // Extract the filename from the selected file
+            String fileName = selectedFile.getName();
+
+            // Maintain the base URL and replace only the filename
+            String baseUrl = "http://localhost/img/profile/";
+            imagePath = baseUrl + fileName;
+
+            // Set the new image in the ImageView
+            Image img = new Image(imagePath);
+            imgOffer.setImage(img);
         }
     }
 

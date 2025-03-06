@@ -47,11 +47,11 @@ public class TablesAdminController implements Initializable {
     public Button editProfile;
     public Label manageAgencies;
     public Label manageReservations;
+    public Label manageWebinaire;
     public Label manageReclamations;
     public Label manageFeedbacks;
     public Label manageTickets;
     public Label manageHotels;
-    public Label manageSurvey;
     public Label managePromotions;
 
     @FXML
@@ -89,11 +89,11 @@ public class TablesAdminController implements Initializable {
         managePromotions.setText(bundle.getString("manage_promotions"));
         manageAgencies.setText(bundle.getString("manage_agency"));
         manageReservations.setText(bundle.getString("manage_reservations"));
+        manageWebinaire.setText(bundle.getString("manage_webinaire"));
         manageReclamations.setText(bundle.getString("manage_reclamations"));
         manageFeedbacks.setText(bundle.getString("manage-feedbacks"));
         manageTickets.setText(bundle.getString("manage_ticket"));
         manageHotels.setText(bundle.getString("manage_hotel"));
-        manageSurvey.setText(bundle.getString("Survey"));
         manageOfferLabel.setText(bundle.getString("travel_offers"));
         editProfile.setText(bundle.getString("profile_button"));
         logOutButton.setText(bundle.getString("logout_button"));
@@ -501,6 +501,20 @@ public class TablesAdminController implements Initializable {
             e.printStackTrace();
         }
     }
+    public void navigateToWebinaireAdmin(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/AdminWebinaire.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Webinaire");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void navigateToAdminFeedbacks(MouseEvent mouseEvent) {
         Stage stage;
@@ -515,4 +529,27 @@ public class TablesAdminController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    protected void showCharts(MouseEvent event) {
+        try {
+            // Load the Charts.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Charts.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage for the charts
+            Stage chartsStage = new Stage();
+            chartsStage.setTitle("Charts");
+            chartsStage.setScene(new Scene(root));
+
+            // Show the charts stage
+            chartsStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed, e.g., show an alert to the user
+        }
+    }
+
+
 }

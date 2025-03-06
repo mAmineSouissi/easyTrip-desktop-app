@@ -81,7 +81,7 @@ public class UpdateOfferTravelController implements Initializable {
 
             // Sélectionner l'agence et la promotion correspondantes
             cbAgence.setValue(selectedOffer.getAgence());
-            cbPromotion.setValue(selectedOffer.getPromotion());
+            cbPromotion.setValue(selectedOffer.getPromotion()); // Peut être null si aucune promotion
             cbCategory.setValue(selectedOffer.getCategory());
 
             // Affichage de l'image
@@ -107,7 +107,7 @@ public class UpdateOfferTravelController implements Initializable {
             String description = taDescription.getText();
             float initialPrice = Float.parseFloat(tfPrice.getText()); // Prix initial saisi par l'utilisateur
             Agence agence = cbAgence.getValue();
-            Promotion promotion = cbPromotion.getValue(); // Nouvelle promotion sélectionnée
+            Promotion promotion = cbPromotion.getValue(); // Peut être null si "Aucune promotion" est sélectionnée
             Category category = cbCategory.getValue();
 
             // Vérification des champs
@@ -120,7 +120,7 @@ public class UpdateOfferTravelController implements Initializable {
             Date departureDate = (departureLocalDate != null) ? Date.valueOf(departureLocalDate) : null;
             Date arrivalDate = (arrivalLocalDate != null) ? Date.valueOf(arrivalLocalDate) : null;
 
-            // Calculer le prix final après application de la nouvelle promotion
+            // Calculer le prix final après application de la nouvelle promotion (ou sans promotion)
             float finalPrice = getFinalPrice(initialPrice, promotion);
 
             // Mettre à jour l'offre
@@ -133,7 +133,7 @@ public class UpdateOfferTravelController implements Initializable {
             selectedOffer.setDiscription(description);
             selectedOffer.setPrice(finalPrice); // Enregistrer le prix final après promotion
             selectedOffer.setAgence(agence);
-            selectedOffer.setPromotion(promotion);
+            selectedOffer.setPromotion(promotion); // Peut être null si "Aucune promotion" est sélectionnée
             selectedOffer.setCategory(category);
             selectedOffer.setImage(imagePath); // Mise à jour de l'image
 
@@ -151,15 +151,21 @@ public class UpdateOfferTravelController implements Initializable {
     @FXML
     private void chooseImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Sélectionner une image");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg")
-        );
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif", "*.bmp"));
 
-        File file = fileChooser.showOpenDialog(null);
-        if (file != null) {
-            imagePath = file.getAbsolutePath();
-            imgOffer.setImage(new Image(file.toURI().toString()));
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            // Extract the filename from the selected file
+            String fileName = selectedFile.getName();
+
+            // Maintain the base URL and replace only the filename
+            String baseUrl = "http://localhost/img/profile/";
+            imagePath = baseUrl + fileName;
+
+            // Set the new image in the ImageView
+            Image img = new Image(imagePath);
+            imgOffer.setImage(img);
         }
     }
 
@@ -184,19 +190,23 @@ public class UpdateOfferTravelController implements Initializable {
 
     private void loadPromotions() {
         ObservableList<Promotion> promotions = FXCollections.observableArrayList(servicePromotion.getAll());
+
+        // Ajouter une option "Aucune promotion" avec une valeur null
+        promotions.add(0, null); // Ajouter en première position
+
         cbPromotion.setItems(promotions);
         cbPromotion.setConverter(new StringConverter<>() {
             @Override
             public String toString(Promotion promotion) {
-                return (promotion != null) ? promotion.getTitle() : "";
+                return (promotion != null) ? promotion.getTitle() : "Aucune promotion"; // Afficher "Aucune promotion" si null
             }
 
             @Override
             public Promotion fromString(String string) {
                 return cbPromotion.getItems().stream()
-                        .filter(p -> p.getTitle().equals(string))
+                        .filter(p -> p != null && p.getTitle().equals(string))
                         .findFirst()
-                        .orElse(null);
+                        .orElse(null); // Retourner null si "Aucune promotion" est sélectionnée
             }
         });
     }
@@ -219,7 +229,7 @@ public class UpdateOfferTravelController implements Initializable {
         if (promotion != null) {
             return initialPrice - (initialPrice * promotion.getDiscount_percentage() / 100);
         } else {
-            return initialPrice;
+            return initialPrice; // Aucune promotion, le prix reste inchangé
         }
     }
 
@@ -228,7 +238,7 @@ public class UpdateOfferTravelController implements Initializable {
         if (promotion != null) {
             return currentPrice / (1 - (promotion.getDiscount_percentage() / 100));
         } else {
-            return currentPrice;
+            return currentPrice; // Aucune promotion, le prix initial est le prix actuel
         }
     }
 }

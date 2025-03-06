@@ -6,40 +6,56 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.image.Image?>
 
-<AnchorPane prefHeight="868.0" prefWidth="1340.0" stylesheets="@../../styles/dashboardClient.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AgentDashboardController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="868.0" prefWidth="1340.0"
+            stylesheets="@../../styles/dashboardClient.css" xmlns="http://javafx.com/javafx/22"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AgentDashboardController">
 
     <!-- Navigation Bar -->
-    <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+    <HBox spacing="20" styleClass="navbar" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+          AnchorPane.topAnchor="0">
 
         <!-- Welcome Text on the Left -->
-        <Label fx:id="welcomeLabel" styleClass="nav-label" text="%welcome_label" />
+        <Label fx:id="welcomeLabel" styleClass="nav-label" text="%welcome_label"/>
 
         <!-- Spacer to push items to the center -->
-        <Region HBox.hgrow="ALWAYS" />
+        <Region HBox.hgrow="ALWAYS"/>
 
         <!-- Centered Navigation Items -->
-        <Label fx:id="manageAgencyLabel" onMouseClicked="#navigateToAgency" styleClass="nav-label" text="%manage_agency" />
-        <Label fx:id="manageOfferHotel" onMouseClicked="#navigateToHotel" styleClass="nav-label" text="%manage_hotel_tickets" />
-        <Label fx:id="consultPromotion" onMouseClicked="#navigatToPromotionAgent" styleClass="nav-label" text="%consult_promotions" />
-        <Label fx:id="manageOfferTravel" onMouseClicked="#navigateToOfferTravel" styleClass="nav-label" text="%manage_travel" />
-        <Label fx:id="manageFeedbackLabel" styleClass="nav-label" text="%manage_feedback" />
-        <Label fx:id="manageReclamationsLabel" styleClass="nav-label" onMouseClicked="#navigatToReclamationAgent" text="%manage_reclamations" />
+        <Label fx:id="manageAgencyLabel" onMouseClicked="#navigateToAgency" styleClass="nav-label"
+               text="%manage_agency"/>
+        <Label fx:id="manageOfferHotel" onMouseClicked="#navigateToHotel" styleClass="nav-label"
+               text="%manage_hotel_tickets"/>
+        <Label fx:id="consultPromotion" onMouseClicked="#navigatToPromotionAgent" styleClass="nav-label"
+               text="%consult_promotions"/>
+        <Label fx:id="manageOfferTravel" onMouseClicked="#navigateToOfferTravel" styleClass="nav-label"
+               text="%manage_travel"/>
+        <Label fx:id="manageReclamationsLabel" styleClass="nav-label" onMouseClicked="#navigatToReclamationAgent"
+               text="%manage_reclamations"/>
 
         <!-- Spacer to push profile and logout to the right -->
-        <Region HBox.hgrow="ALWAYS" />
+        <Region HBox.hgrow="ALWAYS"/>
 
         <!-- Profile Button -->
-        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button" text="%profile_button" />
+        <Button fx:id="editProfile" onAction="#handelEditProfile" styleClass="profile-button" text="%profile_button"/>
 
         <!-- LogOut Button -->
-        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button" text="%logout_button" />
+        <Button fx:id="logOutButton" onAction="#handelLogout" styleClass="logout-button" text="%logout_button"/>
 
         <!-- Profile Image -->
-        <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-image" />
+        <ImageView fx:id="profilePic" fitHeight="36.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true"
+                   styleClass="profile-image"/>
+                           <ImageView fx:id="chatbotIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true"
+                   styleClass="chatbot-icon" onMouseClicked="#startChatWithBot">
+            <image>
+                <Image url="@../../assets/chatbot.png" />
+            </image>
+        </ImageView>
     </HBox>
 
     <!-- Centered "Coming Soon..." Text -->
-    <Label fx:id="coming_soon" layoutX="485.0" layoutY="331.0" styleClass="coming-soon" text="%coming_soon" AnchorPane.leftAnchor="485.0" AnchorPane.topAnchor="331.0" />
+    <Label fx:id="coming_soon" layoutX="485.0" layoutY="331.0" styleClass="coming-soon" text="%coming_soon"
+           AnchorPane.leftAnchor="485.0" AnchorPane.topAnchor="331.0"/>
 
 </AnchorPane>

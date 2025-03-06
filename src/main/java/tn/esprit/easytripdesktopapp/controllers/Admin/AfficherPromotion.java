@@ -32,6 +32,10 @@ public class AfficherPromotion implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         removeExpiredPromotions();
         loadPromotions();
+        cardContainer.widthProperty().addListener((obs, oldVal, newVal) -> {
+            // Ajuster la mise en page en fonction de la nouvelle largeur
+            adjustLayout(newVal.doubleValue());
+        });
         searchField.textProperty().addListener((observable, oldValue, newValue) -> handleSearch());
     }
 
@@ -65,25 +69,27 @@ public class AfficherPromotion implements Initializable {
 
     private VBox createPromotionCard(Promotion promotion) {
         VBox card = new VBox();
-        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 1);");
+        card.getStyleClass().add("card"); // Utilisez une classe CSS pour la carte
         card.setPrefWidth(200);
         card.setSpacing(10);
 
         Label titleLabel = new Label(promotion.getTitle());
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        titleLabel.getStyleClass().add("promo-name"); // Utilisez une classe CSS pour le titre
 
         Label discountLabel = new Label("Réduction : " + promotion.getDiscount_percentage() + "%");
+        discountLabel.getStyleClass().add("promo-discount"); // Utilisez une classe CSS pour le pourcentage
 
         Label dateLabel = new Label("Valide jusqu'au : " + promotion.getValid_until());
+        dateLabel.getStyleClass().add("promo-valid-until"); // Utilisez une classe CSS pour la date
 
         card.setOnMouseClicked(event -> showPromotionDetail(promotion));
 
         Button btnModifier = new Button("Modifier");
-        btnModifier.getStyleClass().add("modify-button");
+        btnModifier.getStyleClass().add("modify-button"); // Utilisez une classe CSS pour le bouton Modifier
         btnModifier.setOnAction(event -> openUpdatePromotion(promotion));
 
         Button btnSupprimer = new Button("Supprimer");
-        btnSupprimer.getStyleClass().add("delete-button");
+        btnSupprimer.getStyleClass().add("delete-button"); // Utilisez une classe CSS pour le bouton Supprimer
         btnSupprimer.setOnAction(event -> confirmDelete(promotion));
 
         card.getChildren().addAll(titleLabel, discountLabel, dateLabel, btnModifier, btnSupprimer);
@@ -164,6 +170,17 @@ public class AfficherPromotion implements Initializable {
         detailAlert.setHeaderText(null);
         detailAlert.setContentText("Titre : " + promotion.getTitle() + "\nDescription : " + promotion.getDescription() + "\nRéduction : " + promotion.getDiscount_percentage() + "%" + "\nValide jusqu'au : " + promotion.getValid_until());
         detailAlert.showAndWait();
+    }
+
+    private void adjustLayout(double width) {
+        // Ajuster la mise en page des cartes en fonction de la largeur
+        if (width < 600) {
+            cardContainer.setHgap(5);
+            cardContainer.setVgap(5);
+        } else {
+            cardContainer.setHgap(10);
+            cardContainer.setVgap(10);
+        }
     }
 
     public void goBack(ActionEvent actionEvent) {

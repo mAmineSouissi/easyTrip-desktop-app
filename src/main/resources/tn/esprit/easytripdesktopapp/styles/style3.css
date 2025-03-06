@@ -1,73 +1,152 @@
-/* Conteneur de la barre de recherche */
-.hbox {
-    -fx-padding: 10px;
-    -fx-alignment: center;
+/* styles/style3.css */
+
+/* Style de base pour le BorderPane */
+BorderPane {
+    -fx-background-color: #ecf0f1;
 }
 
-/* Champ de recherche */
-#searchField {
-    -fx-pref-width: 250px;
-    -fx-padding: 5px;
-    -fx-font-size: 14px;
+/* Style pour le HBox en haut */
+HBox {
+    -fx-background-color: #2c3e50; /* Couleur de fond sombre */
+    -fx-padding: 15;
+    -fx-alignment: CENTER_LEFT;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5); /* Ombre */
 }
 
-/* Bouton Ajouter Promotion aligné à droite */
-#addPromotionButton {
-    -fx-background-color: #3498db;
+/* Style pour le titre */
+Label {
     -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-font-family: 'Arial';
+}
+
+/* Style pour le TextField de recherche */
+TextField {
+    -fx-pref-width: 300px;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-padding: 5 10;
     -fx-font-size: 14px;
-    -fx-padding: 8px 15px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
-    -fx-alignment: center-right;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+}
+
+TextField:focused {
+    -fx-border-color: #3498db;
+}
+
+/* Style pour les boutons */
+Button {
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 8 16;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
+}
+
+/* Style pour le bouton "Ajouter Promotion" */
+#addPromotionButton {
+    -fx-background-color: #3498db; /* Bleu moderne */
 }
 
 #addPromotionButton:hover {
-    -fx-background-color: #2980b9;
+    -fx-background-color: #2980b9; /* Bleu plus foncé au survol */
 }
 
-#addPromotionButton:pressed {
-    -fx-background-color: #1f618d;
+/* Style pour le bouton "Back" */
+Button[text="Back"] {
+    -fx-background-color: #95a5a6; /* Gris moderne */
 }
 
-/* Bouton Supprimer en rouge */
-.delete-button {
-    -fx-background-color: #e74c3c;
-    -fx-text-fill: white;
+Button[text="Back"]:hover {
+    -fx-background-color: #7f8c8d; /* Gris plus foncé au survol */
+}
+
+/* Style pour le ScrollPane */
+ScrollPane {
+    -fx-background-color: transparent;
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
+    -fx-padding: 0;
+}
+
+/* Style pour le FlowPane contenant les cartes */
+FlowPane {
+    -fx-padding: 20;
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+    -fx-alignment: CENTER;
+}
+
+/* styles/style3.css */
+
+/* Style pour les cartes de promotion */
+.card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-padding: 15;
+    -fx-min-width: 250px;
+    -fx-max-width: 300px;
+    -fx-min-height: 150px;
+    -fx-max-height: 200px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+/* Style pour le nom de la promotion */
+.promo-name {
+    -fx-font-size: 18px;
+    -fx-text-fill: #2c3e50; /* Couleur sombre */
+    -fx-font-weight: bold;
+}
+
+/* Style pour le pourcentage de réduction */
+.promo-discount {
+    -fx-font-size: 16px;
+    -fx-text-fill: #e74c3c; /* Rouge vif */
+    -fx-font-weight: bold;
+}
+
+/* Style pour la date de validité */
+.promo-valid-until {
     -fx-font-size: 14px;
-    -fx-padding: 8px 12px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
+    -fx-text-fill: #3498db; /* Bleu moderne */
+    -fx-font-style: italic;
 }
 
-.delete-button:hover {
-    -fx-background-color: #c0392b;
-}
-
-.delete-button:pressed {
-    -fx-background-color: #a93226;
-}
-
-/* Bouton Modifier en bleu ciel */
+/* Style pour le bouton "Modifier" */
 .modify-button {
-    -fx-background-color: #5dade2;
+    -fx-background-color: #f39c12; /* Orange */
     -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 8px 12px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0, 1, 1);
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
 }
 
 .modify-button:hover {
-    -fx-background-color: #2e86c1;
+    -fx-background-color: #e67e22; /* Orange plus foncé au survol */
 }
 
-.modify-button:pressed {
-    -fx-background-color: #21618c;
+/* Style pour le bouton "Supprimer" */
+.delete-button {
+    -fx-background-color: #e74c3c; /* Rouge */
+    -fx-text-fill: white;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.delete-button:hover {
+    -fx-background-color: #c0392b; /* Rouge plus foncé au survol */
 }

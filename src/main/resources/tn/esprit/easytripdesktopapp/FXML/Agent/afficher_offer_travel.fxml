@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
@@ -9,30 +10,36 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane prefHeight="172.0" prefWidth="1129.0" stylesheets="@../../styles/style7.css"
+<BorderPane prefHeight="172.0" prefWidth="1129.0" stylesheets="@../../styles/style17.css"
             xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22"
             fx:controller="tn.esprit.easytripdesktopapp.controllers.Agent.AfficherOfferTravelController">
 
-
-    <!-- Barre de recherche en haut -->
+    <!-- Barre de recherche et filtres en haut -->
     <top>
-        <HBox alignment="CENTER" spacing="10">
-            <Label text="Rechercher une offre:"/>
-            <TextField fx:id="searchField" promptText="Nom de l'offre..."/>
-            <Button onAction="#handleSearch" text="Rechercher"/>
+        <HBox alignment="CENTER" spacing="10" styleClass="top-hbox">
+            <!-- Flèche de retour (←) -->
+            <Button onAction="#goBack" styleClass="arrow-back-button" text="←" />
 
-            <Label text="Filtrer par offre:"/>
-            <ComboBox fx:id="offerComboBox" onAction="#filterOffers" prefWidth="200"/>
+            <!-- Barre de recherche -->
+            <TextField fx:id="searchField" promptText="Rechercher par destination..." styleClass="search-field" />
 
-            <Button onAction="#openAddOffer" text="Ajouter Offre"/>
-            <Button mnemonicParsing="false" onAction="#goBack" prefWidth="87.0" text="Back"/>
+            <!-- Filtre par catégorie -->
+            <Label text="Catégorie:" styleClass="filter-label" />
+            <ComboBox fx:id="cbCategoryFilter" onAction="#filterOffers" styleClass="filter-combo-box" />
+
+            <!-- Filtre par date de départ -->
+            <Label text="Date de départ:" styleClass="filter-label" />
+            <DatePicker fx:id="dpDepartureFilter" onAction="#filterOffers" styleClass="filter-date-picker" />
+
+            <!-- Bouton "Ajouter Offre" -->
+            <Button onAction="#openAddOffer" text="Ajouter Offre" styleClass="add-button" />
         </HBox>
     </top>
 
     <!-- Conteneur central avec ScrollPane et FlowPane -->
     <center>
-        <ScrollPane fitToHeight="true" fitToWidth="true">
-            <FlowPane fx:id="cardContainer" alignment="TOP_LEFT" hgap="10" vgap="10"/>
+        <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="scroll-pane">
+            <FlowPane fx:id="cardContainer" alignment="TOP_LEFT" hgap="10" vgap="10" styleClass="flow-pane" />
         </ScrollPane>
     </center>
 </BorderPane>

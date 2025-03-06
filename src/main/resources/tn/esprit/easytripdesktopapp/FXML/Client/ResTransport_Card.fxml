@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane onMouseClicked="#click1" prefHeight="270.0" prefWidth="300.0" styleClass="card" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.ResTransportCard">
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="63.0" layoutY="8.0" prefHeight="302.0" prefWidth="225.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <HBox alignment="CENTER" prefHeight="41.0" prefWidth="220.0" styleClass="card-header">
+                    <children>
+                        <Label prefHeight="36.0" prefWidth="210.0" styleClass="card-label" text="Date Debut :">
+                            <font>
+                                <Font name="Cambria" size="20.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="DateDebLabel" prefHeight="26.0" prefWidth="273.0" styleClass="card-value" text="Label">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                </HBox>
+                <Separator prefHeight="4.0" prefWidth="257.0" styleClass="card-separator" />
+                <HBox alignment="CENTER" layoutX="10.0" layoutY="51.0" prefHeight="41.0" prefWidth="220.0" styleClass="card-content">
+                    <children>
+                        <Label prefHeight="36.0" prefWidth="210.0" styleClass="card-label" text="Date Fin :">
+                            <font>
+                                <Font name="Cambria" size="20.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="DateFinLabel" prefHeight="26.0" prefWidth="273.0" styleClass="card-value" text="Label">
+                            <font>
+                                <Font name="System Bold Italic" size="12.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <Separator prefHeight="10.0" prefWidth="285.0" styleClass="card-separator" />
+                <HBox alignment="CENTER" layoutX="30.0" layoutY="133.0" prefHeight="41.0" prefWidth="220.0" styleClass="card-content">
+                    <children>
+                        <Label prefHeight="36.0" prefWidth="210.0" styleClass="card-label" text="Statue :">
+                            <font>
+                                <Font name="Cambria" size="20.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="StatuesLabel" prefHeight="20.0" prefWidth="277.0" styleClass="card-value" text="Label" />
+                    </children>
+                </HBox>
+                <Separator prefWidth="200.0" styleClass="card-separator" />
+            <Label fx:id="inprogress_label" prefHeight="24.0" prefWidth="255.0" styleClass="status-res-card" stylesheets="@Style.css" text="nous avons reçu votre demande " textFill="#150ae8">
+               <font>
+                  <Font name="Arial Narrow Bold Italic" size="18.0" />
+               </font>
+            </Label>
+            </children>
+        </VBox>
+      <ImageView fx:id="img_annule" fitHeight="150.0" fitWidth="230.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@images/5c13c1d4dcca9_Annule.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="img_done" fitHeight="120.0" fitWidth="106.0" layoutX="44.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@images/right.png" />
+         </image>
+      </ImageView>
+    </children>
+</AnchorPane>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="585.0" prefWidth="525.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.controllers.UpdateCar">
+   <children>
+      <VBox alignment="CENTER" layoutX="52.0" layoutY="46.0" prefHeight="279.0" prefWidth="426.0" stylesheets="@Style.css">
+         <children>
+            <HBox alignment="CENTER" styleClass="input-box">
+               <children>
+                  <Label alignment="CENTER" prefHeight="27.0" prefWidth="135.0" styleClass="input-label" text="Model:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="model_textfield" promptText="Model" styleClass="input-field" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" top="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" styleClass="input-box">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#upload_img" prefHeight="30.0" prefWidth="90.0" styleClass="upload-button" text="Upload" />
+                  <Pane prefHeight="32.0" prefWidth="34.0" />
+                  <TextField fx:id="image_textfield" promptText="URL de l'image" styleClass="input-field" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" styleClass="input-box">
+               <children>
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="133.0" styleClass="input-label" text="Seats:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="seats_textfield" prefHeight="25.0" prefWidth="124.0" promptText="Nombre de places" styleClass="input-field" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" styleClass="input-box">
+               <children>
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="132.0" styleClass="input-label" text="Location:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="location_textfield" promptText="Localisation" styleClass="input-field" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" styleClass="input-box">
+               <children>
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="131.0" styleClass="input-label" text="Price:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="price_textfield" promptText="Prix par jour" styleClass="input-field" />
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" styleClass="input-box">
+               <children>
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="136.0" styleClass="input-label" text="Statut:">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="statue_combobox" prefWidth="150.0" styleClass="combo-box" />
+               </children>
+            </HBox>
+            <ToolBar prefHeight="40.0" prefWidth="200.0" styleClass="transparent" stylesheets="@Style.css">
+               <items>
+                  <Button mnemonicParsing="false" onAction="#edit" styleClass="action-button" text="Mettre à jour" />
+               </items>
+            </ToolBar>
+         </children>
+         <styleClass>
+            <String fx:value="shadow" />
+            <String fx:value="form-container" />
+         </styleClass>
+      </VBox>
+   </children>
+</AnchorPane>

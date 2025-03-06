@@ -1,67 +1,108 @@
-/* Style général pour le FlowPane (conteneur des cartes) */
-FlowPane {
-    -fx-background-color: #f4f4f4; /* Couleur de fond légère */
-    -fx-padding: 20; /* Espacement intérieur */
-    -fx-hgap: 20; /* Espacement horizontal entre les cartes */
-    -fx-vgap: 20; /* Espacement vertical entre les cartes */
+/* Style général pour le BorderPane */
+BorderPane {
+    -fx-background-color: #f0f2f5; /* Fond léger et moderne */
+    -fx-padding: 0; /* Pas de padding pour que la HBox prenne toute la largeur */
 }
 
-/* Style pour les cartes de promotion */
-VBox {
-    -fx-background-color: white; /* Fond blanc */
-    -fx-padding: 15; /* Espacement intérieur */
-    -fx-border-radius: 10; /* Bordures arrondies */
-    -fx-background-radius: 10; /* Bordures arrondies pour le fond */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); /* Ombre légère */
-    -fx-cursor: hand; /* Curseur en forme de main au survol */
-    -fx-pref-width: 250; /* Largeur préférée des cartes */
-    -fx-spacing: 10; /* Espacement entre les éléments dans la carte */
+/* Style pour le HBox en haut (barre de recherche) */
+HBox {
+    -fx-background-color: #2c3e50; /* Fond bleu foncé */
+    -fx-padding: 10; /* Espacement intérieur */
+    -fx-alignment: CENTER_LEFT; /* Aligner les éléments à gauche */
 }
 
-/* Style pour le titre de la promotion */
-Label.title-label {
+/* Style pour le bouton "Back" avec flèche */
+.back-button {
+    -fx-pref-width: 40; /* Largeur préférée */
+    -fx-pref-height: 35; /* Hauteur préférée */
     -fx-font-size: 18px; /* Taille de la police */
-    -fx-font-weight: bold; /* Texte en gras */
-    -fx-text-fill: #333333; /* Couleur du texte */
+    -fx-background-color: transparent; /* Fond transparent */
+    -fx-text-fill: white; /* Couleur du texte (blanc) */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-cursor: hand; /* Curseur en forme de main au survol */
+    -fx-padding: 5; /* Espacement intérieur */
+    -fx-font-family: "Segoe UI", sans-serif; /* Police moderne */
 }
 
-/* Style pour les labels de réduction et de date */
-Label.discount-label, Label.date-label {
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-text-fill: #555555; /* Couleur du texte */
+.back-button:hover {
+    -fx-text-fill: #bdc3c7; /* Changement de couleur au survol (gris clair) */
 }
 
-/* Style pour la barre de recherche */
-TextField {
+/* Style pour le TextField (barre de recherche) */
+.search-field {
     -fx-pref-width: 300; /* Largeur préférée */
     -fx-pref-height: 35; /* Hauteur préférée */
     -fx-font-size: 14px; /* Taille de la police */
     -fx-background-color: white; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Couleur de la bordure */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+    -fx-border-color: #d1d1d1; /* Couleur de la bordure */
+    -fx-border-radius: 8; /* Bordures arrondies */
+    -fx-background-radius: 8; /* Bordures arrondies pour le fond */
     -fx-padding: 5; /* Espacement intérieur */
+    -fx-font-family: "Segoe UI", sans-serif; /* Police moderne */
 }
 
-/* Style pour la boîte de dialogue des détails */
-.dialog-pane {
-    -fx-background-color: white; /* Fond blanc */
-    -fx-border-radius: 10; /* Bordures arrondies */
-    -fx-background-radius: 10; /* Bordures arrondies pour le fond */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); /* Ombre légère */
+.search-field:focused {
+    -fx-border-color: #2196F3; /* Bordure bleue lorsqu'il est sélectionné */
 }
 
-/* Style pour les boutons dans la boîte de dialogue */
-.dialog-pane .button {
-    -fx-background-color: #4CAF50; /* Fond vert */
-    -fx-text-fill: white; /* Texte blanc */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
+/* Style pour le titre "Liste des Promotions" */
+.title-label {
+    -fx-font-size: 26px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-text-fill: #2c3e50; /* Couleur du texte (bleu foncé) */
+    -fx-alignment: center; /* Centrer le texte */
+    -fx-padding: 10; /* Espacement intérieur */
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
-    -fx-cursor: hand; /* Curseur en forme de main au survol */
+    -fx-font-family: "Segoe UI", sans-serif; /* Police moderne */
 }
 
-.dialog-pane .button:hover {
-    -fx-background-color: #45a049; /* Changement de couleur au survol */
+/* Style pour le ScrollPane */
+ScrollPane {
+    -fx-background-color: transparent; /* Fond transparent */
+    -fx-fit-to-width: true; /* Adapter la largeur au contenu */
+    -fx-fit-to-height: true; /* Adapter la hauteur au contenu */
+    -fx-padding: 10; /* Espacement intérieur */
+}
+
+/* Style pour le FlowPane (conteneur des cartes) */
+FlowPane {
+    -fx-alignment: top-left; /* Aligner les éléments en haut à gauche */
+    -fx-hgap: 15; /* Espacement horizontal entre les éléments */
+    -fx-vgap: 15; /* Espacement vertical entre les éléments */
+    -fx-padding: 10; /* Espacement intérieur */
+}
+
+/* Style pour les cartes de promotion */
+.card {
+    -fx-background-color: white; /* Fond blanc */
+    -fx-padding: 20; /* Espacement intérieur */
+    -fx-border-radius: 12; /* Bordures arrondies */
+    -fx-background-radius: 12; /* Bordures arrondies pour le fond */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); /* Ombre légère */
+    -fx-cursor: hand; /* Curseur en forme de main au survol */
+    -fx-pref-width: 280; /* Largeur préférée des cartes */
+    -fx-spacing: 10; /* Espacement entre les éléments dans la carte */
+}
+
+/* Style pour le titre de la promotion */
+.card-title {
+    -fx-font-size: 20px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-text-fill: #2c3e50; /* Couleur du texte (bleu foncé) */
+    -fx-font-family: "Segoe UI", sans-serif; /* Police moderne */
+}
+
+/* Style pour les labels de réduction */
+.card-discount {
+    -fx-font-size: 18px; /* Taille de la police */
+    -fx-text-fill: #27ae60; /* Couleur du texte (vert vif) */
+    -fx-font-family: "Segoe UI", sans-serif; /* Police moderne */
+}
+
+/* Style pour les labels de date */
+.card-date {
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-text-fill: #e67e22; /* Couleur du texte (orange vif) */
+    -fx-font-family: "Segoe UI", sans-serif; /* Police moderne */
 }

@@ -7,16 +7,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import tn.esprit.easytripdesktopapp.models.User;
@@ -35,11 +32,20 @@ public class AgentDashboardController implements Initializable {
     public Label manageOfferHotel;
     public Label consultPromotion;
     public Label manageOfferTravel;
+    public ImageView chatbotIcon;
     @FXML
     private ImageView profilePic;
 
     @FXML
     private Label welcomeLabel;
+
+    @FXML
+    private VBox chatWindow;       // Fenêtre de chat
+    @FXML
+    private TextArea chatArea;     // Zone de texte pour afficher la conversation
+    @FXML
+    private TextField inputField;  // Champ de texte pour l'entrée de l'utilisateur
+
 
     @FXML
     private Button editProfile;
@@ -333,6 +339,27 @@ public class AgentDashboardController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void startChatWithBot(MouseEvent event) {
+        try {
+            // Load the ChatbotFXML.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Agent/chatbot.fxml"));
+            Parent root = loader.load();
+
+            // Create a new stage for the chatbot
+            Stage chatbotStage = new Stage();
+            chatbotStage.setTitle("Chatbot");
+            chatbotStage.setScene(new Scene(root));
+
+            // Show the chatbot stage
+            chatbotStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Handle the exception as needed
         }
     }
 }

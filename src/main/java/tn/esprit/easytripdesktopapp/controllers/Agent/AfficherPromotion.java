@@ -23,7 +23,8 @@ public class AfficherPromotion implements Initializable {
     private FlowPane cardContainer;
 
     @FXML
-    private TextField searchField;
+    private TextField searchField; // Doit correspondre à fx:id="searchField" dans le FXML
+
 
     private final CRUDService<Promotion> promotionService = new ServicePromotion();
 
@@ -66,15 +67,18 @@ public class AfficherPromotion implements Initializable {
 
     private VBox createPromotionCard(Promotion promotion) {
         VBox card = new VBox();
-        card.setStyle("-fx-background-color: white; -fx-padding: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 1);");
-        card.setPrefWidth(200);
-        card.setSpacing(10);
+        card.getStyleClass().add("card"); // Applique la classe CSS "card"
+        card.setPrefWidth(280); // Largeur préférée
+        card.setSpacing(10); // Espacement entre les éléments
 
         Label titleLabel = new Label(promotion.getTitle());
-        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        titleLabel.getStyleClass().add("card-title"); // Applique la classe CSS "card-title"
 
         Label discountLabel = new Label("Réduction : " + promotion.getDiscount_percentage() + "%");
+        discountLabel.getStyleClass().add("card-discount"); // Applique la classe CSS "card-discount"
+
         Label dateLabel = new Label("Valide jusqu'au : " + promotion.getValid_until());
+        dateLabel.getStyleClass().add("card-date"); // Applique la classe CSS "card-date"
 
         card.setOnMouseClicked(event -> showPromotionDetail(promotion));
 

@@ -1,79 +1,206 @@
-/* Style global pour le BorderPane */
-.root {
-    -fx-background-color: #f4f4f4; /* Couleur de fond douce */
+/* styles/style1.css */
+
+/* Style de base pour le BorderPane */
+BorderPane {
+    -fx-background-color: #f4f4f4; /* Fond clair */
 }
 
-/* Style pour les HBox */
-.hbox {
-    -fx-background-color: #ffffff; /* Couleur de fond blanche */
-    -fx-padding: 10;
-    -fx-border-radius: 5;
-    -fx-background-insets: 0, 0;
+/* Style pour les boutons */
+Button {
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
 }
 
-/* Style pour les Labels */
-.label {
-    -fx-font-size: 14px; /* Taille de police */
-    -fx-text-fill: #333333; /* Couleur du texte */
+/* Style pour le bouton "Rechercher" */
+.search-button {
+    -fx-background-color: #2ecc71; /* Vert moderne */
+    -fx-text-fill: white;
 }
 
-/* Style pour le TextField */
-.text-field {
-    -fx-background-color: #ffffff; /* Couleur de fond blanche */
-    -fx-border-color: #cccccc; /* Couleur de bordure */
-    -fx-border-radius: 5; /* Bords arrondis */
-    -fx-padding: 5; /* Espacement interne */
+.search-button:hover {
+    -fx-background-color: #27ae60; /* Vert plus foncé au survol */
+}
+
+/* Style pour le bouton "Ajouter Agence" */
+.add-button {
+    -fx-background-color: #3498db; /* Bleu moderne */
+    -fx-text-fill: white;
+}
+
+.add-button:hover {
+    -fx-background-color: #2980b9; /* Bleu plus foncé au survol */
+}
+
+/* Style pour les champs de texte */
+TextField {
+    -fx-background-color: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-padding: 5 10;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
+}
+
+TextField:focused {
+    -fx-border-color: #3498db; /* Bleu moderne */
 }
 
 /* Style pour le ComboBox */
-.combo-box {
-    -fx-background-color: #ffffff; /* Couleur de fond blanche */
-    -fx-border-color: #cccccc; /* Couleur de bordure */
-    -fx-border-radius: 5; /* Bords arrondis */
+ComboBox {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #bdc3c7;
+    -fx-border-width: 1px;
+    -fx-padding: 5 10;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3);
 }
 
-/* Style pour le Button */
-.button {
-    -fx-background-color: #4caf50; /* Couleur de fond verte */
-    -fx-text-fill: white; /* Couleur du texte en blanc */
-    -fx-padding: 10; /* Espacement interne */
-    -fx-border-radius: 5; /* Bords arrondis */
-}
-
-.button:hover {
-    -fx-background-color: #45a049; /* Couleur au survol */
+ComboBox:focused {
+    -fx-border-color: #3498db; /* Bleu moderne */
 }
 
 /* Style pour le ScrollPane */
-.scroll-pane {
-    -fx-background-color: transparent; /* Fond transparent */
+ScrollPane {
+    -fx-background-color: transparent;
+    -fx-fit-to-width: true;
+    -fx-fit-to-height: true;
 }
 
 /* Style pour le FlowPane */
-.flow-pane {
-    -fx-padding: 10; /* Espacement autour des éléments */
+FlowPane {
+    -fx-padding: 20;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
 }
 
-/* Style pour le bouton Supprimer */
-.button-supprimer {
-    -fx-background-color: #e74c3c; /* Rouge */
-    -fx-text-fill: white; /* Texte en blanc */
-    -fx-padding: 10; /* Espacement interne */
-    -fx-border-radius: 5; /* Bords arrondis */
+/* Style pour le bouton "Détails" */
+.button-details {
+    -fx-background-color: #3498db; /* Bleu */
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
 }
 
-.button-supprimer:hover {
-    -fx-background-color: #c0392b; /* Rouge foncé au survol */
+.button-details:hover {
+    -fx-background-color: #2980b9; /* Bleu plus foncé au survol */
 }
+/* styles/style1.css */
 
-/* Style pour le bouton Modifier */
+/* Style pour le bouton "Modifier" */
 .button-modifier {
-    -fx-background-color: #3498db; /* Bleu ciel */
-    -fx-text-fill: white; /* Texte en blanc */
-    -fx-padding: 10; /* Espacement interne */
-    -fx-border-radius: 5; /* Bords arrondis */
+    -fx-background-color: #f39c12; /* Orange */
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
 }
 
 .button-modifier:hover {
-    -fx-background-color: #2980b9; /* Bleu foncé au survol */
+    -fx-background-color: #e67e22; /* Orange plus foncé au survol */
+}
+
+/* Style pour le bouton "Supprimer" */
+.button-supprimer {
+    -fx-background-color: #e74c3c; /* Rouge */
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
+}
+
+.button-supprimer:hover {
+    -fx-background-color: #c0392b; /* Rouge plus foncé au survol */
+}
+
+/* styles/style1.css */
+
+/* Style pour la carte */
+.card {
+    -fx-background-color: white;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
+    -fx-spacing: 10; /* Espacement entre les éléments */
+    -fx-alignment: CENTER; /* Centrer les éléments */
+}
+
+/* Style pour l'image dans la carte */
+.card ImageView {
+    -fx-max-width: 200px; /* Largeur maximale */
+    -fx-max-height: 150px; /* Hauteur maximale */
+    -fx-fit-width: 200px; /* Largeur fixe */
+    -fx-fit-height: 150px; /* Hauteur fixe */
+    -fx-preserve-ratio: false; /* Remplir le conteneur */
+    -fx-border-radius: 5; /* Bordures arrondies */
+    -fx-background-radius: 5; /* Bordures arrondies */
+}
+
+/* Style pour le titre de la carte */
+.card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50; /* Couleur sombre */
+}
+
+/* Style pour les boutons */
+.button-details {
+    -fx-background-color: #3498db; /* Bleu */
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
+}
+
+.button-details:hover {
+    -fx-background-color: #2980b9; /* Bleu plus foncé au survol */
+}
+
+.button-modifier {
+    -fx-background-color: #f39c12; /* Orange */
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
+}
+
+.button-modifier:hover {
+    -fx-background-color: #e67e22; /* Orange plus foncé au survol */
+}
+
+.button-supprimer {
+    -fx-background-color: #e74c3c; /* Rouge */
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3);
+}
+
+.button-supprimer:hover {
+    -fx-background-color: #c0392b; /* Rouge plus foncé au survol */
 }

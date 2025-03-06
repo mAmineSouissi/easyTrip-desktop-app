@@ -6,27 +6,28 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="473.0" prefWidth="541.0" stylesheets="@../../styles/style4.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.AjouterPromotion">
+<AnchorPane prefHeight="503.0" prefWidth="541.0" stylesheets="@../../styles/style4.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.AjouterPromotion">
     <children>
-        <Label styleClass="title-label" text="Ajouter une Promotion" AnchorPane.leftAnchor="10"
-               AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10"/>
+        <!-- Titre centré -->
+        <HBox alignment="CENTER" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="10">
+            <Label styleClass="title-label" text="Ajouter une Promotion" />
+        </HBox>
 
-        <TextField fx:id="title" promptText="Titre" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10"
-                   AnchorPane.topAnchor="50"/>
-        <TextArea fx:id="description" layoutX="10.0" layoutY="129.0" promptText="Description"
-                  AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955"
-                  AnchorPane.topAnchor="129.0"/>
-        <TextField fx:id="discountPercentage" layoutX="10.0" layoutY="230.0" promptText="Pourcentage (%)"
-                   AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955"
-                   AnchorPane.topAnchor="230.0"/>
-        <DatePicker fx:id="validUntil" layoutX="10.0" layoutY="290.0" promptText="Date d'expiration"
-                    AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.799999999999955"
-                    AnchorPane.topAnchor="290.0"/>
+        <!-- Champ Titre -->
+        <TextField fx:id="title" promptText="Titre" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="50" />
 
-        <Button layoutX="210.0" layoutY="422.0" onAction="#save" styleClass="save-button" text="Sauvegarder"
-                AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="422.0"/>
+        <!-- Champ Description -->
+        <TextArea fx:id="description" layoutX="30.0" layoutY="111.0" prefHeight="154.0" prefWidth="501.0" promptText="Description" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="170.79999999999995" AnchorPane.topAnchor="111.0" />
+
+        <!-- Champ Pourcentage de réduction -->
+        <TextField fx:id="discountPercentage" layoutX="30.0" layoutY="286.0" prefHeight="33.0" prefWidth="308.0" promptText="Pourcentage (%)" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="243.59999999999997" AnchorPane.topAnchor="286.0" />
+
+        <!-- Champ Date d'expiration -->
+        <DatePicker fx:id="validUntil" layoutX="30.0" layoutY="352.0" prefHeight="42.0" prefWidth="351.0" promptText="Date d'expiration" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="200.39999999999998" AnchorPane.topAnchor="352.0" />
+
+        <!-- Bouton Sauvegarder -->
+        <Button layoutX="70.0" layoutY="432.0" onAction="#save" styleClass="save-button" text="Sauvegarder" AnchorPane.bottomAnchor="0.19999999999998863" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.79999999999995" />
     </children>
 </AnchorPane>

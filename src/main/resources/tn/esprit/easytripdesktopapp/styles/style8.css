@@ -1,76 +1,106 @@
-/* Style général pour l'AnchorPane */
-AnchorPane {
-    -fx-background-color: #f4f4f4; /* Couleur de fond légère */
-    -fx-padding: 10; /* Espacement intérieur */
+/* Style général */
+.root {
+    -fx-background-color: #ecf0f1;
+    -fx-padding: 20px;
 }
 
-/* Style pour les Labels */
-Label {
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-text-fill: #333333; /* Couleur du texte */
+/* Titre */
+.title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e74c3c;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+    -fx-underline: true;
 }
 
-/* Style pour les TextField */
-TextField {
-    -fx-pref-height: 35; /* Hauteur préférée */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Couleur de la bordure */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
-    -fx-padding: 5; /* Espacement intérieur */
+/* Labels */
+.label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
 }
 
-/* Style pour les DatePicker */
-DatePicker {
-    -fx-pref-height: 35; /* Hauteur préférée */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Couleur de la bordure */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
-    -fx-padding: 5; /* Espacement intérieur */
+/* Champs de texte, ComboBox et DatePicker */
+.text-field, .text-area, .combo-box, .date-picker {
+    -fx-pref-height: 35px;
+    -fx-font-size: 14px;
+    -fx-border-color: #2980b9;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-min-width: 250px;
+    -fx-max-width: 100%;
 }
 
-/* Style pour les ComboBox */
-ComboBox {
-    -fx-pref-height: 35; /* Hauteur préférée */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Couleur de la bordure */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
-    -fx-padding: 5; /* Espacement intérieur */
+.text-area {
+    -fx-pref-height: 80px;
+    -fx-wrap-text: true;
 }
 
-/* Style pour les TextArea */
-TextArea {
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-background-color: #ffffff; /* Fond blanc */
-    -fx-border-color: #cccccc; /* Couleur de la bordure */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
-    -fx-padding: 5; /* Espacement intérieur */
+/* Layout Responsive */
+.grid-pane {
+    -fx-hgap: 15px;
+    -fx-vgap: 15px;
+    -fx-alignment: center;
 }
 
-/* Style pour les boutons */
-Button {
-    -fx-pref-width: 120; /* Largeur préférée */
-    -fx-pref-height: 35; /* Hauteur préférée */
-    -fx-font-size: 14px; /* Taille de la police */
-    -fx-background-color: #4CAF50; /* Fond vert */
-    -fx-text-fill: white; /* Texte blanc */
-    -fx-border-radius: 5; /* Bordures arrondies */
-    -fx-background-radius: 5; /* Bordures arrondies pour le fond */
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 3); /* Ombre légère */
-    -fx-cursor: hand; /* Curseur en forme de main au survol */
+@media screen and (max-width: 600px) {
+    .grid-pane {
+        -fx-hgap: 8px;
+        -fx-vgap: 8px;
+    }
+    .text-field, .text-area, .combo-box, .date-picker {
+        -fx-min-width: 180px;
+    }
 }
 
-Button:hover {
-    -fx-background-color: #45a049; /* Changement de couleur au survol */
+/* Boutons Ajouter et Modifier */
+.btn-add, .btn-update {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 12px 24px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0.5, 0, 2);
 }
 
-/* Style pour l'ImageView */
-ImageView {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 3); /* Ombre légère */
+.btn-add {
+    -fx-background-color: #2ecc71;
+}
+
+.btn-add:hover {
+    -fx-background-color: #27ae60;
+}
+
+.btn-update {
+    -fx-background-color: #f39c12;
+}
+
+.btn-update:hover {
+    -fx-background-color: #e67e22;
+}
+
+/* Bouton Choisir une image */
+#btnChoisirImage, #btnChooseImage {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-cursor: hand;
+}
+
+#btnChoisirImage:hover, #btnChooseImage:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* Image */
+#imgOffer {
+    -fx-border-color: #7f8c8d;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
 }

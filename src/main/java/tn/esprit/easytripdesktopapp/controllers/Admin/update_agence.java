@@ -137,10 +137,18 @@ public class update_agence {
     private void chooseImage() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif", "*.bmp"));
+
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
         if (selectedFile != null) {
-            imageUrl = selectedFile.toURI().toString();
+            // Extract the filename from the selected file
+            String fileName = selectedFile.getName();
+
+            // Maintain the base URL and replace only the filename
+            String baseUrl = "http://localhost/img/profile/";
+            imageUrl = baseUrl + fileName;
+
+            // Set the new image in the ImageView
             Image img = new Image(imageUrl);
             imageView.setImage(img);
         }

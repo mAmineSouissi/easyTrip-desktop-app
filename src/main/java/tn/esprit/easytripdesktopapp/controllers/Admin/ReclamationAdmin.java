@@ -73,7 +73,9 @@ public class ReclamationAdmin {
     }
 
     // Twilio credentials
-
+   private final static String TWILIO_ACCOUNT_SID = "";
+    private final static String TWILIO_AUTH_TOKEN = "";
+    private final static String TWILIO_PHONE_NUMBER = "";
 
     @FXML
     void initialize() {

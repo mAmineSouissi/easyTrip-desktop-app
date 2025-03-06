@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="890.0" prefWidth="1315.0"
+            stylesheets="@../../styles/StyleTransport.css"
+            xmlns="http://javafx.com/javafx/23.0.1"
+            fx:controller="tn.esprit.easytripdesktopapp.controllers.Admin.AdminReservation">
+    <children>
+        <BorderPane layoutX="7.0" layoutY="7.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <center>
+                <VBox fx:id="carListContainer" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="65.0" prefWidth="200.0" styleClass="header-box">
+                            <padding>
+                                <Insets left="20.0" right="20.0"/>
+                            </padding>
+                            <children>
+                                <Label prefHeight="31.0" prefWidth="73.0" styleClass="header-label" text="Langue :">
+                                    <font>
+                                        <Font name="Cambria" size="18.0"/>
+                                    </font>
+                                </Label>
+                                <Label prefHeight="31.0" prefWidth="67.0" styleClass="header-label" text="Francais"
+                                       underline="true">
+                                    <font>
+                                        <Font name="Cambria" size="18.0"/>
+                                    </font>
+                                </Label>
+                                <Pane prefHeight="65.0" prefWidth="344.0" HBox.hgrow="ALWAYS"/>
+                                <Label prefHeight="65.0" prefWidth="109.0" styleClass="header-label" text="Mon Compte:">
+                                    <font>
+                                        <Font name="Cambria" size="18.0"/>
+                                    </font>
+                                </Label>
+                                <ImageView fitHeight="50.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../assets/images/images.png"/>
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <ImageView fitHeight="48.0" fitWidth="83.0" onMouseClicked="#BackHome"
+                                           pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../assets/images/home.png"/>
+                                    </image>
+                                </ImageView>
+                            </children>
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" top="10.0"/>
+                            </VBox.margin>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <ScrollPane fx:id="scroll" prefHeight="705.0" prefWidth="1052.0"
+                                            styleClass="transparent" stylesheets="@../../styles/StyleTransport.css">
+                                    <content>
+                                        <GridPane fx:id="grid" prefHeight="0.0" prefWidth="0.0">
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0"/>
+                                            </rowConstraints>
+                                        </GridPane>
+                                    </content>
+                                    <HBox.margin>
+                                        <Insets top="10.0"/>
+                                    </HBox.margin>
+                                </ScrollPane>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </center>
+            <left>
+                <VBox prefHeight="890.0" prefWidth="330.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <HBox prefHeight="203.0" prefWidth="330.0"/>
+                        <VBox alignment="CENTER" prefHeight="472.0" prefWidth="330.0" styleClass="card"
+                              stylesheets="@../../styles/StyleTransport.css">
+                            <children>
+                                <HBox alignment="CENTER"/>
+                                <HBox>
+                                    <children>
+                                        <Label prefHeight="20.0" prefWidth="164.0" styleClass="card-label"
+                                               text="Mettre a jour le status"/>
+                                    </children>
+                                </HBox>
+                                <ComboBox fx:id="statusComboBox" prefWidth="150.0" styleClass="combo-box"/>
+                                <Button mnemonicParsing="false" onAction="#update" styleClass="action-button"
+                                        text="Mettre à jour"/>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </left>
+        </BorderPane>
+    </children>
+</AnchorPane>

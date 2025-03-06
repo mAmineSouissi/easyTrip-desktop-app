@@ -53,6 +53,8 @@ public class TablesAdminController implements Initializable {
     public Label manageTickets;
     public Label manageHotels;
     public Label managePromotions;
+    public Label manageTransports;
+    public Label manageCars;
 
     @FXML
     private ListView<User> userListView;
@@ -86,6 +88,8 @@ public class TablesAdminController implements Initializable {
         } else {
             welcomeLabel.setText(bundle.getString("welcome_guest"));
         }
+        manageCars.setText(bundle.getString("manage_cars"));
+        manageTransports.setText(bundle.getString("manage_transports"));
         managePromotions.setText(bundle.getString("manage_promotions"));
         manageAgencies.setText(bundle.getString("manage_agency"));
         manageReservations.setText(bundle.getString("manage_reservations"));
@@ -552,4 +556,32 @@ public class TablesAdminController implements Initializable {
     }
 
 
+    public void navigateToTransport(MouseEvent mouseEvent) {
+            Stage stage;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/AdminReservation.fxml"));
+                Parent root = loader.load();
+                stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Offer Travel");
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
+
+
+    public void navigateToCars(MouseEvent mouseEvent) {
+        Stage stage;
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tn/esprit/easytripdesktopapp/FXML/Admin/Admin.fxml"));
+            Parent root = loader.load();
+            stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Offer Travel");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

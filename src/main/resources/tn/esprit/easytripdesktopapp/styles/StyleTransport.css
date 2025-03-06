@@ -1,0 +1,464 @@
+.search-box{
+    -fx-background-color:#FFFFFF ;
+    -fx-background-radius: 100;
+}
+.transparent{
+    -fx-background-color: rgba(0,0,0,0);
+}
+.search-button{
+    -fx-background-color: #828282;
+    -fx-background-radius: 30;
+}
+.right-bar{
+    -fx-background-color: D3D3D3;
+}
+.shadow{
+    -fx-effect: dropShadow(three-pass-box,rgba(0,0,0,0.1),10.0,0.0,0.0,10.0);
+}
+.chosen-car-card{
+    -fx-background-color: #0e7ee0;
+    -fx-background-radius: 30;
+}
+.labelAtt{
+    -fx-background-color: rgba(255,255,255,0.3);
+    -fx-background-radius: 30;
+}
+.add-ResButton{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 100;
+}
+.first-discription-card{
+    -fx-background-color: #D3D3D3;
+    -fx-background-radius: 30;
+}
+.car-item{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 100;
+}
+/* Background color for the main form */
+.form-container {
+    -fx-background-color: #f9f9f9;
+    -fx-background-radius: 20;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 10);
+}
+
+/* Labels Styling */
+.label {
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* TextFields Styling */
+.text-field {
+    -fx-pref-height: 30px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
+    -fx-font-size: 14px;
+}
+
+/* Buttons Styling */
+.button {
+    -fx-background-color: #0e7ee0;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #005bb5;
+}
+
+/* Image Upload Section */
+.upload-box {
+    -fx-background-color: #f1f1f1;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 10;
+    -fx-padding: 10;
+}
+.grid-pane {
+    -fx-hgap: 0;
+    -fx-vgap: 0;
+}
+
+.anchor-pane {
+    -fx-margin: 0;
+}
+.borderr{
+    -fx-background-radius: 100;
+}
+.card {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-spacing: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+/* Style de base pour le DatePicker */
+.date-picker {
+    -fx-background-color: #f0f0f0; /* Couleur de fond */
+    -fx-border-color: #cccccc; /* Couleur de la bordure */
+    -fx-border-radius: 5px; /* Rayon de la bordure */
+    -fx-padding: 5px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-font-family: "Arial"; /* Police de caractères */
+    -fx-text-fill: #333333; /* Couleur du texte */
+}
+
+/* Style du bouton du DatePicker */
+.date-picker .arrow-button {
+    -fx-background-color: #2196F3; /* Couleur de fond du bouton (bleu) */
+    -fx-background-radius: 5px; /* Rayon de la bordure du bouton */
+    -fx-padding: 5px; /* Espacement interne du bouton */
+}
+
+/* Style de l'icône du bouton */
+.date-picker .arrow-button .arrow {
+    -fx-background-color: white; /* Couleur de l'icône */
+}
+
+/* Style du popup du DatePicker */
+.date-picker-popup {
+    -fx-background-color: #ffffff; /* Couleur de fond du popup */
+    -fx-border-color: #cccccc; /* Couleur de la bordure du popup */
+    -fx-border-radius: 5px; /* Rayon de la bordure du popup */
+}
+
+/* Style des cellules du calendrier */
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #2196F3; /* Couleur de fond du mois et de l'année (bleu) */
+}
+
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: white; /* Couleur du texte du mois et de l'année */
+}
+
+.date-picker-popup .spinner .button {
+    -fx-background-color: #2196F3; /* Couleur de fond des boutons du spinner (bleu) */
+    -fx-text-fill: white; /* Couleur du texte des boutons du spinner */
+}
+
+.date-picker-popup .spinner .button:hover {
+    -fx-background-color: #1E88E5; /* Couleur de fond au survol (bleu plus foncé) */
+}
+
+.date-picker-popup .calendar-grid {
+    -fx-background-color: #ffffff; /* Couleur de fond de la grille du calendrier */
+}
+
+.date-picker-popup .calendar-grid .day-cell {
+    -fx-background-color: #ffffff; /* Couleur de fond des cellules */
+    -fx-text-fill: #333333; /* Couleur du texte des cellules */
+    -fx-border-color: #cccccc; /* Couleur de la bordure des cellules */
+}
+
+.date-picker-popup .calendar-grid .day-cell:hover {
+    -fx-background-color: #e0e0e0; /* Couleur de fond au survol */
+}
+
+.date-picker-popup .calendar-grid .day-cell:selected {
+    -fx-background-color: #2196F3; /* Couleur de fond de la cellule sélectionnée (bleu) */
+    -fx-text-fill: white; /* Couleur du texte de la cellule sélectionnée */
+}
+
+.date-picker-popup .calendar-grid .today {
+    -fx-background-color: #BBDEFB; /* Couleur de fond pour la date d'aujourd'hui (bleu clair) */
+    -fx-text-fill: #333333; /* Couleur du texte pour la date d'aujourd'hui */
+}
+
+/* Style général du formulaire */
+.form-container {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 10px; /* Coins arrondis */
+    -fx-padding: 20px; /* Espacement interne */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 0); /* Ombre */
+}
+
+/* Style de l'en-tête */
+.header-box {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px; /* Espacement interne */
+}
+
+.header-label {
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style des boîtes d'entrée */
+.input-box {
+    -fx-spacing: 10px; /* Espacement entre les éléments */
+    -fx-padding: 10px 0; /* Espacement interne */
+}
+
+.input-label {
+    -fx-text-fill: #333333; /* Texte gris foncé */
+    -fx-font-size: 14px; /* Taille de la police */
+    -fx-min-width: 80px; /* Largeur minimale */
+}
+
+.input-field {
+    -fx-background-color: #f0f0f0; /* Fond gris clair */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 5px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.input-field:focused {
+    -fx-border-color: #2196F3; /* Bordure bleue lorsqu'en focus */
+}
+
+/* Style des boutons */
+.upload-button {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 5px 10px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.upload-button:hover {
+    -fx-background-color: #1E88E5; /* Fond bleu plus foncé au survol */
+}
+
+.action-button {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.action-button:hover {
+    -fx-background-color: #1E88E5; /* Fond bleu plus foncé au survol */
+}
+/* Style général de la carte */
+.card {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 10px; /* Coins arrondis */
+    -fx-padding: 15px; /* Espacement interne */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 0); /* Ombre */
+}
+
+/* Style de l'en-tête de la carte */
+.card-header {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px; /* Espacement interne */
+}
+
+/* Style des labels dans la carte */
+.card-label {
+    -fx-text-fill: #333333; /* Texte gris foncé */
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style des valeurs dans la carte */
+.card-value {
+    -fx-text-fill: #555555; /* Texte gris */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+/* Style des séparateurs */
+.card-separator {
+    -fx-background-color: #cccccc; /* Couleur du séparateur */
+    -fx-padding: 5px 0; /* Espacement interne */
+}
+
+/* Style du contenu de la carte */
+.card-content {
+    -fx-spacing: 10px; /* Espacement entre les éléments */
+    -fx-padding: 10px 0; /* Espacement interne */
+}
+/* Style général de la page */
+.header-box {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px; /* Espacement interne */
+}
+
+.header-label {
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style des cartes */
+.card {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 10px; /* Coins arrondis */
+    -fx-padding: 15px; /* Espacement interne */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 0); /* Ombre */
+}
+
+.card-label {
+    -fx-text-fill: #333333; /* Texte gris foncé */
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style des boutons */
+.action-button {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.action-button:hover {
+    -fx-background-color: #1E88E5; /* Fond bleu plus foncé au survol */
+}
+
+/* Style de la ComboBox */
+.combo-box {
+    -fx-background-color: #f0f0f0; /* Fond gris clair */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 5px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-text-fill: #333333; /* Texte gris foncé */
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #2196F3; /* Fond bleu au survol */
+    -fx-text-fill: white; /* Texte blanc */
+}
+/* Style général de la page */
+.header-box {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px; /* Espacement interne */
+}
+
+.header-label {
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style des cartes */
+.card {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 10px; /* Coins arrondis */
+    -fx-padding: 15px; /* Espacement interne */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 0); /* Ombre */
+}
+
+.card-label {
+    -fx-text-fill: #333333; /* Texte gris foncé */
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style des boutons */
+.action-button {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.action-button:hover {
+    -fx-background-color: #1E88E5; /* Fond bleu plus foncé au survol */
+}
+
+/* Style de la ComboBox */
+.combo-box {
+    -fx-background-color: #f0f0f0; /* Fond gris clair */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 5px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-text-fill: #333333; /* Texte gris foncé */
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #2196F3; /* Fond bleu au survol */
+    -fx-text-fill: white; /* Texte blanc */
+}
+/* Style général de la page */
+.header-box {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px; /* Espacement interne */
+}
+
+.header-label {
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style des cartes */
+.card {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 10px; /* Coins arrondis */
+    -fx-padding: 15px; /* Espacement interne */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 10, 0, 0, 0); /* Ombre */
+}
+
+.card-label {
+    -fx-text-fill: #333333; /* Texte gris foncé */
+    -fx-font-size: 16px; /* Taille de la police */
+    -fx-font-weight: bold; /* Texte en gras */
+}
+
+/* Style des boutons */
+.action-button {
+    -fx-background-color: #2196F3; /* Fond bleu */
+    -fx-text-fill: white; /* Texte blanc */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 10px 20px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.action-button:hover {
+    -fx-background-color: #1E88E5; /* Fond bleu plus foncé au survol */
+}
+
+/* Style de la ComboBox */
+.combo-box {
+    -fx-background-color: #f0f0f0; /* Fond gris clair */
+    -fx-border-color: #cccccc; /* Bordure grise */
+    -fx-border-radius: 5px; /* Coins arrondis */
+    -fx-padding: 5px; /* Espacement interne */
+    -fx-font-size: 14px; /* Taille de la police */
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #ffffff; /* Fond blanc */
+    -fx-text-fill: #333333; /* Texte gris foncé */
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #2196F3; /* Fond bleu au survol */
+    -fx-text-fill: white; /* Texte blanc */
+}
+.status-res-card{
+    -fx-font-weight: bold; /* Texte en gras */
+    -fx-font-style: italic; /* Texte en italique */
+    -fx-text-fill: #150ae8; /* Couleur du texte */
+    -fx-font-size: 14px; /* Taille de la police (optionnelle) */
+    -fx-font-family: "Arial"; /* Police de caractères (optionnelle) */
+}

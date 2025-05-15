@@ -44,7 +44,11 @@
 
                 <Label text="Image de la ville:" GridPane.rowIndex="11" GridPane.columnIndex="0" />
                 <TextField fx:id="cityImage" editable="false" GridPane.rowIndex="11" GridPane.columnIndex="1" />
-                <Button fx:id="uploadButton" text="Upload" onAction="#uploadImage" GridPane.rowIndex="11" GridPane.columnIndex="2" />
+                <Button fx:id="uploadCityButton" text="Upload" onAction="#uploadCityImage" GridPane.rowIndex="11" GridPane.columnIndex="2" />
+
+                <Label text="Image compagnie aérienne:" GridPane.rowIndex="12" GridPane.columnIndex="0" />
+                <TextField fx:id="airlineImage" editable="false" GridPane.rowIndex="12" GridPane.columnIndex="1" />
+                <Button fx:id="uploadAirlineButton" text="Upload" onAction="#uploadAirlineImage" GridPane.rowIndex="12" GridPane.columnIndex="2" />
 
                 <Label text="Promotion:" GridPane.rowIndex="13" GridPane.columnIndex="0" />
                 <ComboBox fx:id="promotionTitle" GridPane.rowIndex="13" GridPane.columnIndex="1" />

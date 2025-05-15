@@ -15,37 +15,25 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class AjouterTicket {
-
     private final ServiceTicket ticketService = new ServiceTicket();
     private final ServicePromotion promotionService = new ServicePromotion();
-    @FXML
-    private TextField flightNumber;
-    @FXML
-    private TextField airline;
-    @FXML
-    private TextField departureCity;
-    @FXML
-    private TextField arrivalCity;
-    @FXML
-    private DatePicker departureDate;
-    @FXML
-    private TextField departureTime;
-    @FXML
-    private DatePicker arrivalDate;
-    @FXML
-    private TextField arrivalTime;
-    @FXML
-    private ComboBox<String> ticketClass;
-    @FXML
-    private TextField price;
-    @FXML
-    private ComboBox<String> ticketType;
-    @FXML
-    private TextField cityImage;
-    @FXML
-    private ComboBox<String> promotionTitle;
-    @FXML
-    private Button uploadButton;
+
+    @FXML private TextField flightNumber;
+    @FXML private TextField airline;
+    @FXML private TextField departureCity;
+    @FXML private TextField arrivalCity;
+    @FXML private DatePicker departureDate;
+    @FXML private TextField departureTime;
+    @FXML private DatePicker arrivalDate;
+    @FXML private TextField arrivalTime;
+    @FXML private ComboBox<String> ticketClass;
+    @FXML private TextField price;
+    @FXML private ComboBox<String> ticketType;
+    @FXML private TextField cityImage;
+    @FXML private TextField airlineImage;
+    @FXML private ComboBox<String> promotionTitle;
+    @FXML private Button uploadCityButton;
+    @FXML private Button uploadAirlineButton;
 
     UserSession session = UserSession.getInstance();
 
@@ -53,7 +41,6 @@ public class AjouterTicket {
     public void initialize() {
         ticketClass.getItems().addAll("Economy", "Business", "First");
         ticketType.getItems().addAll("One-way", "Round-trip");
-
 
         promotionTitle.getItems().add("Aucune promotion");
         List<Promotion> promotions = promotionService.getAll();
@@ -92,14 +79,30 @@ public class AjouterTicket {
     }
 
     @FXML
-    private void uploadImage() {
+    private void uploadCityImage() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choisir une image");
-        fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-        Stage stage = (Stage) uploadButton.getScene().getWindow();
+        fileChooser.setTitle("Choisir une image de la ville");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        Stage stage = (Stage) uploadCityButton.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
         if (selectedFile != null) {
             cityImage.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    @FXML
+    private void uploadAirlineImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Choisir une image pour la compagnie aérienne");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        Stage stage = (Stage) uploadAirlineButton.getScene().getWindow();
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        if (selectedFile != null) {
+            airlineImage.setText(selectedFile.getAbsolutePath());
         }
     }
 
@@ -119,9 +122,9 @@ public class AjouterTicket {
                 float pr = Float.parseFloat(price.getText());
                 String tType = ticketType.getValue();
                 String cityImg = cityImage.getText();
+                String airlineImg = airlineImage.getText();
                 String promoTitle = promotionTitle.getValue();
 
-                // Gestion de la promotion
                 int promotionId = 0;
                 if (!promoTitle.equals("Aucune promotion")) {
                     Promotion selectedPromotion = promotionService.getByTitle(promoTitle);
@@ -130,9 +133,7 @@ public class AjouterTicket {
                         return;
                     }
                     promotionId = selectedPromotion.getId();
-                    // Appliquer la réduction au prix
-                    float discountPercentage = selectedPromotion.getDiscount_percentage();
-                    pr = pr * (1 - discountPercentage / 100); // Réduction en pourcentage
+                    pr = pr * (1 - selectedPromotion.getDiscount_percentage() / 100);
                 }
 
                 Ticket ticket = new Ticket();
@@ -145,10 +146,11 @@ public class AjouterTicket {
                 ticket.setArrivalDate(arrDate.toString());
                 ticket.setArrivalTime(arrTime);
                 ticket.setTicketClass(tClass);
-                ticket.setPrice(pr); // Prix avec réduction si applicable
+                ticket.setPrice(pr);
                 ticket.setTicketType(tType);
                 ticket.setCityImage(cityImg);
-                ticket.setPromotionId(promotionId); // 0 si "Aucune promotion"
+                ticket.setImageAirline(airlineImg);
+                ticket.setPromotionId(promotionId);
                 ticket.setUserId(session.getUser().getId());
 
                 ticketService.add(ticket);
@@ -173,6 +175,7 @@ public class AjouterTicket {
         if (ticketClass.getValue() == null) errors.append("Classe requise.\n");
         if (ticketType.getValue() == null) errors.append("Type de billet requis.\n");
         if (cityImage.getText().isEmpty()) errors.append("Image de la ville requise.\n");
+        if (airlineImage.getText().isEmpty()) errors.append("Image de la compagnie aérienne requise.\n");
         if (promotionTitle.getValue() == null) errors.append("Promotion requise.\n");
 
         try {

@@ -18,7 +18,7 @@ public class ServiceHotel implements CRUDService<Hotel> {
 
     @Override
     public void add(Hotel hotel) {
-        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `hotels`(`name`, `adresse`, `city`, `rating`, `description`, `price`, `type_room`, `num_room`, `image`, `promotion_id`, `agency_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, hotel.getName());
@@ -45,8 +45,6 @@ public class ServiceHotel implements CRUDService<Hotel> {
                 pstm.setNull(11, java.sql.Types.INTEGER);
             }
 
-            // Ajout du user_id
-            pstm.setInt(12, hotel.getUserId());
 
             pstm.executeUpdate();
             System.out.println("Hôtel ajouté avec succès !");

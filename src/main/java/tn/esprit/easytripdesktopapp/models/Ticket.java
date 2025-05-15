@@ -14,13 +14,17 @@ public class Ticket {
     private float price;
     private String ticketType;
     private String cityImage;
+    private String imageAirline;
     private int agencyId;
     private int promotionId;
     private int userId;
 
     public Ticket() {}
 
-    public Ticket(int idTicket, int flightNumber, String airline, String departureCity, String arrivalCity, String departureDate, String departureTime, String arrivalDate, String arrivalTime, String ticketClass, float price, String ticketType, String cityImage, int agencyId, int promotionId, int userId) {
+    public Ticket(int idTicket, int flightNumber, String airline, String departureCity, String arrivalCity,
+                  String departureDate, String departureTime, String arrivalDate, String arrivalTime,
+                  String ticketClass, float price, String ticketType, String cityImage, String imageAirline,
+                  int agencyId, int promotionId, int userId) {
         this.idTicket = idTicket;
         this.flightNumber = flightNumber;
         this.airline = airline;
@@ -34,16 +38,9 @@ public class Ticket {
         this.price = price;
         this.ticketType = ticketType;
         this.cityImage = cityImage;
-        this.agencyId = agencyId; // Initialisation de l'ID de l'agence
-        this.promotionId = promotionId; // Initialisation de l'ID de la promotion
-        this.userId = userId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
+        this.imageAirline = imageAirline;
+        this.agencyId = agencyId;
+        this.promotionId = promotionId;
         this.userId = userId;
     }
 
@@ -87,11 +84,17 @@ public class Ticket {
     public String getCityImage() { return cityImage; }
     public void setCityImage(String cityImage) { this.cityImage = cityImage; }
 
-    public int getAgencyId() { return agencyId; } // Getter pour l'ID de l'agence
-    public void setAgencyId(int agencyId) { this.agencyId = agencyId; } // Setter pour l'ID de l'agence
+    public String getImageAirline() { return imageAirline; }
+    public void setImageAirline(String imageAirline) { this.imageAirline = imageAirline; }
 
-    public int getPromotionId() { return promotionId; } // Getter pour l'ID de la promotion
-    public void setPromotionId(int promotionId) { this.promotionId = promotionId; } // Setter pour l'ID de la promotion
+    public int getAgencyId() { return agencyId; }
+    public void setAgencyId(int agencyId) { this.agencyId = agencyId; }
+
+    public int getPromotionId() { return promotionId; }
+    public void setPromotionId(int promotionId) { this.promotionId = promotionId; }
+
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
     @Override
     public String toString() {
@@ -109,8 +112,10 @@ public class Ticket {
                 ", price=" + price +
                 ", ticketType='" + ticketType + '\'' +
                 ", cityImage='" + cityImage + '\'' +
-                ", agencyId=" + agencyId + // Affichage de l'ID de l'agence
-                ", promotionId=" + promotionId + // Affichage de l'ID de la promotion
+                ", imageAirline='" + imageAirline + '\'' +
+                ", agencyId=" + agencyId +
+                ", promotionId=" + promotionId +
+                ", userId=" + userId +
                 '}';
     }
 }

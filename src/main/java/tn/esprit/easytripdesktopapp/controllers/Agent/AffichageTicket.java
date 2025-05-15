@@ -35,7 +35,6 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AffichageTicket {
-
     private final ServiceTicket ticketService = new ServiceTicket();
     private final ServicePromotion promotionService = new ServicePromotion();
     private final CurrencyConverter currencyConverter = new CurrencyConverter();
@@ -77,26 +76,13 @@ public class AffichageTicket {
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: #ffffff; -fx-padding: 20; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 10, 0, 0);");
 
-        ImageView imageView = new ImageView();
-        try {
-            String imagePath = ticket.getCityImage();
-            if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
-                Image image = new Image(imagePath);
-                imageView.setImage(image);
-            } else {
-                if (!imagePath.startsWith("file:")) {
-                    imagePath = "file:" + imagePath;
-                }
-                Image image = new Image(imagePath);
-                imageView.setImage(image);
-            }
-            imageView.setFitWidth(200);
-            imageView.setFitHeight(150);
-            imageView.setPreserveRatio(true);
-        } catch (Exception e) {
-            imageView.setImage(new Image("file:src/main/resources/default_image.png"));
-            System.out.println("Erreur lors du chargement de l'image : " + e.getMessage());
-        }
+        // Image de la ville
+        ImageView cityImageView = new ImageView();
+        loadImage(ticket.getCityImage(), cityImageView, 200, 150);
+
+        // Image de la compagnie aérienne
+        ImageView airlineImageView = new ImageView();
+        loadImage(ticket.getImageAirline(), airlineImageView, 100, 50);
 
         Text airlineText = new Text("Compagnie : " + ticket.getAirline());
         Text departureText = new Text("Départ : " + ticket.getDepartureCity() + " - " + ticket.getDepartureDate() + " " + ticket.getDepartureTime());
@@ -134,9 +120,32 @@ public class AffichageTicket {
 
         buttonBox.getChildren().addAll(updateButton, deleteButton);
 
-        card.getChildren().addAll(imageView, airlineText, departureText, arrivalText, priceText, promotionText, weatherText, buttonBox);
+        card.getChildren().addAll(cityImageView, airlineImageView, airlineText, departureText, arrivalText, priceText, promotionText, weatherText, buttonBox);
 
         return card;
+    }
+
+    private void loadImage(String imagePath, ImageView imageView, double width, double height) {
+        try {
+            if (imagePath != null && !imagePath.isEmpty()) {
+                if (imagePath.startsWith("http://") || imagePath.startsWith("https://")) {
+                    imageView.setImage(new Image(imagePath));
+                } else {
+                    if (!imagePath.startsWith("file:")) {
+                        imagePath = "file:" + imagePath;
+                    }
+                    imageView.setImage(new Image(imagePath));
+                }
+                imageView.setFitWidth(width);
+                imageView.setFitHeight(height);
+                imageView.setPreserveRatio(true);
+            } else {
+                imageView.setImage(new Image("file:src/main/resources/default_image.png"));
+            }
+        } catch (Exception e) {
+            System.out.println("Erreur lors du chargement de l'image : " + e.getMessage());
+            imageView.setImage(new Image("file:src/main/resources/default_image.png"));
+        }
     }
 
     @FXML

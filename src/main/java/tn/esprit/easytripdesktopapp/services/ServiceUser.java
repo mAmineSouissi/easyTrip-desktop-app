@@ -19,7 +19,7 @@ public class ServiceUser implements CRUDService<User> {
 
     @Override
     public void add(User user) {
-        String qry = "INSERT INTO `User`(`name`, `surname`, `password`, `email`, `phone`, `addresse`, `profilePhoto`, `role`) VALUES (?,?,?,?,?,?,?,?)";
+        String qry = "INSERT INTO `User`(`name`, `surname`, `password`, `email`, `phone`, `addresse`, `profile_photo`, `role`) VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, user.getName());
@@ -58,7 +58,7 @@ public class ServiceUser implements CRUDService<User> {
                             rs.getString("email"),
                             rs.getString("phone"),
                             rs.getString("addresse"),
-                            rs.getString("profilePhoto"),
+                            rs.getString("profile_photo"),
                             rs.getString("role")
                     );
                 } else {
@@ -92,7 +92,7 @@ public class ServiceUser implements CRUDService<User> {
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("addresse"));
-                user.setProfilePhoto(rs.getString("profilePhoto"));
+                user.setProfilePhoto(rs.getString("profile_photo"));
                 user.setRole(rs.getString("role"));
 
                 users.add(user);
@@ -107,7 +107,7 @@ public class ServiceUser implements CRUDService<User> {
 
     @Override
     public void update(User user) {
-        String qry = "UPDATE `User` SET `name`=?, `surname`=?, `password`=?, `email`=?, `phone`=?, `addresse`=?, `profilePhoto`=?, `role`=? WHERE `id`=?";
+        String qry = "UPDATE `User` SET `name`=?, `surname`=?, `password`=?, `email`=?, `phone`=?, `addresse`=?, `profile_photo`=?, `role`=? WHERE `id`=?";
         try {
             PreparedStatement pstm = cnx.prepareStatement(qry);
             pstm.setString(1, user.getName());
@@ -156,7 +156,7 @@ public class ServiceUser implements CRUDService<User> {
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("addresse"));
-                user.setProfilePhoto(rs.getString("profilePhoto"));
+                user.setProfilePhoto(rs.getString("profile_photo"));
                 user.setRole(rs.getString("role"));
                 user.setPassword(rs.getString("password"));
                 System.out.println("EL ID=" + rs.getInt("id") + ",EL  Password aman=" + rs.getString("password"));
@@ -192,7 +192,7 @@ public class ServiceUser implements CRUDService<User> {
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("addresse"));
-                user.setProfilePhoto(rs.getString("profilePhoto"));
+                user.setProfilePhoto(rs.getString("profile_photo"));
                 user.setRole(rs.getString("role"));
 
                 users.add(user);
@@ -283,7 +283,7 @@ public class ServiceUser implements CRUDService<User> {
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("addresse"));
-                user.setProfilePhoto(rs.getString("profilePhoto"));
+                user.setProfilePhoto(rs.getString("profile_photo"));
                 user.setRole(rs.getString("role"));
                 return user;
             }

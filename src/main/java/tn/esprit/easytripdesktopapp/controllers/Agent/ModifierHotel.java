@@ -41,47 +41,61 @@ public class ModifierHotel {
 
     private String imageUrl;
     private Hotel hotelToUpdate;
-    private float basePrice; // Prix de base sans promotion
+    private float basePrice;
+    private AffichageHotel affichageHotelController;
     private final ServiceHotel hotelService = new ServiceHotel();
     private final ServicePromotion promotionService = new ServicePromotion();
 
-
     public void setHotel(Hotel hotel) {
         this.hotelToUpdate = hotel;
-
-
         this.basePrice = (hotel.getPromotion() != null ?
                 hotel.getPrice() / (1 - hotel.getPromotion().getDiscount_percentage() / 100) :
                 hotel.getPrice());
 
+        // Initialiser les champs avec les valeurs de l'hôtel
         name.setText(hotel.getName());
         adresse.setText(hotel.getAdresse());
         city.setText(hotel.getCity());
         rating.setText(String.valueOf(hotel.getRating()));
         description.setText(hotel.getDescription());
-        price.setText(String.format("%.2f", hotel.getPrice()).replace(".", ",")); // Afficher avec virgule
+        price.setText(String.format("%.2f", hotel.getPrice()).replace(".", ","));
         typeroom.setValue(hotel.getTypeRoom());
         numroom.setText(String.valueOf(hotel.getNumRoom()));
 
+        // Charger l'image
         if (hotel.getImage() != null && !hotel.getImage().isEmpty()) {
-            Image img = new Image(hotel.getImage());
-            imageView.setImage(img);
-            imageUrl = hotel.getImage();
+            try {
+                Image img = new Image(hotel.getImage());
+                imageView.setImage(img);
+                imageUrl = hotel.getImage();
+            } catch (Exception e) {
+                showAlert("Erreur", "Impossible de charger l'image de l'hôtel");
+            }
         }
 
+        // Initialiser les types de chambre
+        typeroom.getItems().addAll("Simple", "Double", "Suite");
+
+        // Charger les promotions
         loadPromotions();
 
+        // Sélectionner la promotion actuelle si elle existe
         if (hotel.getPromotion() != null) {
             promotionComboBox.setValue(hotel.getPromotion().getTitle());
         } else {
             promotionComboBox.setValue("Aucune promotion");
         }
 
+        // Écouteur pour mettre à jour le prix selon la promotion
         promotionComboBox.setOnAction(event -> updatePriceBasedOnPromotion());
     }
 
+    public void setAffichageHotelController(AffichageHotel controller) {
+        this.affichageHotelController = controller;
+    }
 
     private void loadPromotions() {
+        promotionComboBox.getItems().clear();
         promotionComboBox.getItems().add("Aucune promotion");
         List<Promotion> promotions = promotionService.getAll();
         for (Promotion promotion : promotions) {
@@ -89,21 +103,18 @@ public class ModifierHotel {
         }
     }
 
-
     private void updatePriceBasedOnPromotion() {
         String promotionTitle = promotionComboBox.getValue();
         if (promotionTitle != null && !promotionTitle.equals("Aucune promotion")) {
             Promotion promotion = promotionService.getByTitle(promotionTitle);
             if (promotion != null) {
-                float discountPercentage = promotion.getDiscount_percentage();
-                float discountedPrice = basePrice * (1 - discountPercentage / 100);
-                price.setText(String.format("%.2f", discountedPrice).replace(".", ",")); // Afficher avec virgule
+                float discountedPrice = basePrice * (1 - promotion.getDiscount_percentage() / 100);
+                price.setText(String.format("%.2f", discountedPrice).replace(".", ","));
             }
         } else {
-            price.setText(String.format("%.2f", basePrice).replace(".", ",")); // Réinitialiser au prix de base avec virgule
+            price.setText(String.format("%.2f", basePrice).replace(".", ","));
         }
     }
-
 
     @FXML
     private void saveChanges() {
@@ -113,11 +124,12 @@ public class ModifierHotel {
             hotelToUpdate.setCity(city.getText());
             hotelToUpdate.setRating(Integer.parseInt(rating.getText()));
             hotelToUpdate.setDescription(description.getText());
-            hotelToUpdate.setPrice(Float.parseFloat(price.getText().replace(",", "."))); // Convertir en point pour sauvegarde
+            hotelToUpdate.setPrice(Float.parseFloat(price.getText().replace(",", ".")));
             hotelToUpdate.setTypeRoom(typeroom.getValue());
             hotelToUpdate.setNumRoom(Integer.parseInt(numroom.getText()));
             hotelToUpdate.setImage(imageUrl);
 
+            // Gestion de la promotion
             String promotionTitle = promotionComboBox.getValue();
             Promotion promotion = null;
             if (promotionTitle != null && !promotionTitle.equals("Aucune promotion")) {
@@ -125,11 +137,19 @@ public class ModifierHotel {
             }
             hotelToUpdate.setPromotion(promotion);
 
+            // Sauvegarder les modifications
             hotelService.update(hotelToUpdate);
-            name.getScene().getWindow().hide();
+
+            // Rafraîchir la liste des hôtels dans AffichageHotel
+            if (affichageHotelController != null) {
+                affichageHotelController.refreshHotels();
+            }
+
+            // Fermer la fenêtre
+            Stage stage = (Stage) name.getScene().getWindow();
+            stage.close();
         }
     }
-
 
     private boolean validateFields() {
         StringBuilder errors = new StringBuilder();
@@ -148,8 +168,7 @@ public class ModifierHotel {
         if (description.getText().isEmpty()) errors.append("La description est obligatoire.\n");
 
         try {
-            String priceText = price.getText().replace(",", "."); // Accepter la virgule
-            float prix = Float.parseFloat(priceText);
+            float prix = Float.parseFloat(price.getText().replace(",", "."));
             if (prix < 0) errors.append("Le prix doit être positif.\n");
         } catch (NumberFormatException e) {
             errors.append("Le prix doit être un nombre valide (ex. 12,00 ou 12.00).\n");
@@ -175,6 +194,23 @@ public class ModifierHotel {
         return true;
     }
 
+    @FXML
+    private void uploadImage() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
+        );
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            try {
+                imageUrl = selectedFile.toURI().toString();
+                imageView.setImage(new Image(imageUrl));
+            } catch (Exception e) {
+                showAlert("Erreur", "Impossible de charger l'image sélectionnée");
+            }
+        }
+    }
 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -182,19 +218,5 @@ public class ModifierHotel {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
-    }
-
-
-    @FXML
-    private void uploadImage() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.png", "*.gif", "*.bmp"));
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
-
-        if (selectedFile != null) {
-            imageUrl = selectedFile.toURI().toString();
-            Image img = new Image(imageUrl);
-            imageView.setImage(img);
-        }
     }
 }

@@ -45,7 +45,7 @@ public class AffichageHotelClient {
     private final CRUDService<Hotel> hotelService = new ServiceHotel();
     private List<Hotel> hotels;
 
-    UserSession session=UserSession.getInstance();
+
     private ResourceBundle bundle;
 
     @FXML
@@ -56,7 +56,7 @@ public class AffichageHotelClient {
         bundle = ResourceBundle.getBundle("tn.esprit.easytripdesktopapp.i18n.messages", Locale.getDefault());
 
 
-        loadHotels();
+
     }
 
 

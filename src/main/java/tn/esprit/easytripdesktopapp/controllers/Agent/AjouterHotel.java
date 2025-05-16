@@ -99,7 +99,7 @@ public class AjouterHotel {
             hotel.setNumRoom(nbChambres);
             hotel.setImage(img);
             hotel.setPromotion(promotion);
-            hotel.setUserId(session.getUser().getId());
+
 
             if (promotion != null) {
                 hotel.setPrice(hotel.getDiscountedPrice());
@@ -107,9 +107,6 @@ public class AjouterHotel {
 
             hotelService.add(hotel);
 
-            if (affichageHotel != null) {
-                affichageHotel.addHotelCard(hotel);
-            }
 
             clearFields();
         }
